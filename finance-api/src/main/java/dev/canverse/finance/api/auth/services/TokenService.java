@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.auth.services;
 
-import dev.canverse.finance.api.auth.dtos.CreateToken;
+import dev.canverse.finance.api.auth.dtos.CreateTokenResponse;
 import dev.canverse.finance.api.features.user.entities.User;
 import dev.canverse.finance.api.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class TokenService {
         var expiresAt = now.plus(jwtProperties.getRefreshTokenExpirationInSeconds(), ChronoUnit.SECONDS);
 
         var claims = JwtClaimsSet.builder()
-                .issuer("studio-api")
+                .issuer("finance-api")
                 .issuedAt(now)
                 .expiresAt(expiresAt)
                 .subject(principal.getUsername())
@@ -52,19 +52,19 @@ public class TokenService {
                 .toString();
     }
 
-    public CreateToken.Response createAccessToken(User principal) {
+    public CreateTokenResponse createAccessToken(User principal) {
         var now = Instant.now();
         var expiresAt = now.plus(jwtProperties.getAccessTokenExpirationInSeconds(), ChronoUnit.SECONDS);
 
         var claims = JwtClaimsSet.builder()
-                .issuer("studio-api")
+                .issuer("finance-api")
                 .issuedAt(now)
                 .expiresAt(expiresAt)
                 .subject(principal.getUsername())
-                .claim("timezone", principal.getTimezone())
+                //.claim("timezone", principal.getTimezone())
                 .build();
 
         var token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-        return new CreateToken.Response(principal, token);
+        return CreateTokenResponse.from(principal, token);
     }
 }

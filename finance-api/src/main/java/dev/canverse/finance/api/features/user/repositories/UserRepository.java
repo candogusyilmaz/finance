@@ -11,11 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-    @Query("select u from User u " +
-            "left outer join u.userRoles ur " +
-            "where u.username = :username and ur.timeperiod.startDate <= current_date and ur.timeperiod.endDate >= current_date")
+    @Query("select u from User u where u.username = :username")
     @EntityGraph(attributePaths = {"userRoles.role", "userRoles.role.rolePermissions.permission"})
-    User findByUsernameIncludePermissions(String username);
+    Optional<User> findByUsernameIncludePermissions(String username);
 
     Optional<User> findByUsername(String username);
 }

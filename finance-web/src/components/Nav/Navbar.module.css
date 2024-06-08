@@ -1,5 +1,5 @@
 .navbar {
-    width: 3.75rem;
+    width: rem;
     height: 100%;
     padding: var(--mantine-spacing-md);
     display: flex;
@@ -27,7 +27,7 @@
       background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
     }
   
-    &[data-active] {
+    &[data-status] {
       &,
       &:hover {
         background-color: var(--mantine-color-gray-4);

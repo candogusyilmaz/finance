@@ -1,24 +1,17 @@
 import { Tooltip } from '@mantine/core';
 import { IconHome, IconLock } from '@tabler/icons-react';
-import { Link, useRouterState } from '@tanstack/react-router';
-import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
 import classes from './Navbar.module.css';
 
 export function Navbar() {
-  const [active, setActive] = useState(false);
-
   return (
     <nav className={classes.navbar}>
       <Tooltip
         label="Anasayfa"
         position="right"
-        transitionProps={{ duration: 0 }}
+        transitionProps={{ duration: 200 }}
       >
-        <Link
-          className={classes.link}
-          data-active={active || undefined}
-          to="/dashboard"
-        >
+        <Link className={classes.link} to="/dashboard">
           <IconHome
             style={{ width: '1.25rem', height: '1.25rem' }}
             stroke={1.5}
@@ -28,13 +21,9 @@ export function Navbar() {
       <Tooltip
         label="Giris"
         position="right"
-        transitionProps={{ duration: 100 }}
+        transitionProps={{ duration: 200 }}
       >
-        <Link
-          className={classes.link}
-          data-active={active || undefined}
-          to="/login"
-        >
+        <Link className={classes.link} to="/login">
           <IconLock
             style={{ width: '1.25rem', height: '1.25rem' }}
             stroke={1.5}

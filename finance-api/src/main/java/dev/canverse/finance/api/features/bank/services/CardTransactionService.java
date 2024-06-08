@@ -41,7 +41,7 @@ public class CardTransactionService {
         } else if (sender.getCardType() == CardType.CREDIT) {
             var creditCard = creditCardRepository.findById(sender.getId()).orElseThrow(() -> new RuntimeException("Kart bulunamadı!"));
 
-            if (creditCard.getExpense() + transaction.getAmount() > creditCard.getLimit())
+            if (creditCard.getExpense() + transaction.getAmount() > creditCard.getMaxLimit())
                 throw new BadRequestException("Harcama kredi kartı limitini aştığından dolayı gerçekleştirilemedi!");
 
             creditCardRepository.increaseExpense(creditCard.getId(), transaction.getAmount());

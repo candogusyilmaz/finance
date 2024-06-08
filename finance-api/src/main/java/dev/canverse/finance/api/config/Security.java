@@ -48,6 +48,7 @@ public class Security {
         http.cors(Customizer.withDefaults());
 
         http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/api/auth/token").permitAll()
                 .requestMatchers("/api/auth/refresh-token").permitAll()

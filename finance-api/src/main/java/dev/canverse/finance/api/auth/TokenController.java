@@ -1,6 +1,7 @@
 package dev.canverse.finance.api.auth;
 
-import dev.canverse.finance.api.auth.dtos.CreateToken;
+import dev.canverse.finance.api.auth.dtos.CreateTokenRequest;
+import dev.canverse.finance.api.auth.dtos.CreateTokenResponse;
 import dev.canverse.finance.api.auth.services.TokenService;
 import dev.canverse.finance.api.features.user.entities.User;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class TokenController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/token")
-    public ResponseEntity<CreateToken.Response> token(@RequestBody CreateToken.Request login) {
-        var token = new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
+    public ResponseEntity<CreateTokenResponse> createAccessToken(@RequestBody CreateTokenRequest login) {
+        var token = new UsernamePasswordAuthenticationToken(login.username(), login.password());
         var auth = authenticationManager.authenticate(token);
         var user = (User) auth.getPrincipal();
 
@@ -34,7 +35,7 @@ public class TokenController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<CreateToken.Response> refreshToken(@CookieValue(name = "refresh-token") Optional<String> refreshToken) {
+    public ResponseEntity<CreateTokenResponse> refreshAccessToken(@CookieValue(name = "refresh-token") Optional<String> refreshToken) {
         if (refreshToken.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }

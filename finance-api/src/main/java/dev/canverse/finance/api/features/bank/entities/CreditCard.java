@@ -20,7 +20,7 @@ public class CreditCard extends Card {
 
     private LocalDateTime statementDate;
 
-    private double limit;
+    private double maxLimit;
 
     @Column(nullable = false)
     private double expense;
