@@ -5,7 +5,7 @@ import { Navbar } from '../components/Nav/Navbar';
 export const Route = createFileRoute('/_authenticated')({
   component: Layout,
   beforeLoad: ({ context, location }) => {
-    if (!context.auth?.isAuthenticated) {
+    if (!context.auth.user) {
       throw redirect({
         to: '/login',
         search: {
@@ -13,10 +13,6 @@ export const Route = createFileRoute('/_authenticated')({
         }
       });
     }
-
-    return {
-      username: 'abc'
-    };
   }
 });
 

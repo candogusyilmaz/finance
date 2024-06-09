@@ -21,13 +21,14 @@ import {
 import { useState } from 'react';
 import { z } from 'zod';
 import { useCreateAccessToken } from '../api/token-controller';
+import { useAuth } from '../utils/auth';
 
 export const Route = createFileRoute('/login')({
   validateSearch: z.object({
     redirect: z.string().optional().catch('')
   }),
   beforeLoad: ({ context, search }) => {
-    if (context.auth.isAuthenticated) {
+    if (context.auth.user) {
       throw redirect({ to: search.redirect ?? '/dashboard' });
     }
   },
@@ -44,16 +45,14 @@ function Login() {
 
   const search = Route.useSearch();
 
-  const { auth } = Route.useRouteContext({
-    select: ({ auth }) => ({ auth })
-  });
+  const auth = useAuth();
 
   const login = useCreateAccessToken({
     mutation: {
       async onSuccess(data) {
-        auth.login(data.data);
-        router.invalidate();
-        navigate({ to: search.redirect ?? '/dashboard' });
+        await auth.login(data.data);
+        await router.invalidate();
+        await navigate({ to: search.redirect ?? '/dashboard' });
       },
       onError(error) {
         if (error.response?.status === 401) {
@@ -68,8 +67,8 @@ function Login() {
     }
   });
 
-  const handleLogin = () => {
-    login.mutate({
+  const handleLogin = async () => {
+    await login.mutateAsync({
       data: {
         username,
         password
