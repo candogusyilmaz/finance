@@ -20,7 +20,7 @@ import {
 } from '@tanstack/react-router';
 import { useState } from 'react';
 import { z } from 'zod';
-import { useCreateAccessToken } from '../api/token-controller';
+import { useCreateAccessToken } from '../api/Token';
 import { useAuth } from '../utils/auth';
 
 export const Route = createFileRoute('/login')({
@@ -48,31 +48,27 @@ function Login() {
   const auth = useAuth();
 
   const login = useCreateAccessToken({
-    mutation: {
-      async onSuccess(data) {
-        await auth.login(data.data);
-        await router.invalidate();
-        await navigate({ to: search.redirect ?? '/dashboard' });
-      },
-      onError(error) {
-        if (error.response?.status === 401) {
-          notifications.show({
-            message: 'Kullanici adi veya sifre hatali!',
-            color: 'red'
-          });
-        }
-
-        setPassword('');
+    async onSuccess(data) {
+      await auth.login(data);
+      await router.invalidate();
+      await navigate({ to: search.redirect ?? '/dashboard' });
+    },
+    onError(error) {
+      if (error.response?.status === 401) {
+        notifications.show({
+          message: 'Kullanici adi veya sifre hatali!',
+          color: 'red'
+        });
       }
+
+      setPassword('');
     }
   });
 
   const handleLogin = async () => {
     await login.mutateAsync({
-      data: {
-        username,
-        password
-      }
+      username,
+      password
     });
   };
 

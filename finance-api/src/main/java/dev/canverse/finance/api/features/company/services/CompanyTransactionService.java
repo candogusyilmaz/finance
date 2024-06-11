@@ -1,5 +1,6 @@
 package dev.canverse.finance.api.features.company.services;
 
+import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.bank.entities.CardTransaction;
 import dev.canverse.finance.api.features.bank.repositories.CardRepository;
 import dev.canverse.finance.api.features.bank.repositories.CardTransactionRepository;
@@ -40,7 +41,7 @@ public class CompanyTransactionService {
 
     private void createCardTransaction(Long cardId, Transaction transaction) {
         var card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new RuntimeException("Kart bulunamadı!"));
+                .orElseThrow(() -> new NotFoundException("Kart bulunamadı!"));
 
         var cardTransaction = new CardTransaction();
         cardTransaction.setSender(card);
@@ -51,7 +52,7 @@ public class CompanyTransactionService {
 
     private void createCompanyTransaction(Long companyId, Transaction transaction) {
         var company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new RuntimeException("Firma bulunamadı!"));
+                .orElseThrow(() -> new NotFoundException("Firma bulunamadı!"));
 
         var companyTransaction = new CompanyTransaction();
         companyTransaction.setCompany(company);

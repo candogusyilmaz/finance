@@ -9,6 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.util.TimeZone;
+
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
@@ -16,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class FinanceApi {
 
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SpringApplication.run(FinanceApi.class, args);
     }
-
 }

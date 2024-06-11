@@ -1,5 +1,6 @@
 package dev.canverse.finance.api.features.company.entities;
 
+import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,9 @@ public class Company {
 
     private String taxRegistrationNumber;
 
-    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    @PrimaryKeyJoinColumn
-    private CompanyBalance balance;
+    private String phoneNumber;
+
+    private String email;
+
+    private Timestamp timestamp;
 }

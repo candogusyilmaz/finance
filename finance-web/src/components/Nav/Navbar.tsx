@@ -1,5 +1,10 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
-import { IconHome, IconLock, IconLogout } from '@tabler/icons-react';
+import {
+  IconBuildingCommunity,
+  IconHome,
+  IconLock,
+  IconLogout
+} from '@tabler/icons-react';
 import { Link, useNavigate, useRouter } from '@tanstack/react-router';
 import { useAuth } from '../../utils/auth';
 import classes from './Navbar.module.css';
@@ -24,6 +29,18 @@ export function Navbar() {
       >
         <Link className={classes.link} to="/dashboard">
           <IconHome
+            style={{ width: '1.25rem', height: '1.25rem' }}
+            stroke={1.5}
+          />
+        </Link>
+      </Tooltip>
+      <Tooltip
+        label="Sirketler"
+        position="right"
+        transitionProps={{ duration: 200 }}
+      >
+        <Link className={classes.link} to="/companies">
+          <IconBuildingCommunity
             style={{ width: '1.25rem', height: '1.25rem' }}
             stroke={1.5}
           />

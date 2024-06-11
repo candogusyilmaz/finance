@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index'
+import { Route as AuthenticatedCompaniesIndexImport } from './routes/_authenticated/companies/index'
 
 // Create/Update Routes
 
@@ -30,6 +31,12 @@ const AuthenticatedRoute = AuthenticatedImport.update({
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexImport.update({
     path: '/dashboard/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedCompaniesIndexRoute =
+  AuthenticatedCompaniesIndexImport.update({
+    path: '/companies/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -51,6 +58,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/companies/': {
+      id: '/_authenticated/companies/'
+      path: '/companies'
+      fullPath: '/companies'
+      preLoaderRoute: typeof AuthenticatedCompaniesIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
       path: '/dashboard'
@@ -65,6 +79,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
+    AuthenticatedCompaniesIndexRoute,
     AuthenticatedDashboardIndexRoute,
   }),
   LoginRoute,
@@ -85,11 +100,16 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/companies/",
         "/_authenticated/dashboard/"
       ]
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/_authenticated/companies/": {
+      "filePath": "_authenticated/companies/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/dashboard/": {
       "filePath": "_authenticated/dashboard/index.tsx",

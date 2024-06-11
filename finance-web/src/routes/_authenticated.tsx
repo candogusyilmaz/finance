@@ -20,7 +20,7 @@ export function Layout() {
   return (
     <Flex style={{ height: '100%' }}>
       <Navbar />
-      <Flex p="xl">
+      <Flex direction="column" p="xl" w="100%" h="100%">
         <Outlet />
       </Flex>
     </Flex>

@@ -6,11 +6,11 @@ import { Notifications, notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+
 import { AxiosError } from 'axios';
 import { MutationCache, QueryClient, QueryClientProvider } from 'react-query';
 import NotFound from '../components/NotFound/NotFound';
 import type { AuthContext } from '../utils/auth';
-
 const theme = createTheme({
   autoContrast: true,
   defaultRadius: 'xs'
