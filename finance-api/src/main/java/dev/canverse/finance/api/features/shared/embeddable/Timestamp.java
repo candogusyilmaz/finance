@@ -17,6 +17,8 @@ public class Timestamp {
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
     @UpdateTimestamp
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
 }

@@ -16,5 +16,5 @@ export type CompanyResponse = {
   taxOffice?: string;
   taxRegistrationNumber?: string;
   createdAt: string;
-  updatedAt?: string;
+  updatedAt: string;
 };

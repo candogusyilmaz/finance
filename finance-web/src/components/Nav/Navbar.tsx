@@ -1,6 +1,7 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
 import {
   IconBuildingCommunity,
+  IconBuildingWarehouse,
   IconHome,
   IconLock,
   IconLogout
@@ -35,12 +36,24 @@ export function Navbar() {
         </Link>
       </Tooltip>
       <Tooltip
-        label="Sirketler"
+        label="Şirketler"
         position="right"
         transitionProps={{ duration: 200 }}
       >
         <Link className={classes.link} to="/companies">
           <IconBuildingCommunity
+            style={{ width: '1.25rem', height: '1.25rem' }}
+            stroke={1.5}
+          />
+        </Link>
+      </Tooltip>
+      <Tooltip
+        label="Ürünler"
+        position="right"
+        transitionProps={{ duration: 200 }}
+      >
+        <Link className={classes.link} to="/products">
+          <IconBuildingWarehouse
             style={{ width: '1.25rem', height: '1.25rem' }}
             stroke={1.5}
           />

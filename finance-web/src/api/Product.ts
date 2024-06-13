@@ -1,9 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
 import { api } from './axios';
-import type {
-  CompanyResponse,
-  CreateCompanyRequest
-} from './types/CompanyTypes';
 import {
   createURL,
   type ApiMutationOptions,
@@ -12,14 +8,18 @@ import {
   type Page,
   type Pageable
 } from './types/Defaults';
+import type {
+  CreateProductRequest,
+  ProductResponse
+} from './types/ProductTypes';
 
-export function useCreateCompany(
-  options?: ApiMutationOptions<CreateCompanyRequest, Empty>
+export function useCreateProduct(
+  options?: ApiMutationOptions<CreateProductRequest, Empty>
 ) {
   return useMutation({
     ...options,
-    mutationFn: async (data: CreateCompanyRequest) => {
-      return await api.post('/companies', data);
+    mutationFn: async (data: CreateProductRequest) => {
+      return await api.post('/products', data);
     }
   });
 }
@@ -28,20 +28,20 @@ export function useDeleteCompany(options?: ApiMutationOptions<number, Empty>) {
   return useMutation({
     ...options,
     mutationFn: async (id: number) => {
-      return await api.delete(`/companies/${id}`);
+      return await api.delete(`/products/${id}`);
     }
   });
 }
 
-export function useGetCompanies(
+export function useGetProducts(
   page: Pageable,
-  options?: ApiQueryOptions<Page<CompanyResponse>>
+  options?: ApiQueryOptions<Page<ProductResponse>>
 ) {
   return useQuery({
-    queryKey: ['companies', page],
+    queryKey: ['products', page],
     queryFn: async () => {
       return (
-        await api.get<Page<CompanyResponse>>(createURL('/companies', page))
+        await api.get<Page<ProductResponse>>(createURL('/products', page))
       ).data;
     },
     cacheTime: 6000,

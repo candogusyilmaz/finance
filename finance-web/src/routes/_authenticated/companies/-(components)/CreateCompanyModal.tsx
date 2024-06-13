@@ -1,17 +1,26 @@
-import { Box, Button, Group, Modal, Stack, TextInput } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Group,
+  InputBase,
+  Modal,
+  Stack,
+  TextInput
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { zodResolver } from 'mantine-form-zod-resolver';
+import { IMaskInput } from 'react-imask';
 import { useQueryClient } from 'react-query';
+import { useCreateCompany } from 'src/api/Company';
 import { z } from 'zod';
-import { useCreateCompany } from '../../../../api/Company';
 
 const schema = z.object({
   name: z
     .string()
     .trim()
-    .min(2, { message: 'Sirket adi en az 2 karakter olmalidir.' }),
+    .min(2, { message: 'Şirket adı en az 2 karakter olmalıdır.' }),
   address: z.string().optional(),
   taxOffice: z.string().optional(),
   taxRegistrationNumber: z.string().optional(),
@@ -39,7 +48,7 @@ export default function CreateCompanyModal() {
   const create = useCreateCompany({
     onSuccess(_data, variables) {
       notifications.show({
-        message: `${variables.name} sirketi basariyla olusturuldu.`,
+        message: `${variables.name} şirketi başarıyla oluşturuldu.`,
         color: 'green'
       });
       close();
@@ -62,10 +71,10 @@ export default function CreateCompanyModal() {
       <Modal
         opened={opened}
         onClose={() => {
-          close();
           form.reset();
+          close();
         }}
-        title="Sirket Ekle"
+        title="Şirket Hakkında"
         centered
       >
         <form
@@ -75,8 +84,8 @@ export default function CreateCompanyModal() {
         >
           <Stack gap="md">
             <TextInput
-              label="Sirket"
-              placeholder="Sirket Ismi"
+              label="Şirket"
+              placeholder="Şirket İsmi"
               withAsterisk
               key={form.key('name')}
               {...form.getInputProps('name')}
@@ -89,8 +98,8 @@ export default function CreateCompanyModal() {
                 {...form.getInputProps('taxOffice')}
               />
               <TextInput
-                label="Vergi Numarasi"
-                placeholder="Vergi Numarasi"
+                label="Vergi Numarası"
+                placeholder="Vergi Numarası"
                 key={form.key('taxRegistrationNumber')}
                 {...form.getInputProps('taxRegistrationNumber')}
               />
@@ -102,9 +111,11 @@ export default function CreateCompanyModal() {
               {...form.getInputProps('address')}
             />
             <Group grow>
-              <TextInput
+              <InputBase
                 label="Telefon"
-                placeholder="05554443322"
+                component={IMaskInput}
+                placeholder="+90 000 000 0000"
+                mask="+{9\0} 000 000 0000"
                 key={form.key('phoneNumber')}
                 {...form.getInputProps('phoneNumber')}
               />
@@ -122,7 +133,9 @@ export default function CreateCompanyModal() {
         </form>
       </Modal>
 
-      <Button onClick={open}>OLUSTUR</Button>
+      <Button onClick={open} tt="uppercase">
+        Oluştur
+      </Button>
     </Box>
   );
 }

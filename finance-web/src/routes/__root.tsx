@@ -8,8 +8,10 @@ import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 
 import { AxiosError } from 'axios';
+import 'mantine-datatable/styles.layer.css';
 import { MutationCache, QueryClient, QueryClientProvider } from 'react-query';
 import NotFound from '../components/NotFound/NotFound';
+import '../styles.css';
 import type { AuthContext } from '../utils/auth';
 const theme = createTheme({
   autoContrast: true,
@@ -24,12 +26,12 @@ const queryClient = new QueryClient({
     }
   },
   mutationCache: new MutationCache({
-    onError(error, variables, context, mutation) {
+    onError(error, _variables, _context, _mutation) {
       if (error instanceof AxiosError && error.code === 'ERR_NETWORK') {
         notifications.show({
-          title: 'Baglanti Hatasi',
+          title: 'Bağlantı Hatası',
           message:
-            'Sunucuya baglanirken hata olustu. Lutfen daha sonra tekrar deneyin.',
+            'Sunucuya bağlanırken hata oluştu. Lütfen daha sonra tekrar deneyin.',
           color: 'red'
         });
       }

@@ -5,12 +5,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "companies")
 @NoArgsConstructor
+@SoftDelete(strategy = SoftDeleteType.DELETED)
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

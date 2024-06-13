@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as AuthenticatedProductsIndexImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedCompaniesIndexImport } from './routes/_authenticated/companies/index'
 
@@ -27,6 +28,13 @@ const AuthenticatedRoute = AuthenticatedImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRoute,
 } as any)
+
+const AuthenticatedProductsIndexRoute = AuthenticatedProductsIndexImport.update(
+  {
+    path: '/products/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+)
 
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexImport.update({
@@ -72,6 +80,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/products/': {
+      id: '/_authenticated/products/'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof AuthenticatedProductsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
   }
 }
 
@@ -81,6 +96,7 @@ export const routeTree = rootRoute.addChildren({
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
     AuthenticatedCompaniesIndexRoute,
     AuthenticatedDashboardIndexRoute,
+    AuthenticatedProductsIndexRoute,
   }),
   LoginRoute,
 })
@@ -101,7 +117,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated.tsx",
       "children": [
         "/_authenticated/companies/",
-        "/_authenticated/dashboard/"
+        "/_authenticated/dashboard/",
+        "/_authenticated/products/"
       ]
     },
     "/login": {
@@ -113,6 +130,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/dashboard/": {
       "filePath": "_authenticated/dashboard/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/products/": {
+      "filePath": "_authenticated/products/index.tsx",
       "parent": "/_authenticated"
     }
   }

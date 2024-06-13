@@ -22,12 +22,16 @@ export type ProblemDetail = {
   status: number;
   detail: string;
   instance: string;
+  'invalid-params'?: { [key: string]: string[] };
 };
 
 export type Pageable = {
   page?: number;
   size?: number;
-  sort?: string[];
+  sort?: {
+    id: string;
+    direction: 'asc' | 'desc';
+  };
 };
 
 export type Page<T> = {
@@ -55,10 +59,29 @@ export function createURL(url: string, pageable: Pageable) {
   }
 
   if (pageable.sort) {
-    for (const s of pageable.sort) {
-      params.append('sort', s);
-    }
+    params.append('sort', `${pageable.sort.id},${pageable.sort.direction}`);
   }
 
   return `${url}?${params.toString()}`;
+}
+
+export function setInvalidParams(
+  problem: ProblemDetail | undefined,
+  setFieldError: (field: string, message: string) => void
+) {
+  if (!problem) return false;
+
+  const invalidParams = problem['invalid-params'];
+
+  if (invalidParams) {
+    for (const [key, messages] of Object.entries(invalidParams)) {
+      for (const message of messages) {
+        setFieldError(key, message);
+      }
+    }
+
+    return true;
+  }
+
+  return false;
 }

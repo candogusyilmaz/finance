@@ -37,4 +37,8 @@ public class CompanyService {
                 .findAll(page)
                 .map(CompanyResponse::from);
     }
+
+    public void deleteCompany(Long id) {
+        companyRepository.deleteById(id);
+    }
 }

@@ -5,9 +5,9 @@ import {
   type DataTableSortStatus
 } from 'mantine-datatable';
 import { useState } from 'react';
-import { useGetCompanies } from 'src/api/Company';
-import type { CompanyResponse } from 'src/api/types/CompanyTypes';
-import DeleteCompanyModal from './DeleteCompanyModal';
+import { useGetProducts } from 'src/api/Product';
+import type { ProductResponse } from 'src/api/types/ProductTypes';
+import DeleteCompanyModal from './DeleteProductModal';
 
 const dateFormatter = (params: string) => {
   if (!params) {
@@ -21,28 +21,31 @@ const dateFormatter = (params: string) => {
   })}`;
 };
 
-export default function CompaniesTable() {
+export default function ProductsTable() {
   const [page, setPage] = useState(0);
   const [sortStatus, setSortStatus] = useState<
-    DataTableSortStatus<CompanyResponse>
+    DataTableSortStatus<ProductResponse>
   >({
     columnAccessor: 'name',
     direction: 'asc'
   });
-  const query = useGetCompanies({
+  const query = useGetProducts({
     page: page,
     size: 20,
     sort: { id: sortStatus.columnAccessor, direction: sortStatus.direction }
   });
 
-  const columns: DataTableColumn<CompanyResponse>[] = [
-    { accessor: 'name', title: 'Şirket', sortable: true },
+  const columns: DataTableColumn<ProductResponse>[] = [
+    { accessor: 'name', title: 'Ürün', sortable: true },
     {
-      accessor: 'phoneNumber',
-      title: 'Telefon'
+      accessor: 'type',
+      title: 'Ürün Tipi',
+      sortable: true,
+      render: (record) => (record.type === 'PRODUCT' ? 'Ürün' : 'Hizmet')
     },
-    { accessor: 'taxOffice', title: 'Vergi Dairesi' },
-    { accessor: 'taxRegistrationNumber', title: 'Vergi Numarası' },
+    { accessor: 'category.name', title: 'Kategori', sortable: true },
+    { accessor: 'unit.name', title: 'Birim' },
+    { accessor: 'description', title: 'Açıklama' },
     {
       accessor: 'createdAt',
       title: 'Oluşturulma Tarihi',
@@ -63,7 +66,7 @@ export default function CompaniesTable() {
       )
     }
   ];
-  const [selectedRecords, setSelectedRecords] = useState<CompanyResponse[]>([]);
+  const [selectedRecords, setSelectedRecords] = useState<ProductResponse[]>([]);
 
   return (
     <DataTable

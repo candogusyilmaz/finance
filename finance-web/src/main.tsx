@@ -8,9 +8,8 @@ import ReactDOM from 'react-dom/client';
 
 import { AuthProvider, useAuth } from './utils/auth';
 
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { routeTree } from './routeTree.gen';
+
 const router = createRouter({
   routeTree,
   defaultPendingComponent: () => <div className={'p-2 text-2xl'}>loading</div>,

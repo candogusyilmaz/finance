@@ -26,4 +26,9 @@ public class CompanyController {
     public Page<CompanyResponse> getCompanies(@PageableDefault Pageable page) {
         return companyService.getCompanies(page);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteCompany(@PathVariable Long id) {
+        companyService.deleteCompany(id);
+    }
 }
