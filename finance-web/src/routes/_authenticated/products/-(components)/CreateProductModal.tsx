@@ -136,7 +136,9 @@ export default function CreateProductModal() {
             />
 
             <Group justify="flex-end" mt="md">
-              <Button type="submit">Kaydet</Button>
+              <Button type="submit" loading={create.isLoading}>
+                Kaydet
+              </Button>
             </Group>
           </Stack>
         </form>

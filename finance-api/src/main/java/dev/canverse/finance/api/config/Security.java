@@ -1,5 +1,6 @@
 package dev.canverse.finance.api.config;
 
+import dev.canverse.finance.api.auth.services.JwtAuthConverter;
 import dev.canverse.finance.api.properties.CorsProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Security {
     private final CorsProperties corsProperties;
+    private final JwtAuthConverter jwtAuthConverter;
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userService, PasswordEncoder passwordEncoder) {
@@ -54,7 +56,7 @@ public class Security {
                 .requestMatchers("/api/auth/refresh-token").permitAll()
                 .anyRequest().authenticated());
 
-        http.oauth2ResourceServer(config -> config.jwt(Customizer.withDefaults()));
+        http.oauth2ResourceServer(config -> config.jwt(s -> s.jwtAuthenticationConverter(jwtAuthConverter)));
 
         http.exceptionHandling(handler -> handler
                 .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
