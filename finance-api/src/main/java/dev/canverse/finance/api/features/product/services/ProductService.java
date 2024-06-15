@@ -2,7 +2,8 @@ package dev.canverse.finance.api.features.product.services;
 
 import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.product.dtos.CreateProductRequest;
-import dev.canverse.finance.api.features.product.dtos.ProductResponse;
+import dev.canverse.finance.api.features.product.dtos.GetProductByIdResponse;
+import dev.canverse.finance.api.features.product.dtos.GetProductsResponse;
 import dev.canverse.finance.api.features.product.entities.Product;
 import dev.canverse.finance.api.features.product.repository.ProductCategoryRepository;
 import dev.canverse.finance.api.features.product.repository.ProductRepository;
@@ -42,7 +43,11 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public Page<ProductResponse> getProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(ProductResponse::from);
+    public Page<GetProductsResponse> getProducts(Pageable pageable) {
+        return productRepository.findAll(pageable).map(GetProductsResponse::from);
+    }
+
+    public GetProductByIdResponse getProductById(Long id) {
+        return GetProductByIdResponse.from(productRepository.findByIdIncludeAll(id).orElseThrow(() -> new NotFoundException("Ürün bulunamadı.")));
     }
 }

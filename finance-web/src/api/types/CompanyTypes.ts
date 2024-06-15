@@ -7,7 +7,7 @@ export type CreateCompanyRequest = {
   taxRegistrationNumber?: string;
 };
 
-export type CompanyResponse = {
+export type GetCompaniesResponse = {
   id: number;
   name: string;
   address?: string;

@@ -11,10 +11,14 @@ import {
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { useQueryClient } from 'react-query';
-import { useCreateProduct } from 'src/api/Product';
-import { setInvalidParams } from 'src/api/types/Defaults';
-import type { ProductType } from 'src/api/types/ProductTypes';
+import type { AxiosError } from 'axios';
+import { useMutation, useQueryClient } from 'react-query';
+import { api } from 'src/api/axios';
+import { setInvalidParams, type ProblemDetail } from 'src/api/types/Defaults';
+import type {
+  CreateProductRequest,
+  ProductType
+} from 'src/api/types/ProductTypes';
 import ProductCategorySelect from 'src/components/ProductCategorySelect';
 import ProductUnitSelect from 'src/components/ProductUnitSelect';
 import { z } from 'zod';
@@ -60,7 +64,10 @@ export default function CreateProductModal() {
     }
   });
 
-  const create = useCreateProduct({
+  const create = useMutation({
+    mutationFn: async (data: CreateProductRequest) => {
+      return await api.post('/products', data);
+    },
     onSuccess(_data, variables) {
       notifications.show({
         message: `${variables.name} ürünü başarıyla oluşturuldu.`,
@@ -71,7 +78,7 @@ export default function CreateProductModal() {
         queryKey: 'products'
       });
     },
-    onError(error, _variables, _context) {
+    onError(error: AxiosError<ProblemDetail>, _variables, _context) {
       const invalidParams = setInvalidParams(
         error.response?.data,
         (field, msg) => form.setFieldError(field, msg)

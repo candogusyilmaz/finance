@@ -1,13 +1,11 @@
-import { Group, rem } from '@mantine/core';
-import {
-  DataTable,
-  type DataTableColumn,
-  type DataTableSortStatus
-} from 'mantine-datatable';
+import { rem } from '@mantine/core';
+import { getRouteApi } from '@tanstack/react-router';
+import { DataTable, type DataTableColumn } from 'mantine-datatable';
 import { useState } from 'react';
-import { useGetProducts } from 'src/api/Product';
-import type { ProductResponse } from 'src/api/types/ProductTypes';
-import DeleteCompanyModal from './DeleteProductModal';
+import { useQuery } from 'react-query';
+import { api } from 'src/api/axios';
+import { createURL, type Page } from 'src/api/types/Defaults';
+import type { GetProductsResponse } from 'src/api/types/ProductTypes';
 
 const dateFormatter = (params: string) => {
   if (!params) {
@@ -21,21 +19,29 @@ const dateFormatter = (params: string) => {
   })}`;
 };
 
+const route = getRouteApi('/_authenticated/products/');
+
 export default function ProductsTable() {
-  const [page, setPage] = useState(0);
-  const [sortStatus, setSortStatus] = useState<
-    DataTableSortStatus<ProductResponse>
-  >({
-    columnAccessor: 'name',
-    direction: 'asc'
-  });
-  const query = useGetProducts({
+  const { page, sort, size } = route.useSearch();
+  const navigate = route.useNavigate();
+  const pageable = {
     page: page,
-    size: 20,
-    sort: { id: sortStatus.columnAccessor, direction: sortStatus.direction }
+    size: size,
+    sort: sort
+  };
+
+  const query = useQuery({
+    queryKey: ['products', pageable],
+    queryFn: async () =>
+      (
+        await api.get<Page<GetProductsResponse>>(
+          createURL('/products', pageable)
+        )
+      ).data,
+    cacheTime: 120000
   });
 
-  const columns: DataTableColumn<ProductResponse>[] = [
+  const columns: DataTableColumn<GetProductsResponse>[] = [
     { accessor: 'name', title: 'Ürün', sortable: true },
     {
       accessor: 'type',
@@ -55,18 +61,11 @@ export default function ProductsTable() {
       accessor: 'updatedAt',
       title: 'Son Güncelleme Tarihi',
       render: (record) => dateFormatter(record.updatedAt)
-    },
-    {
-      accessor: 'actions',
-      title: '',
-      render: (company) => (
-        <Group gap={4} justify="right" wrap="nowrap">
-          <DeleteCompanyModal id={company.id} name={company.name} />
-        </Group>
-      )
     }
   ];
-  const [selectedRecords, setSelectedRecords] = useState<ProductResponse[]>([]);
+  const [selectedRecords, setSelectedRecords] = useState<GetProductsResponse[]>(
+    []
+  );
 
   return (
     <DataTable
@@ -76,15 +75,26 @@ export default function ProductsTable() {
       highlightOnHover
       columns={columns}
       records={query.data?.content}
-      sortStatus={sortStatus}
-      onSortStatusChange={setSortStatus}
-      totalRecords={query.data?.totalElements}
-      recordsPerPage={20}
-      page={page + 1}
-      onPageChange={(p) => setPage(p - 1)}
       selectedRecords={selectedRecords}
       onSelectedRecordsChange={setSelectedRecords}
       fetching={query.isFetching}
+      sortStatus={{ columnAccessor: sort.id, direction: sort.direction }}
+      onSortStatusChange={(s) =>
+        navigate({
+          search: (prev) => ({
+            ...prev,
+            sort: { id: s.columnAccessor, direction: s.direction }
+          })
+        })
+      }
+      totalRecords={query.data?.totalElements}
+      recordsPerPage={size}
+      page={page}
+      onPageChange={(p) =>
+        navigate({
+          search: (prev) => ({ ...prev, page: p })
+        })
+      }
       defaultColumnProps={{
         cellsStyle: () => ({
           paddingTop: rem(12),

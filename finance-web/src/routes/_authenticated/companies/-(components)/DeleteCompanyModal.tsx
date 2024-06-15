@@ -2,8 +2,9 @@ import { ActionIcon, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
-import { useQueryClient } from 'react-query';
-import { useDeleteCompany } from 'src/api/Company';
+import { useMutation, useQueryClient } from 'react-query';
+import { api } from 'src/api/axios';
+import type { ApiError } from 'src/api/types/Defaults';
 
 export default function DeleteCompanyModal({
   id,
@@ -11,7 +12,10 @@ export default function DeleteCompanyModal({
 }: Readonly<{ id: number; name: string }>) {
   const client = useQueryClient();
 
-  const deleteCompany = useDeleteCompany({
+  const deleteCompany = useMutation({
+    mutationFn: async (id: number) => {
+      return await api.delete(`/companies/${id}`);
+    },
     onSuccess() {
       notifications.show({
         message: `${name} sirketi basariyla silindi.`,
@@ -22,7 +26,7 @@ export default function DeleteCompanyModal({
         queryKey: 'companies'
       });
     },
-    onError(error) {
+    onError(error: ApiError) {
       if (error.response?.data.detail) {
         notifications.show({
           message: error.response.data.detail,

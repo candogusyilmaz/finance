@@ -1,20 +1,4 @@
 import type { AxiosError } from 'axios';
-import type {
-  QueryKey,
-  UseMutationOptions,
-  UseQueryOptions
-} from 'react-query';
-
-export type ApiMutationOptions<TRequest, TResponse, TContext = unknown> = Omit<
-  UseMutationOptions<TResponse, AxiosError<ProblemDetail>, TRequest, TContext>,
-  'mutationFn'
->;
-
-export type ApiQueryOptions<
-  TResponse,
-  TRequest = Empty,
-  TQueryKey extends QueryKey = QueryKey
-> = UseQueryOptions<TRequest, AxiosError<ProblemDetail>, TResponse, TQueryKey>;
 
 export type ProblemDetail = {
   type: string;
@@ -25,13 +9,17 @@ export type ProblemDetail = {
   'invalid-params'?: { [key: string]: string[] };
 };
 
+export type ApiError = AxiosError<ProblemDetail>;
+
 export type Pageable = {
   page?: number;
   size?: number;
-  sort?: {
-    id: string;
-    direction: 'asc' | 'desc';
-  };
+  sort?: Sort;
+};
+
+export type Sort = {
+  id: string;
+  direction: 'asc' | 'desc';
 };
 
 export type Page<T> = {
@@ -51,7 +39,7 @@ export function createURL(url: string, pageable: Pageable) {
   const params = new URLSearchParams();
 
   if (pageable.page !== undefined) {
-    params.append('page', pageable.page.toString());
+    params.append('page', (pageable.page - 1).toString());
   }
 
   if (pageable.size !== undefined) {

@@ -12,8 +12,10 @@ import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IMaskInput } from 'react-imask';
-import { useQueryClient } from 'react-query';
-import { useCreateCompany } from 'src/api/Company';
+import { useMutation, useQueryClient } from 'react-query';
+import { api } from 'src/api/axios';
+import type { CreateCompanyRequest } from 'src/api/types/CompanyTypes';
+import { setInvalidParams, type ApiError } from 'src/api/types/Defaults';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -45,7 +47,10 @@ export default function CreateCompanyModal() {
     validate: zodResolver(schema)
   });
 
-  const create = useCreateCompany({
+  const create = useMutation({
+    mutationFn: async (data: CreateCompanyRequest) => {
+      return await api.post('/companies', data);
+    },
     onSuccess(_data, variables) {
       notifications.show({
         message: `${variables.name} şirketi başarıyla oluşturuldu.`,
@@ -56,8 +61,13 @@ export default function CreateCompanyModal() {
         queryKey: 'companies'
       });
     },
-    onError(error, _variables, _context) {
-      if (error.response?.data.detail) {
+    onError(error: ApiError, _variables, _context) {
+      const invalidParams = setInvalidParams(
+        error.response?.data,
+        (field, msg) => form.setFieldError(field, msg)
+      );
+
+      if (!invalidParams && error.response?.data.detail) {
         notifications.show({
           message: error.response.data.detail,
           color: 'red'

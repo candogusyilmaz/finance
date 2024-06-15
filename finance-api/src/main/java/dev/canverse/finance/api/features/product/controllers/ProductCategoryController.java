@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.features.product.controllers;
 
-import dev.canverse.finance.api.features.product.dtos.ProductCategoryResponse;
+import dev.canverse.finance.api.features.product.dtos.GetProductCategoriesResponse;
 import dev.canverse.finance.api.features.product.services.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
     @GetMapping
-    public List<ProductCategoryResponse> getProductCategories() {
+    public List<GetProductCategoriesResponse> getProductCategories() {
         return productCategoryService.getProductCategories();
     }
 }

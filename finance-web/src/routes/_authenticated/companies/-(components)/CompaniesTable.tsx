@@ -5,8 +5,10 @@ import {
   type DataTableSortStatus
 } from 'mantine-datatable';
 import { useState } from 'react';
-import { useGetCompanies } from 'src/api/Company';
-import type { CompanyResponse } from 'src/api/types/CompanyTypes';
+import { useQuery } from 'react-query';
+import { api } from 'src/api/axios';
+import type { GetCompaniesResponse } from 'src/api/types/CompanyTypes';
+import { createURL, type Page } from 'src/api/types/Defaults';
 import DeleteCompanyModal from './DeleteCompanyModal';
 
 const dateFormatter = (params: string) => {
@@ -24,18 +26,31 @@ const dateFormatter = (params: string) => {
 export default function CompaniesTable() {
   const [page, setPage] = useState(0);
   const [sortStatus, setSortStatus] = useState<
-    DataTableSortStatus<CompanyResponse>
+    DataTableSortStatus<GetCompaniesResponse>
   >({
     columnAccessor: 'name',
     direction: 'asc'
   });
-  const query = useGetCompanies({
+
+  const pageable = {
     page: page,
     size: 20,
     sort: { id: sortStatus.columnAccessor, direction: sortStatus.direction }
+  };
+
+  const query = useQuery({
+    queryKey: ['companies', pageable],
+    queryFn: async () => {
+      return (
+        await api.get<Page<GetCompaniesResponse>>(
+          createURL('/companies', pageable)
+        )
+      ).data;
+    },
+    cacheTime: 6000
   });
 
-  const columns: DataTableColumn<CompanyResponse>[] = [
+  const columns: DataTableColumn<GetCompaniesResponse>[] = [
     { accessor: 'name', title: 'Şirket', sortable: true },
     {
       accessor: 'phoneNumber',
@@ -63,7 +78,9 @@ export default function CompaniesTable() {
       )
     }
   ];
-  const [selectedRecords, setSelectedRecords] = useState<CompanyResponse[]>([]);
+  const [selectedRecords, setSelectedRecords] = useState<
+    GetCompaniesResponse[]
+  >([]);
 
   return (
     <DataTable

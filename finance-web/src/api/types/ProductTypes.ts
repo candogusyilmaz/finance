@@ -8,24 +8,24 @@ export type CreateProductRequest = {
 
 export type ProductType = 'SERVICE' | 'PRODUCT';
 
-export type ProductResponse = {
+export type GetProductsResponse = {
   id: number;
   name: string;
-  category: ProductCategoryResponse;
-  unit: ProductUnitResponse;
+  category: GetProductCategoriesResponse;
+  unit: GetProductUnitsResponse;
   type: ProductType;
   description?: string;
   createdAt: string;
   updatedAt: string;
 };
 
-export type ProductCategoryResponse = {
+export type GetProductCategoriesResponse = {
   id: number;
   name: string;
   description?: string;
 };
 
-export type ProductUnitResponse = {
+export type GetProductUnitsResponse = {
   id: number;
   name: string;
 };

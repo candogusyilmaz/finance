@@ -2,7 +2,8 @@ package dev.canverse.finance.api.features.product.controllers;
 
 
 import dev.canverse.finance.api.features.product.dtos.CreateProductRequest;
-import dev.canverse.finance.api.features.product.dtos.ProductResponse;
+import dev.canverse.finance.api.features.product.dtos.GetProductByIdResponse;
+import dev.canverse.finance.api.features.product.dtos.GetProductsResponse;
 import dev.canverse.finance.api.features.product.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<ProductResponse> getProducts(Pageable page) {
+    public Page<GetProductsResponse> getProducts(Pageable page) {
         return productService.getProducts(page);
+    }
+
+    @GetMapping("/{id}")
+    public GetProductByIdResponse getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
     }
 }

@@ -2,13 +2,13 @@ import { Select, rem, type SelectProps } from '@mantine/core';
 import { IconBox } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
-import type { ProductUnitResponse } from 'src/api/types/ProductTypes';
+import type { GetProductUnitsResponse } from 'src/api/types/ProductTypes';
 
 const ProductUnitSelect = (props: SelectProps) => {
   const unitsQuery = useQuery({
     queryKey: ['product-units'],
     queryFn: async () => {
-      return (await api.get<ProductUnitResponse[]>('/product-units')).data;
+      return (await api.get<GetProductUnitsResponse[]>('/product-units')).data;
     },
     select: (data) =>
       data.map((s) => ({ label: s.name, value: s.id.toString() })),

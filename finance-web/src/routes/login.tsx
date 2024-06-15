@@ -18,9 +18,15 @@ import {
   useRouter,
   useRouterState
 } from '@tanstack/react-router';
+import axios from 'axios';
 import { useState } from 'react';
+import { useMutation } from 'react-query';
+import type { ApiError } from 'src/api/types/Defaults';
+import type {
+  CreateAccessTokenRequest,
+  CreateAccessTokenResponse
+} from 'src/api/types/TokenTypes';
 import { z } from 'zod';
-import { useCreateAccessToken } from '../api/Token';
 import { useAuth } from '../utils/auth';
 
 export const Route = createFileRoute('/login')({
@@ -47,13 +53,16 @@ function Login() {
 
   const auth = useAuth();
 
-  const login = useCreateAccessToken({
+  const login = useMutation({
+    mutationFn: async (data: CreateAccessTokenRequest) => {
+      return (await axios.post<CreateAccessTokenResponse>('/token', data)).data;
+    },
     async onSuccess(data) {
       await auth.login(data);
       await router.invalidate();
       await navigate({ to: search.redirect ?? '/dashboard' });
     },
-    onError(error) {
+    onError(error: ApiError) {
       if (error.response?.status === 401) {
         notifications.show({
           message: 'Kullanici adi veya sifre hatali!',
@@ -73,8 +82,8 @@ function Login() {
   };
 
   return (
-    <Flex justify="center" align="center" style={{ height: '100%' }}>
-      <Container size={420} style={{ width: 600 }}>
+    <Flex justify="center" align="center" h="100%">
+      <Container size={420} w={600}>
         <Title ta="center" fw={900}>
           Tekrar Hosgeldin
         </Title>

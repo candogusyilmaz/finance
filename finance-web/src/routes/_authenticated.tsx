@@ -18,7 +18,7 @@ export const Route = createFileRoute('/_authenticated')({
 
 export function Layout() {
   return (
-    <Flex style={{ height: '100%' }}>
+    <Flex h="100%">
       <Navbar />
       <Flex direction="column" p="xl" w="100%" h="100%">
         <Outlet />

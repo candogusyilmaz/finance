@@ -1,7 +1,7 @@
 package dev.canverse.finance.api.features.product.services;
 
 import dev.canverse.finance.api.features.product.dtos.CreateProductUnitRequest;
-import dev.canverse.finance.api.features.product.dtos.ProductUnitResponse;
+import dev.canverse.finance.api.features.product.dtos.GetProductUnitsResponse;
 import dev.canverse.finance.api.features.product.entities.ProductUnit;
 import dev.canverse.finance.api.features.product.repository.ProductUnitRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +14,14 @@ import java.util.List;
 public class ProductUnitService {
     private final ProductUnitRepository productUnitRepository;
 
-    public void createProductCategory(CreateProductUnitRequest request) {
-        var category = new ProductUnit();
-        category.setName(request.name());
+    public void createProductUnit(CreateProductUnitRequest request) {
+        var unit = new ProductUnit();
+        unit.setName(request.name());
 
-        productUnitRepository.save(category);
+        productUnitRepository.save(unit);
     }
 
-    public List<ProductUnitResponse> getProductUnits() {
-        return productUnitRepository.findAll().stream().map(ProductUnitResponse::from).toList();
+    public List<GetProductUnitsResponse> getProductUnits() {
+        return productUnitRepository.findAll().stream().map(GetProductUnitsResponse::from).toList();
     }
 }

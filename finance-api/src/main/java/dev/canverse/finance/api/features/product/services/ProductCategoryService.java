@@ -1,7 +1,7 @@
 package dev.canverse.finance.api.features.product.services;
 
 import dev.canverse.finance.api.features.product.dtos.CreateProductCategoryRequest;
-import dev.canverse.finance.api.features.product.dtos.ProductCategoryResponse;
+import dev.canverse.finance.api.features.product.dtos.GetProductCategoriesResponse;
 import dev.canverse.finance.api.features.product.entities.ProductCategory;
 import dev.canverse.finance.api.features.product.repository.ProductCategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class ProductCategoryService {
         productCategoryRepository.save(category);
     }
 
-    public List<ProductCategoryResponse> getProductCategories() {
-        return productCategoryRepository.findAll().stream().map(ProductCategoryResponse::from).toList();
+    public List<GetProductCategoriesResponse> getProductCategories() {
+        return productCategoryRepository.findAll().stream().map(GetProductCategoriesResponse::from).toList();
     }
 }
