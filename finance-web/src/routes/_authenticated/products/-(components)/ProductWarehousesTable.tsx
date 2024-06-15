@@ -8,9 +8,9 @@ import { createURL, type Page } from 'src/api/types/Defaults';
 import type { GetProductsResponse } from 'src/api/types/ProductTypes';
 import { FormatDate } from 'src/utils/formatter';
 
-const route = getRouteApi('/_authenticated/products/');
+const route = getRouteApi('/_authenticated/products/$productId');
 
-export default function ProductsTable() {
+export default function ProductWarehousesTable() {
   const { page, sort, size } = route.useSearch();
   const navigate = route.useNavigate();
   const pageable = {
@@ -32,14 +32,6 @@ export default function ProductsTable() {
 
   const columns: DataTableColumn<GetProductsResponse>[] = [
     { accessor: 'name', title: 'Ürün', sortable: true },
-    {
-      accessor: 'type',
-      title: 'Ürün Tipi',
-      sortable: true,
-      render: (record) => (record.type === 'PRODUCT' ? 'Ürün' : 'Hizmet')
-    },
-    { accessor: 'category.name', title: 'Kategori', sortable: true },
-    { accessor: 'unit.name', title: 'Birim' },
     { accessor: 'description', title: 'Açıklama' },
     {
       accessor: 'createdAt',
@@ -82,12 +74,6 @@ export default function ProductsTable() {
       onPageChange={(p) =>
         navigate({
           search: (prev) => ({ ...prev, page: p })
-        })
-      }
-      onRowDoubleClick={({ record }) =>
-        navigate({
-          to: '/products/$productId',
-          params: { productId: record.id }
         })
       }
       defaultColumnProps={{

@@ -52,7 +52,11 @@ export function Navbar() {
         position="right"
         transitionProps={{ duration: 200 }}
       >
-        <Link className={classes.link} to="/products">
+        <Link
+          className={classes.link}
+          to="/products"
+          search={{ page: 0, size: 20, sort: { id: 'id', direction: 'desc' } }}
+        >
           <IconBuildingWarehouse
             style={{ width: '1.25rem', height: '1.25rem' }}
             stroke={1.5}

@@ -19,7 +19,8 @@ export const DefaultQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 10000,
-      cacheTime: 10000
+      cacheTime: 10000,
+      retry: false
     }
   },
   mutationCache
