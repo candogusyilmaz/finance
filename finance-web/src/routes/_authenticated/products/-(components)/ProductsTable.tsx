@@ -6,18 +6,7 @@ import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { createURL, type Page } from 'src/api/types/Defaults';
 import type { GetProductsResponse } from 'src/api/types/ProductTypes';
-
-const dateFormatter = (params: string) => {
-  if (!params) {
-    return '';
-  }
-
-  const date = new Date(params);
-  return `${date.toLocaleString('tr-TR', {
-    dateStyle: 'long',
-    timeStyle: 'short'
-  })}`;
-};
+import { FormatDate } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/products/');
 
@@ -55,12 +44,12 @@ export default function ProductsTable() {
     {
       accessor: 'createdAt',
       title: 'Oluşturulma Tarihi',
-      render: (record) => dateFormatter(record.createdAt)
+      render: (record) => FormatDate(record.createdAt)
     },
     {
       accessor: 'updatedAt',
       title: 'Son Güncelleme Tarihi',
-      render: (record) => dateFormatter(record.updatedAt)
+      render: (record) => FormatDate(record.updatedAt)
     }
   ];
   const [selectedRecords, setSelectedRecords] = useState<GetProductsResponse[]>(
@@ -93,6 +82,12 @@ export default function ProductsTable() {
       onPageChange={(p) =>
         navigate({
           search: (prev) => ({ ...prev, page: p })
+        })
+      }
+      onRowDoubleClick={({ record }) =>
+        navigate({
+          to: '/products/$productId',
+          params: { productId: record.id }
         })
       }
       defaultColumnProps={{

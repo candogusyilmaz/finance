@@ -1,4 +1,5 @@
 import type { AxiosError } from 'axios';
+import { z } from 'zod';
 
 export type ProblemDetail = {
   type: string;
@@ -73,3 +74,22 @@ export function setInvalidParams(
 
   return false;
 }
+
+export type Timestamp = {
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const PageSchema = z.object({
+  page: z.number().min(1).catch(1),
+  size: z.number().min(5).max(50).catch(20),
+  sort: z
+    .object({
+      id: z.string(),
+      direction: z.enum(['asc', 'desc'])
+    })
+    .catch({
+      id: 'id',
+      direction: 'desc'
+    })
+});

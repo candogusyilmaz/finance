@@ -1,26 +1,12 @@
 import { Group, Stack, Text, rem } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router';
-import { z } from 'zod';
+import { PageSchema } from 'src/api/types/Defaults';
 import CreateProductModal from './-(components)/CreateProductModal';
 import ProductsTable from './-(components)/ProductsTable';
 
 export const Route = createFileRoute('/_authenticated/products/')({
   component: Products,
-  validateSearch: (search) => productsSearchSchema.parse(search)
-});
-
-const productsSearchSchema = z.object({
-  page: z.number().min(1).catch(1),
-  size: z.number().min(5).max(50).catch(20),
-  sort: z
-    .object({
-      id: z.string(),
-      direction: z.enum(['asc', 'desc'])
-    })
-    .catch({
-      id: 'id',
-      direction: 'desc'
-    })
+  validateSearch: PageSchema
 });
 
 function Products() {

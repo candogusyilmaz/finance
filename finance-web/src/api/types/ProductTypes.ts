@@ -1,3 +1,5 @@
+import type { Timestamp } from './Defaults';
+
 export type CreateProductRequest = {
   name: string;
   description: string;
@@ -17,6 +19,16 @@ export type GetProductsResponse = {
   description?: string;
   createdAt: string;
   updatedAt: string;
+};
+
+export type GetProductByIdResponse = {
+  id: number;
+  name: string;
+  category?: GetProductCategoriesResponse;
+  unit?: GetProductUnitsResponse;
+  type: ProductType;
+  description?: string;
+  timestamp: Timestamp;
 };
 
 export type GetProductCategoriesResponse = {
