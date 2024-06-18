@@ -1,15 +1,18 @@
 package dev.canverse.finance.api.features.company.services;
 
 import dev.canverse.finance.api.exceptions.BadRequestException;
-import dev.canverse.finance.api.features.company.dtos.CompanyResponse;
 import dev.canverse.finance.api.features.company.dtos.CreateCompanyRequest;
+import dev.canverse.finance.api.features.company.dtos.GetCompaniesResponse;
 import dev.canverse.finance.api.features.company.entities.Company;
 import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
+import dev.canverse.finance.api.features.company.repositories.projections.CompanyNameProjection;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +35,18 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public Page<CompanyResponse> getCompanies(Pageable page) {
+    public Page<GetCompaniesResponse> getCompanies(Pageable page) {
         return companyRepository
                 .findAll(page)
-                .map(CompanyResponse::from);
+                .map(GetCompaniesResponse::from);
+    }
+
+    public List<CompanyNameProjection> getCompaniesByName(String name) {
+        return companyRepository.findByName(name, CompanyNameProjection.class);
+    }
+
+    public List<CompanyNameProjection> getAllCompanies() {
+        return companyRepository.findAll(CompanyNameProjection.class);
     }
 
     public void deleteCompany(Long id) {

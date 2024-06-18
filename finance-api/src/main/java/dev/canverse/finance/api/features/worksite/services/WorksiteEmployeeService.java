@@ -3,7 +3,7 @@ package dev.canverse.finance.api.features.worksite.services;
 import dev.canverse.finance.api.exceptions.BadRequestException;
 import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
-import dev.canverse.finance.api.features.shared.embeddable.Timeperiod;
+import dev.canverse.finance.api.features.shared.embeddable.DateTimePeriod;
 import dev.canverse.finance.api.features.worksite.dtos.CreateWorksiteEmployeeRequest;
 import dev.canverse.finance.api.features.worksite.entities.WorksiteEmployee;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteEmployeeRepository;
@@ -29,7 +29,7 @@ public class WorksiteEmployeeService {
         var worksiteEmployee = new WorksiteEmployee();
         worksiteEmployee.setWorksite(worksite);
         worksiteEmployee.setEmployee(employee);
-        worksiteEmployee.setPeriod(new Timeperiod(request.startDate(), request.endDate()));
+        worksiteEmployee.setPeriod(new DateTimePeriod(request.startDate(), request.endDate()));
 
         worksiteEmployeeRepository.save(worksiteEmployee);
     }

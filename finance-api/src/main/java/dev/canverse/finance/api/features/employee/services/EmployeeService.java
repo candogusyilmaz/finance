@@ -8,7 +8,7 @@ import dev.canverse.finance.api.features.employee.entities.EmployeeJobDetail;
 import dev.canverse.finance.api.features.employee.repositories.EmployeeJobDetailRepository;
 import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.employee.repositories.ProfessionRepository;
-import dev.canverse.finance.api.features.shared.embeddable.Timeperiod;
+import dev.canverse.finance.api.features.shared.embeddable.DateTimePeriod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class EmployeeService {
 
         detail.setProfession(profession);
         detail.setEmployee(employee);
-        detail.setValidityPeriod(new Timeperiod(request.validityPeriodStartDate(), request.validityPeriodEndDate()));
+        detail.setValidityPeriod(new DateTimePeriod(request.validityPeriodStartDate(), request.validityPeriodEndDate()));
         detail.setSocialSecurityStartDate(request.socialSecurityStartDate());
         detail.setSocialSecurityEndDate(request.socialSecurityEndDate());
         detail.setWorkStartDate(request.workStartDate());

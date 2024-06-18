@@ -12,7 +12,7 @@ import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { PageSchema, type ApiError } from 'src/api/types/Defaults';
 import type { GetProductByIdResponse } from 'src/api/types/ProductTypes';
-import { FormatDate } from 'src/utils/formatter';
+import { FormatDateTime } from 'src/utils/formatter';
 import { z } from 'zod';
 import ProductPricesTable from './-(components)/ProductPricesTable';
 import ProductWarehousesTable from './-(components)/ProductWarehousesTable';
@@ -34,6 +34,8 @@ function Product() {
   const navigate = Route.useNavigate();
   const query = useQuery({
     queryKey: ['products', productId],
+    cacheTime: Number.POSITIVE_INFINITY,
+    staleTime: Number.POSITIVE_INFINITY,
     queryFn: async () => {
       return (await api.get<GetProductByIdResponse>(`/products/${productId}`))
         .data;
@@ -65,11 +67,11 @@ function Product() {
         <TextGroup label="Kategori" value={query.data.category?.name} />
         <TextGroup
           label="Oluşturulma Tarihi"
-          value={FormatDate(query.data.timestamp.createdAt)}
+          value={FormatDateTime(query.data.timestamp.createdAt)}
         />
         <TextGroup
           label="Son Güncellenme Tarihi"
-          value={FormatDate(query.data.timestamp.updatedAt)}
+          value={FormatDateTime(query.data.timestamp.updatedAt)}
         />
       </SimpleGrid>
       <Tabs
@@ -77,6 +79,7 @@ function Product() {
         variant="outline"
         orientation="vertical"
         value={tab}
+        radius="md"
         onChange={(s) =>
           navigate({
             search: (prev) => ({
@@ -87,14 +90,18 @@ function Product() {
         }
       >
         <Tabs.List>
-          <Tabs.Tab value="warehouses">Bulunduğu Depolar</Tabs.Tab>
-          <Tabs.Tab value="prices">Alınan Fiyatlar</Tabs.Tab>
+          <Tabs.Tab value="warehouses" p={20}>
+            Bulunduğu Depolar
+          </Tabs.Tab>
+          <Tabs.Tab value="prices" p={20}>
+            Alınan Fiyatlar
+          </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="warehouses" px={rem(12)}>
-          <ProductPricesTable />
+          <ProductWarehousesTable />
         </Tabs.Panel>
         <Tabs.Panel value="prices" px={rem(12)}>
-          <ProductWarehousesTable />
+          <ProductPricesTable />
         </Tabs.Panel>
       </Tabs>
     </Stack>

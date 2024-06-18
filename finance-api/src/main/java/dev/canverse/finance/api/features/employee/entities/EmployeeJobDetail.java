@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.features.employee.entities;
 
-import dev.canverse.finance.api.features.shared.embeddable.Timeperiod;
+import dev.canverse.finance.api.features.shared.embeddable.DateTimePeriod;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class EmployeeJobDetail {
     @ManyToOne(optional = false)
     private Profession profession;
 
-    private Timeperiod validityPeriod;
+    private DateTimePeriod validityPeriod;
 
     private LocalDateTime socialSecurityStartDate;
 

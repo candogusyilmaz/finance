@@ -1,9 +1,8 @@
 package dev.canverse.finance.api.features.product.controllers;
 
 
-import dev.canverse.finance.api.features.product.dtos.CreateProductRequest;
-import dev.canverse.finance.api.features.product.dtos.GetProductByIdResponse;
-import dev.canverse.finance.api.features.product.dtos.GetProductsResponse;
+import dev.canverse.finance.api.features.product.dtos.*;
+import dev.canverse.finance.api.features.product.services.ProductPriceService;
 import dev.canverse.finance.api.features.product.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final ProductPriceService productPriceService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,5 +32,10 @@ public class ProductController {
     @GetMapping("/{id}")
     public GetProductByIdResponse getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
+    }
+
+    @GetMapping("/{id}/prices")
+    public Page<GetProductPricesResponse> getProductPricesByProductId(@PathVariable Long id, GetProductPricesQuery query, Pageable pageable) {
+        return productPriceService.getProductPricesByProductId(id, query, pageable);
     }
 }

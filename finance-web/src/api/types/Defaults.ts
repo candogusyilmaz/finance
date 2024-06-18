@@ -36,19 +36,27 @@ export type Page<T> = {
 // biome-ignore lint/complexity/noBannedTypes:
 export type Empty = {};
 
-export function createURL(url: string, pageable: Pageable) {
+// biome-ignore lint/suspicious/noExplicitAny:
+export function createURL(url: string, pageable?: Pageable, query?: any) {
   const params = new URLSearchParams();
 
-  if (pageable.page !== undefined) {
+  if (pageable?.page) {
     params.append('page', (pageable.page - 1).toString());
   }
 
-  if (pageable.size !== undefined) {
+  if (pageable?.size) {
     params.append('size', pageable.size.toString());
   }
 
-  if (pageable.sort) {
+  if (pageable?.sort) {
     params.append('sort', `${pageable.sort.id},${pageable.sort.direction}`);
+  }
+
+  if (query) {
+    // biome-ignore lint/complexity/noForEach:
+    Object.keys(query).forEach((key) => {
+      if (query[key]) params.append(key, query[key]);
+    });
   }
 
   return `${url}?${params.toString()}`;

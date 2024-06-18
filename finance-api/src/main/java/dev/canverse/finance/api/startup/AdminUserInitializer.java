@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.startup;
 
-import dev.canverse.finance.api.features.shared.embeddable.Timeperiod;
+import dev.canverse.finance.api.features.shared.embeddable.DateTimePeriod;
 import dev.canverse.finance.api.features.user.entities.User;
 import dev.canverse.finance.api.features.user.entities.UserRole;
 import dev.canverse.finance.api.features.user.repositories.RoleRepository;
@@ -45,7 +45,7 @@ public class AdminUserInitializer implements ApplicationListener<DefaultRolePerm
             return;
 
         var adminUserRole = new UserRole(adminUser, adminRole);
-        adminUserRole.setTimeperiod(new Timeperiod(LocalDateTime.now(), LocalDateTime.now().plusYears(2934)));
+        adminUserRole.setDateTimePeriod(new DateTimePeriod(LocalDateTime.now(), LocalDateTime.now().plusYears(2934)));
         userRoleRepository.save(adminUserRole);
         log.info("Admin user and role initialized.");
     }

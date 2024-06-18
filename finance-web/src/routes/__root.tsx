@@ -7,6 +7,7 @@ import '@mantine/notifications/styles.css';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 
+import { DatesProvider } from '@mantine/dates';
 import 'mantine-datatable/styles.layer.css';
 import { QueryClientProvider } from 'react-query';
 import { DefaultQueryClient } from 'src/react-query';
@@ -14,6 +15,8 @@ import { MantineTheme } from 'src/theme';
 import NotFound from '../components/NotFound/NotFound';
 import '../styles.css';
 import type { AuthContext } from '../utils/auth';
+
+import 'dayjs/locale/tr';
 
 export const Route = createRootRouteWithContext<{
   auth: AuthContext;
@@ -27,9 +30,11 @@ function Root() {
     <QueryClientProvider client={DefaultQueryClient}>
       <MantineProvider theme={MantineTheme} defaultColorScheme="light">
         <Notifications />
-        <ModalsProvider>
-          <Outlet />
-        </ModalsProvider>
+        <DatesProvider settings={{ locale: 'tr' }}>
+          <ModalsProvider>
+            <Outlet />
+          </ModalsProvider>
+        </DatesProvider>
       </MantineProvider>
       <TanStackRouterDevtools />
     </QueryClientProvider>

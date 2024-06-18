@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { createURL, type Page } from 'src/api/types/Defaults';
 import type { GetProductsResponse } from 'src/api/types/ProductTypes';
-import { FormatDate } from 'src/utils/formatter';
+import { FormatDateTime } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/products/$productId');
 
@@ -36,12 +36,12 @@ export default function ProductWarehousesTable() {
     {
       accessor: 'createdAt',
       title: 'Oluşturulma Tarihi',
-      render: (record) => FormatDate(record.createdAt)
+      render: (record) => FormatDateTime(record.createdAt)
     },
     {
       accessor: 'updatedAt',
       title: 'Son Güncelleme Tarihi',
-      render: (record) => FormatDate(record.updatedAt)
+      render: (record) => FormatDateTime(record.updatedAt)
     }
   ];
   const [selectedRecords, setSelectedRecords] = useState<GetProductsResponse[]>(

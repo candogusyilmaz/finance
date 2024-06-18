@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 
 @Embeddable
 @Getter
-public class Timeperiod implements Serializable {
+public class DateTimePeriod implements Serializable {
 
     @Column(nullable = false)
     private LocalDateTime startDate;
@@ -18,15 +18,15 @@ public class Timeperiod implements Serializable {
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    protected Timeperiod() {
+    protected DateTimePeriod() {
     }
 
-    public Timeperiod(LocalDateTime startDate, LocalDateTime endDate) {
+    public DateTimePeriod(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate == null || endDate == null)
-            throw new IllegalArgumentException("Start date and end date must not be null.");
+            throw new IllegalArgumentException("Başlangıç tarihi ve bitiş tarihi alanları gereklidir.");
 
         if (startDate.isAfter(endDate))
-            throw new IllegalArgumentException("Start date must be before end date.");
+            throw new IllegalArgumentException("Başlangıç tarihi, bitiş tarihinden önce olmalıdır.");
 
         this.startDate = startDate.withSecond(59).truncatedTo(ChronoUnit.SECONDS);
         this.endDate = endDate.withSecond(1).truncatedTo(ChronoUnit.SECONDS);
