@@ -2,8 +2,8 @@ package dev.canverse.finance.api.features.company.controllers;
 
 import dev.canverse.finance.api.features.company.dtos.CreateCompanyRequest;
 import dev.canverse.finance.api.features.company.dtos.GetCompaniesResponse;
-import dev.canverse.finance.api.features.company.repositories.projections.CompanyNameProjection;
 import dev.canverse.finance.api.features.company.services.CompanyService;
+import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -34,12 +34,12 @@ public class CompanyController {
     }
 
     @GetMapping("/search")
-    public List<CompanyNameProjection> getCompaniesByName(@Valid @Size(min = 3) @NotBlank String name) {
+    public List<IdNameProjection> getCompaniesByName(@Valid @Size(min = 3) @NotBlank String name) {
         return companyService.getCompaniesByName(name);
     }
 
     @GetMapping("/simple")
-    public List<CompanyNameProjection> getAllCompanies() {
+    public List<IdNameProjection> getAllCompanies() {
         return companyService.getAllCompanies();
     }
 

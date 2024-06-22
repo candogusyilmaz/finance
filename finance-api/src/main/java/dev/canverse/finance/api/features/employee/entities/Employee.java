@@ -28,10 +28,10 @@ public class Employee {
     private String phoneNumber;
 
     @ManyToOne
-    @JoinFormula("(SELECT ec.id FROM worksite_employees ec WHERE ec.employee_id = id and ec.startDate <= now() and now() <= ec.endDate ORDER BY ec.id DESC LIMIT 1)")
+    @JoinFormula("(SELECT ec.id FROM worksite_employees ec WHERE ec.employee_id = id and ec.start_date <= now() and now() <= ec.end_date ORDER BY ec.id DESC LIMIT 1)")
     private WorksiteEmployee worksite;
 
     @ManyToOne
-    @JoinFormula("(SELECT ejd.id FROM employee_job_details ejd WHERE ejd.employee_id = id and ejd.startDate <= now() and now() <= ejd.endDate ORDER BY ejd.id DESC LIMIT 1)")
+    @JoinFormula("(SELECT ejd.id FROM employee_job_details ejd WHERE ejd.employee_id = id and ejd.start_date <= now() and now() <= ejd.end_date ORDER BY ejd.id DESC LIMIT 1)")
     private EmployeeJobDetail jobDetail;
 }

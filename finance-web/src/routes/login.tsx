@@ -18,9 +18,9 @@ import {
   useRouter,
   useRouterState
 } from '@tanstack/react-router';
-import axios from 'axios';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
+import { api } from 'src/api/axios';
 import type { ApiError } from 'src/api/types/Defaults';
 import type {
   CreateAccessTokenRequest,
@@ -55,7 +55,8 @@ function Login() {
 
   const login = useMutation({
     mutationFn: async (data: CreateAccessTokenRequest) => {
-      return (await axios.post<CreateAccessTokenResponse>('/token', data)).data;
+      return (await api.post<CreateAccessTokenResponse>('/auth/token', data))
+        .data;
     },
     async onSuccess(data) {
       await auth.login(data);

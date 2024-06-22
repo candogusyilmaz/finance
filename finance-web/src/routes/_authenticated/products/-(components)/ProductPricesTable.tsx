@@ -13,13 +13,14 @@ import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { createURL, type Page } from 'src/api/types/Defaults';
 import type { GetProductPricesResponse } from 'src/api/types/ProductPriceTypes';
-import CompanyAutocompleteSelect from 'src/components/CompanyAutocompleteSelect';
+import CompanySelect from 'src/components/CompanySelect';
 import {
   FormatDate,
   FormatDateTime,
   FormatPercentage,
   FormatPrice
 } from 'src/utils/formatter';
+import CreateProductPriceModal from './CreateProductPriceModal';
 
 const route = getRouteApi('/_authenticated/products/$productId');
 
@@ -104,7 +105,7 @@ export default function ProductPricesTable() {
 
   return (
     <Stack>
-      <Group>
+      <Group justify="space-between">
         <Popover
           opened={opened}
           onChange={setOpened}
@@ -125,7 +126,7 @@ export default function ProductPricesTable() {
           </Popover.Target>
           <Popover.Dropdown miw={rem(300)}>
             <Stack gap="md">
-              <CompanyAutocompleteSelect
+              <CompanySelect
                 clearable
                 onClear={() => setSubcontractorId(undefined)}
                 label="Taşeron"
@@ -192,9 +193,7 @@ export default function ProductPricesTable() {
             </Stack>
           </Popover.Dropdown>
         </Popover>
-        <Button ml="auto" tt="uppercase" px={rem(30)}>
-          Oluştur
-        </Button>
+        <CreateProductPriceModal productId={productId} />
       </Group>
       <DataTable
         noRecordsText="Kayıt bulunamadı"

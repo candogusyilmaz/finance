@@ -35,3 +35,16 @@ export type UserResponse = {
   id: number;
   displayName: string;
 };
+
+export type CreateProductPriceRequest = {
+  subcontractorId?: number;
+  productId: number;
+  price: number;
+  priceConfirmedById?: number;
+  currencyId: number;
+  vatRate?: number;
+  withholdingTaxRate?: number;
+  startDate: string;
+  endDate: string;
+  description?: string;
+};

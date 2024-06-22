@@ -5,7 +5,7 @@ import dev.canverse.finance.api.features.company.dtos.CreateCompanyRequest;
 import dev.canverse.finance.api.features.company.dtos.GetCompaniesResponse;
 import dev.canverse.finance.api.features.company.entities.Company;
 import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
-import dev.canverse.finance.api.features.company.repositories.projections.CompanyNameProjection;
+import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -41,12 +41,12 @@ public class CompanyService {
                 .map(GetCompaniesResponse::from);
     }
 
-    public List<CompanyNameProjection> getCompaniesByName(String name) {
-        return companyRepository.findByName(name, CompanyNameProjection.class);
+    public List<IdNameProjection> getCompaniesByName(String name) {
+        return companyRepository.findByName(name, IdNameProjection.class);
     }
 
-    public List<CompanyNameProjection> getAllCompanies() {
-        return companyRepository.findAll(CompanyNameProjection.class);
+    public List<IdNameProjection> getAllCompanies() {
+        return companyRepository.findAll(IdNameProjection.class);
     }
 
     public void deleteCompany(Long id) {

@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.shared.entities;
+package dev.canverse.finance.api.features.currency.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;

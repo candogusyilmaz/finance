@@ -9,8 +9,11 @@ import dev.canverse.finance.api.features.employee.repositories.EmployeeJobDetail
 import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.employee.repositories.ProfessionRepository;
 import dev.canverse.finance.api.features.shared.embeddable.DateTimePeriod;
+import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +48,9 @@ public class EmployeeService {
         detail.setSalary(request.salary());
 
         employeeJobDetailRepository.save(detail);
+    }
+
+    public List<IdNameProjection> getEmployeesSimple() {
+        return employeeRepository.findAllSimple(IdNameProjection.class);
     }
 }

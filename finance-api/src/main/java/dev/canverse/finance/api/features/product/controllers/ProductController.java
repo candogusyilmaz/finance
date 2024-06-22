@@ -4,12 +4,15 @@ package dev.canverse.finance.api.features.product.controllers;
 import dev.canverse.finance.api.features.product.dtos.*;
 import dev.canverse.finance.api.features.product.services.ProductPriceService;
 import dev.canverse.finance.api.features.product.services.ProductService;
+import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -27,6 +30,11 @@ public class ProductController {
     @GetMapping
     public Page<GetProductsResponse> getProducts(Pageable page) {
         return productService.getProducts(page);
+    }
+
+    @GetMapping("/simple")
+    public List<IdNameProjection> getProductsSimple() {
+        return productService.getProductsSimple();
     }
 
     @GetMapping("/{id}")

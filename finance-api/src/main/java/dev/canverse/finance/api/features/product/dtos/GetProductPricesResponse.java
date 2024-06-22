@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record GetProductPricesResponse(Long id, CompanyResponse subcontractor, ProductResponse product,
-                                       CurrencyResponse currency, double price, UserResponse priceConfirmedBy,
-                                       double vatRate, double withholdingTaxRate, LocalDate startDate,
+                                       CurrencyResponse currency, Double price, UserResponse priceConfirmedBy,
+                                       Double vatRate, Double withholdingTaxRate, LocalDate startDate,
                                        LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt,
                                        UserResponse createdBy, UserResponse updatedBy) {
 
@@ -26,10 +26,10 @@ public record GetProductPricesResponse(Long id, CompanyResponse subcontractor, P
     public static GetProductPricesResponse from(ProductPrice price) {
         return new GetProductPricesResponse(
                 price.getId(),
-                new CompanyResponse(price.getSubcontractor().getId(), price.getSubcontractor().getName()),
+                price.getSubcontractor() != null ? new CompanyResponse(price.getSubcontractor().getId(), price.getSubcontractor().getName()) : null,
                 new ProductResponse(price.getProduct().getId(), price.getProduct().getName()),
                 new CurrencyResponse(price.getCurrency().getId(), price.getCurrency().getCode(), price.getCurrency().getName()), price.getPrice(),
-                new UserResponse(price.getPriceConfirmedBy().getId(), price.getPriceConfirmedBy().getDisplayName()),
+                price.getPriceConfirmedBy() != null ? new UserResponse(price.getPriceConfirmedBy().getId(), price.getPriceConfirmedBy().getName()) : null,
                 price.getVatRate(),
                 price.getWithholdingTaxRate(),
                 price.getTimeperiod().getStartDate(),

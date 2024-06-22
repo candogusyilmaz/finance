@@ -17,7 +17,10 @@ public record CreateProductPriceRequest(
         Long currencyId,
         Double vatRate,
         Double withholdingTaxRate,
+        @NotNull(message = "Başlangıç tarihi boş olamaz!")
         LocalDate startDate,
-        LocalDate endDate
+        @NotNull(message = "Bitiş tarihi boş olamaz!")
+        LocalDate endDate,
+        String description
 ) {
 }

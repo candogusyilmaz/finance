@@ -87,7 +87,13 @@ export default function ProductsTable() {
       onRowDoubleClick={({ record }) =>
         navigate({
           to: '/products/$productId',
-          params: { productId: record.id }
+          params: { productId: record.id },
+          search: {
+            page: 1,
+            size: 20,
+            sort: { id: 'id', direction: 'asc' },
+            tab: 'prices'
+          }
         })
       }
       defaultColumnProps={{

@@ -1,9 +1,10 @@
 package dev.canverse.finance.api.features.product.entities;
 
 import dev.canverse.finance.api.features.company.entities.Company;
+import dev.canverse.finance.api.features.currency.entities.Currency;
+import dev.canverse.finance.api.features.employee.entities.Employee;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
-import dev.canverse.finance.api.features.shared.entities.Currency;
 import dev.canverse.finance.api.features.user.entities.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class ProductPrice {
     private double price;
 
     @ManyToOne
-    private User priceConfirmedBy;
+    private Employee priceConfirmedBy;
 
     @ManyToOne(optional = false)
     private Currency currency;

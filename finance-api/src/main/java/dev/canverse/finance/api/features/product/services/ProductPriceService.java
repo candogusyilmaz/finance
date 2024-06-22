@@ -2,6 +2,8 @@ package dev.canverse.finance.api.features.product.services;
 
 import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
+import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
+import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.product.dtos.CreateProductPriceRequest;
 import dev.canverse.finance.api.features.product.dtos.GetProductPricesQuery;
 import dev.canverse.finance.api.features.product.dtos.GetProductPricesResponse;
@@ -9,8 +11,6 @@ import dev.canverse.finance.api.features.product.entities.ProductPrice;
 import dev.canverse.finance.api.features.product.repository.ProductPriceRepository;
 import dev.canverse.finance.api.features.product.repository.ProductRepository;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
-import dev.canverse.finance.api.features.shared.repositories.CurrencyRepository;
-import dev.canverse.finance.api.features.user.repositories.UserRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class ProductPriceService {
     private final ProductPriceRepository productPriceRepository;
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
+    private final EmployeeRepository employeeRepository;
     private final CompanyRepository companyRepository;
     private final CurrencyRepository currencyRepository;
 
@@ -38,7 +38,7 @@ public class ProductPriceService {
         var productPrice = new ProductPrice();
 
         if (request.priceConfirmedById() != null) {
-            var priceConfirmedBy = userRepository.findById(request.priceConfirmedById())
+            var priceConfirmedBy = employeeRepository.findById(request.priceConfirmedById())
                     .orElseThrow(() -> new NotFoundException("Fiyat teyit alınan kullanıcı bulunamadı."));
 
             productPrice.setPriceConfirmedBy(priceConfirmedBy);
@@ -76,6 +76,6 @@ public class ProductPriceService {
             query.endDate().ifPresent(date -> predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("timeperiod").get("endDate"), date)));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
-        }, r -> r.project("product", "subcontractor", "priceConfirmedBy", "currency", "createdBy", "updatedBy").page(pageable).map(GetProductPricesResponse::from));
+        }, r -> r.project("product", "subcontractor", "priceConfirmedBy", "currency", "createdBy", "updatedBy").sortBy(pageable.getSort()).page(pageable).map(GetProductPricesResponse::from));
     }
 }

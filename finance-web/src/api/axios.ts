@@ -22,7 +22,7 @@ api.interceptors.request.use((config) => {
     );
   }
 
-  if (config.url === 'auth/token' || config.url === 'auth/refresh-token') {
+  if (config.url === '/auth/token' || config.url === '/auth/refresh-token') {
     config.headers.Authorization = undefined;
   } else {
     const user = getStoredUser();

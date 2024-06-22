@@ -1,14 +1,14 @@
 import { Select, type SelectProps } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 
-const CompanyAutocompleteSelect = (props: SelectProps) => {
+const EmployeeSelect = (props: SelectProps) => {
   const query = useQuery({
-    queryKey: ['companies', 'simple'],
+    queryKey: ['employees', 'simple'],
     queryFn: async () => {
       return (
-        await api.get<{ id: number; name: string }[]>('/companies/simple')
+        await api.get<{ id: number; name: string }[]>('/employees/simple')
       ).data;
     },
     cacheTime: Number.POSITIVE_INFINITY,
@@ -22,11 +22,11 @@ const CompanyAutocompleteSelect = (props: SelectProps) => {
       searchable
       nothingFoundMessage="Sonuç bulunamadı"
       maxDropdownHeight={200}
-      leftSection={<IconSearch size={18} />}
+      leftSection={<IconUser size={18} />}
       data={query.data}
       {...props}
     />
   );
 };
 
-export default CompanyAutocompleteSelect;
+export default EmployeeSelect;

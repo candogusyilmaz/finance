@@ -8,11 +8,14 @@ import dev.canverse.finance.api.features.product.entities.Product;
 import dev.canverse.finance.api.features.product.repository.ProductCategoryRepository;
 import dev.canverse.finance.api.features.product.repository.ProductRepository;
 import dev.canverse.finance.api.features.product.repository.ProductUnitRepository;
+import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +48,10 @@ public class ProductService {
 
     public Page<GetProductsResponse> getProducts(Pageable pageable) {
         return productRepository.findAll(pageable).map(GetProductsResponse::from);
+    }
+
+    public List<IdNameProjection> getProductsSimple() {
+        return productRepository.findAll(IdNameProjection.class);
     }
 
     public GetProductByIdResponse getProductById(Long id) {
