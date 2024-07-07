@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Repository
 public interface WorksiteEmployeeRepository extends JpaRepository<WorksiteEmployee, Long>, JpaSpecificationExecutor<WorksiteEmployee> {
 
     @Query("SELECT COUNT(we) > 0 FROM WorksiteEmployee we WHERE we.worksite.id = :worksiteId AND we.employee.id = :employeeId AND " +
             "we.period.startDate <= :endDate AND we.period.endDate >= :startDate")
-    boolean existsWithinPeriod(Long worksiteId, Long employeeId, LocalDateTime startDate, LocalDateTime endDate);
+    boolean existsWithinPeriod(Long worksiteId, Long employeeId, LocalDate startDate, LocalDate endDate);
 }
