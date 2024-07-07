@@ -1,7 +1,7 @@
 package dev.canverse.finance.api.features.worksite.entities;
 
-import dev.canverse.finance.api.features.employee.entities.Employee;
-import dev.canverse.finance.api.features.shared.embeddable.DateTimePeriod;
+import dev.canverse.finance.api.features.employment.entities.Employee;
+import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class WorksiteEmployee {
     @ManyToOne(optional = false)
     private Employee employee;
 
-    private DateTimePeriod period;
+    private DatePeriod period;
 
     private Timestamp timestamp;
 }

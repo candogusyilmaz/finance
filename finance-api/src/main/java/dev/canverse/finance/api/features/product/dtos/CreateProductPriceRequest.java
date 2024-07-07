@@ -3,6 +3,7 @@ package dev.canverse.finance.api.features.product.dtos;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record CreateProductPriceRequest(
@@ -11,7 +12,7 @@ public record CreateProductPriceRequest(
         Long productId,
         @NotNull(message = "Ürün fiyatı boş olamaz!")
         @PositiveOrZero(message = "Ürün fiyatı pozitif olmalıdır!")
-        Double price,
+        BigDecimal price,
         Long priceConfirmedById,
         @NotNull(message = "Para birimi boş olamaz!")
         Long currencyId,

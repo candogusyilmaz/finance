@@ -1,6 +1,7 @@
-package dev.canverse.finance.api.features.employee.repositories;
+package dev.canverse.finance.api.features.employment.repositories;
 
-import dev.canverse.finance.api.features.employee.entities.Employee;
+import dev.canverse.finance.api.features.employment.entities.Employee;
+import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
-    @Query("SELECT e FROM Employee e")
-    <T> List<T> findAllSimple(Class<T> type);
+    @Query("SELECT e.id as id, concat(e.individual.firstName, ' ' ,e.individual.lastName ) as name FROM Employee e")
+    List<IdNameProjection> findAllSimple();
 }

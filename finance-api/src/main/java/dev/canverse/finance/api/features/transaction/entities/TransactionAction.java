@@ -1,15 +1,13 @@
 package dev.canverse.finance.api.features.transaction.entities;
 
+import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedBy;
-
-import java.time.LocalDateTime;
+import org.springframework.data.annotation.LastModifiedBy;
 
 @Getter
 @Setter
@@ -27,11 +25,18 @@ public class TransactionAction {
     @Column(nullable = false)
     private TransactionStatus status;
 
-    @CreationTimestamp
-    @Setter(AccessLevel.NONE)
-    private LocalDateTime createdAt;
-
     @ManyToOne(optional = false)
     @CreatedBy
     private User createdBy;
+
+    @ManyToOne(optional = false)
+    @LastModifiedBy
+    private User updatedBy;
+
+    private Timestamp timestamp;
+
+    public TransactionAction(Transaction transaction, TransactionStatus status) {
+        this.transaction = transaction;
+        this.status = status;
+    }
 }

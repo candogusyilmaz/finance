@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,16 +15,16 @@ import java.time.LocalDateTime;
 @Table(name = "credit_cards")
 public class CreditCard extends Card {
 
-    private Double minimumPayment;
+    private BigDecimal minimumPayment;
 
     private LocalDateTime dueDate;
 
     private LocalDateTime statementDate;
 
-    private double maxLimit;
+    private BigDecimal maxLimit;
 
     @Column(nullable = false)
-    private double expense;
+    private BigDecimal expense;
 
     public CreditCard() {
         this.cardType = CardType.CREDIT;

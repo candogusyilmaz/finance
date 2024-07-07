@@ -8,15 +8,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 @Repository
 public interface DebitCardRepository extends JpaRepository<DebitCard, Long>, JpaSpecificationExecutor<DebitCard> {
     @Transactional
     @Modifying
     @Query("UPDATE DebitCard dc SET dc.balance = dc.balance + :amount WHERE dc.id = :id")
-    void increaseBalance(Long id, double amount);
+    void increaseBalance(Long id, BigDecimal amount);
 
     @Transactional
     @Modifying
     @Query("UPDATE DebitCard dc SET dc.balance = dc.balance - :amount WHERE dc.id = :id")
-    void decreaseBalance(Long id, double amount);
+    void decreaseBalance(Long id, BigDecimal amount);
 }

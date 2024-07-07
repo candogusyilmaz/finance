@@ -24,6 +24,6 @@
     }
   },
   "files": {
-    "ignore": ["./src/routeTree.gen.ts", "./src/api"]
+    "ignore": ["./src/routeTree.gen.ts", "./src/api", "/generated"]
   }
 }

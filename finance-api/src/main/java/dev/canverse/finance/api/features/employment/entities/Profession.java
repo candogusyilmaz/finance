@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.employee.entities;
+package dev.canverse.finance.api.features.employment.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;

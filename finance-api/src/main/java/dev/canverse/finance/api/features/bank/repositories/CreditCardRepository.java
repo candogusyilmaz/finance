@@ -8,15 +8,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 @Repository
 public interface CreditCardRepository extends JpaRepository<CreditCard, Long>, JpaSpecificationExecutor<CreditCard> {
     @Transactional
     @Modifying
     @Query("UPDATE CreditCard cc SET cc.expense = cc.expense + :amount WHERE cc.id = :id")
-    void increaseExpense(Long id, double amount);
+    void increaseExpense(Long id, BigDecimal amount);
 
     @Transactional
     @Modifying
     @Query("UPDATE CreditCard cc SET cc.expense = cc.expense - :amount WHERE cc.id = :id")
-    void decreaseExpense(Long id, double amount);
+    void decreaseExpense(Long id, BigDecimal amount);
 }

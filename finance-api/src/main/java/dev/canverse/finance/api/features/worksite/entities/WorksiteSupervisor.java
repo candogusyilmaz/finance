@@ -1,7 +1,7 @@
 package dev.canverse.finance.api.features.worksite.entities;
 
-import dev.canverse.finance.api.features.employee.entities.Employee;
-import dev.canverse.finance.api.features.shared.embeddable.DateTimePeriod;
+import dev.canverse.finance.api.features.employment.entities.Employee;
+import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
 import jakarta.persistence.*;
@@ -26,7 +26,10 @@ public class WorksiteSupervisor {
     @ManyToOne(optional = false)
     private Employee supervisor;
 
-    private DateTimePeriod dateTimePeriod;
+    @AttributeOverrides({
+            @AttributeOverride(name = "endDate", column = @Column())
+    })
+    private DatePeriod effectivePeriod;
 
     private Timestamp timestamp;
 

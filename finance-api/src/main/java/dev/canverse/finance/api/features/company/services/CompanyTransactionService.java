@@ -11,7 +11,6 @@ import dev.canverse.finance.api.features.company.repositories.CompanyTransaction
 import dev.canverse.finance.api.features.transaction.entities.Transaction;
 import dev.canverse.finance.api.features.transaction.entities.TransactionAction;
 import dev.canverse.finance.api.features.transaction.entities.TransactionStatus;
-import dev.canverse.finance.api.features.transaction.entities.TransactionType;
 import dev.canverse.finance.api.features.transaction.repository.TransactionCategoryRepository;
 import dev.canverse.finance.api.features.transaction.repository.TransactionMethodRepository;
 import dev.canverse.finance.api.features.transaction.repository.TransactionRepository;
@@ -74,11 +73,6 @@ public class CompanyTransactionService {
         var transaction = new Transaction();
         transaction.setCategory(transactionCategory);
         transaction.setMethod(transactionMethod);
-        transaction.setAmount(request.amount());
-        transaction.setCurrency(request.currency());
-        transaction.setType(TransactionType.PAYMENT);
-        transaction.setOfficial(request.official());
-        transaction.setDate(request.date());
         transaction.getActions().add(action);
 
         transactionRepository.save(transaction);

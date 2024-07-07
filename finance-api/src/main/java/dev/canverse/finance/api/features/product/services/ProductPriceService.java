@@ -3,7 +3,7 @@ package dev.canverse.finance.api.features.product.services;
 import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
-import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
+import dev.canverse.finance.api.features.employment.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.product.dtos.CreateProductPriceRequest;
 import dev.canverse.finance.api.features.product.dtos.GetProductPricesQuery;
 import dev.canverse.finance.api.features.product.dtos.GetProductPricesResponse;

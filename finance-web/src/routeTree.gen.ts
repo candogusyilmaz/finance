@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthenticatedProductsIndexImport } from './routes/_authenticated/products/index'
+import { Route as AuthenticatedEmployeesIndexImport } from './routes/_authenticated/employees/index'
 import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedCompaniesIndexImport } from './routes/_authenticated/companies/index'
 import { Route as AuthenticatedProductsProductIdImport } from './routes/_authenticated/products/$productId'
@@ -36,6 +37,12 @@ const AuthenticatedProductsIndexRoute = AuthenticatedProductsIndexImport.update(
     getParentRoute: () => AuthenticatedRoute,
   } as any,
 )
+
+const AuthenticatedEmployeesIndexRoute =
+  AuthenticatedEmployeesIndexImport.update({
+    path: '/employees/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexImport.update({
@@ -94,6 +101,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/employees/': {
+      id: '/_authenticated/employees/'
+      path: '/employees'
+      fullPath: '/employees'
+      preLoaderRoute: typeof AuthenticatedEmployeesIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/products/': {
       id: '/_authenticated/products/'
       path: '/products'
@@ -111,6 +125,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedProductsProductIdRoute,
     AuthenticatedCompaniesIndexRoute,
     AuthenticatedDashboardIndexRoute,
+    AuthenticatedEmployeesIndexRoute,
     AuthenticatedProductsIndexRoute,
   }),
   LoginRoute,
@@ -134,6 +149,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/products/$productId",
         "/_authenticated/companies/",
         "/_authenticated/dashboard/",
+        "/_authenticated/employees/",
         "/_authenticated/products/"
       ]
     },
@@ -150,6 +166,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/dashboard/": {
       "filePath": "_authenticated/dashboard/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/employees/": {
+      "filePath": "_authenticated/employees/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/products/": {

@@ -3,7 +3,7 @@ import {
   IconBuildingCommunity,
   IconBuildingWarehouse,
   IconHome,
-  IconLock,
+  IconId,
   IconLogout
 } from '@tabler/icons-react';
 import { Link, useNavigate, useRouter } from '@tanstack/react-router';
@@ -64,19 +64,23 @@ export function Navbar() {
         </Link>
       </Tooltip>
       <Tooltip
-        label="Giris"
+        label="Personeller"
         position="right"
         transitionProps={{ duration: 200 }}
       >
-        <Link className={classes.link} to="/login">
-          <IconLock
+        <Link
+          className={classes.link}
+          to="/employees"
+          search={{ page: 0, size: 20, sort: { id: 'id', direction: 'desc' } }}
+        >
+          <IconId
             style={{ width: '1.25rem', height: '1.25rem' }}
             stroke={1.5}
           />
         </Link>
       </Tooltip>
       <Tooltip
-        label="Cikis"
+        label="Çıkış"
         position="right"
         transitionProps={{ duration: 200 }}
       >
