@@ -13,6 +13,8 @@ import dev.canverse.finance.api.features.individual.entities.Individual;
 import dev.canverse.finance.api.features.individual.repositories.IndividualRepository;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
+import dev.canverse.finance.api.features.worksite.entities.WorksiteEmployee;
+import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final ProfessionRepository professionRepository;
     private final CurrencyRepository currencyRepository;
+    private final WorksiteRepository worksiteRepository;
 
     public void createEmployee(CreateEmployeeRequest request) {
         if (individualRepository.existsBySocialSecurityNumberIgnoreCase(request.individual().socialSecurityNumber()))
@@ -34,8 +37,11 @@ public class EmployeeService {
 
         var employee = new Employee();
         employee.setIndividual(getIndividual(request));
-        employee.setEmploymentPeriod(new DatePeriod(request.employmentStartDate(), request.employmentEndDate()));
-        employee.setOfficialEmploymentPeriod(new DatePeriod(request.officialEmploymentStartDate(), request.officialEmploymentEndDate()));
+        employee.setEmploymentPeriod(new DatePeriod(request.employmentStartDate(), null));
+        employee.setOfficialEmploymentPeriod(new DatePeriod(request.officialEmploymentStartDate(), null));
+
+        worksiteRepository.findById(request.worksiteId())
+                .ifPresent(worksite -> employee.getWorksites().add(new WorksiteEmployee(worksite, employee, request.employmentStartDate())));
 
         // Find professions by ids and add them to the employee as EmployeeProfession
         professionRepository.findAllById(request.professionIds()).stream()

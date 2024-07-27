@@ -1,4 +1,13 @@
-import { LoadingOverlay, SimpleGrid, Stack, Tabs, Text, Title, rem } from '@mantine/core';
+import {
+  Card,
+  Group,
+  LoadingOverlay,
+  Stack,
+  Tabs,
+  Text,
+  Title,
+  rem
+} from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
@@ -29,7 +38,8 @@ function Product() {
     cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     queryFn: async () => {
-      return (await api.get<GetProductByIdResponse>(`/products/${productId}`)).data;
+      return (await api.get<GetProductByIdResponse>(`/products/${productId}`))
+        .data;
     },
     onError(err: ApiError) {
       if (err.response?.status === 404) {
@@ -46,45 +56,61 @@ function Product() {
   if (query.isError || !query.data) return <>error</>;
 
   return (
-    <Stack>
-      <Title>{query.data.name}</Title>
-      <SimpleGrid cols={3} px={rem(32)}>
-        <TextGroup label="ID" value={query.data.id} />
-        <TextGroup label="Tür" value={query.data.type === 'PRODUCT' ? 'Ürün' : 'Hizmet'} />
-        <TextGroup label="Birim" value={query.data.unit?.name} />
-        <TextGroup label="Kategori" value={query.data.category?.name} />
-        <TextGroup label="Oluşturulma Tarihi" value={FormatDateTime(query.data.timestamp.createdAt)} />
-        <TextGroup label="Son Güncellenme Tarihi" value={FormatDateTime(query.data.timestamp.updatedAt)} />
-      </SimpleGrid>
-      <Tabs
-        keepMounted={false}
-        variant="outline"
-        orientation="vertical"
-        value={tab}
-        radius="md"
-        onChange={(s) =>
-          navigate({
-            search: (prev) => ({
-              ...prev,
-              tab: s as 'warehouses' | 'prices'
+    <Stack h="100%">
+      <Title>Ürün Detayı</Title>
+      <Group align="flex-start" wrap="nowrap">
+        <Card padding="lg" radius="md" withBorder w={rem(400)}>
+          <Stack gap={8}>
+            <TextGroup label="ID" value={query.data.id} />
+            <TextGroup label="Ürün" value={query.data.name} />
+            <TextGroup
+              label="Tür"
+              value={query.data.type === 'PRODUCT' ? 'Ürün' : 'Hizmet'}
+            />
+            <TextGroup label="Birim" value={query.data.unit?.name} />
+            <TextGroup label="Kategori" value={query.data.category?.name} />
+            <TextGroup
+              label="Oluşturulma Tarihi"
+              value={FormatDateTime(query.data.timestamp.createdAt)}
+            />
+            <TextGroup
+              label="Son Güncellenme Tarihi"
+              value={FormatDateTime(query.data.timestamp.updatedAt)}
+            />
+          </Stack>
+        </Card>
+        <Tabs
+          w="100%"
+          keepMounted={false}
+          variant="default"
+          orientation="horizontal"
+          value={tab}
+          radius="md"
+          onChange={(s) =>
+            navigate({
+              search: (prev) => ({
+                ...prev,
+                tab: s as 'warehouses' | 'prices'
+              })
             })
-          })
-        }>
-        <Tabs.List>
-          <Tabs.Tab value="warehouses" p={20}>
-            Bulunduğu Depolar
-          </Tabs.Tab>
-          <Tabs.Tab value="prices" p={20}>
-            Alınan Fiyatlar
-          </Tabs.Tab>
-        </Tabs.List>
-        <Tabs.Panel value="warehouses" px={rem(12)}>
-          <ProductWarehousesTable />
-        </Tabs.Panel>
-        <Tabs.Panel value="prices" px={rem(12)}>
-          <ProductPricesTable />
-        </Tabs.Panel>
-      </Tabs>
+          }
+          styles={{
+            list: { marginBottom: 'var(--mantine-spacing-md)' },
+            panel: { height: '100%' }
+          }}
+        >
+          <Tabs.List>
+            <Tabs.Tab value="warehouses">Bulunduğu Depolar</Tabs.Tab>
+            <Tabs.Tab value="prices">Alınan Fiyatlar</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="warehouses">
+            <ProductWarehousesTable />
+          </Tabs.Panel>
+          <Tabs.Panel value="prices">
+            <ProductPricesTable />
+          </Tabs.Panel>
+        </Tabs>
+      </Group>
     </Stack>
   );
 }
@@ -95,11 +121,11 @@ function TextGroup({
   // biome-ignore lint/suspicious/noExplicitAny:
 }: Readonly<{ label: string; value: any }>) {
   return (
-    <Stack gap={0} miw={rem(150)}>
+    <Stack gap={0} justify="space-between">
       <Text fz="md" fw={500} c="var(--mantine-color-gray-6)">
         {label}
       </Text>
-      <Text fz="xl">{value || '-'}</Text>
+      <Text fz="md">{value || '-'}</Text>
     </Stack>
   );
 }

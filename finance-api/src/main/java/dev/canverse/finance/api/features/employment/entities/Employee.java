@@ -50,7 +50,7 @@ public class Employee {
     private DatePeriod employmentPeriod;
 
     @ManyToOne
-    @JoinFormula("(SELECT ec.id FROM worksite_employees ec WHERE ec.employee_id = id and ec.start_date <= now() and now() <= ec.end_date ORDER BY ec.id DESC LIMIT 1)")
+    @JoinFormula("(SELECT ec.id FROM worksite_employees ec WHERE ec.employee_id = id and ec.start_date <= now() and (ec.end_date IS NULL OR now() <= ec.end_date) ORDER BY ec.id DESC LIMIT 1)")
     @Setter(AccessLevel.NONE)
     private WorksiteEmployee currentWorksite;
 

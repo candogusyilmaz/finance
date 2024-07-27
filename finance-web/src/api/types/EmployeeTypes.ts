@@ -18,6 +18,7 @@ type GetEmployeesResponse = {
 
 type CreateEmployeeRequest = {
   individual: CreateIndividualRequest;
+  worksiteId?: number;
   professionIds: number[];
   officialEmploymentStartDate: string;
   employmentStartDate: string;

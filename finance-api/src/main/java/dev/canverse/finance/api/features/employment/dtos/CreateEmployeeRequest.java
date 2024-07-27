@@ -13,6 +13,7 @@ public record CreateEmployeeRequest(
         @Valid CreateIndividualRequest individual,
         @Size(min = 1, message = "En az bir meslek gereklidir.")
         Set<Long> professionIds,
+        Long worksiteId,
         LocalDate officialEmploymentStartDate,
         @NotNull(message = "İşe başlama tarihi gereklidir.")
         LocalDate employmentStartDate,

@@ -1,11 +1,14 @@
 package dev.canverse.finance.api.features.worksite.services;
 
 import dev.canverse.finance.api.exceptions.BadRequestException;
+import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import dev.canverse.finance.api.features.worksite.dtos.CreateWorksiteRequest;
 import dev.canverse.finance.api.features.worksite.entities.Worksite;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,5 +24,9 @@ public class WorksiteService {
         worksite.setName(request.name());
 
         worksiteRepository.save(worksite);
+    }
+
+    public List<IdNameProjection> getWorksitesSimple() {
+        return worksiteRepository.findAllSimple();
     }
 }

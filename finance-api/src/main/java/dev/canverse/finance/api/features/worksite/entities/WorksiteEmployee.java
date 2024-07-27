@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
@@ -24,7 +26,17 @@ public class WorksiteEmployee {
     @ManyToOne(optional = false)
     private Employee employee;
 
+    @AttributeOverrides({
+            @AttributeOverride(name = "startDate", column = @Column(name = "start_date", nullable = false)),
+            @AttributeOverride(name = "endDate", column = @Column(name = "end_date"))
+    })
     private DatePeriod period;
 
     private Timestamp timestamp;
+
+    public WorksiteEmployee(Worksite worksite, Employee employee, LocalDate startDate) {
+        this.worksite = worksite;
+        this.employee = employee;
+        this.period = new DatePeriod(startDate, null);
+    }
 }
