@@ -14,7 +14,7 @@ import java.util.List;
 public class CurrencyService {
     private final CurrencyRepository currencyRepository;
 
-    public List<CurrencyResponse> getCurrencies() {
+    public List<CurrencyResponse> getCurrenciesSimple() {
         return currencyRepository.findAll().stream()
                 .map(CurrencyResponse::from)
                 .toList();

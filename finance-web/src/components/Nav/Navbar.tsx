@@ -71,7 +71,11 @@ export function Navbar() {
         <Link
           className={classes.link}
           to="/employees"
-          search={{ page: 0, size: 20, sort: { id: 'id', direction: 'desc' } }}
+          search={{
+            page: 0,
+            size: 20,
+            sort: { id: 'worksite.id', direction: 'desc' }
+          }}
         >
           <IconId
             style={{ width: '1.25rem', height: '1.25rem' }}

@@ -17,7 +17,7 @@ import { formatISO } from 'date-fns';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
-import { setInvalidParams, type ProblemDetail } from 'src/api/types/Defaults';
+import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import type { CreateProductPriceRequest } from 'src/api/types/ProductPriceTypes';
 import CompanySelect from 'src/components/CompanySelect';
 import CurrencySelect from 'src/components/CurrencySelect';
@@ -147,7 +147,7 @@ export default function CreateProductPriceModal({
               key={form.key('productId')}
               {...form.getInputProps('productId')}
             />
-            <Group grow>
+            <Group grow align="flex-start">
               <CurrencySelect
                 label="Para Birimi"
                 placeholder="TRY"
@@ -172,7 +172,7 @@ export default function CreateProductPriceModal({
                 {...form.getInputProps('price')}
               />
             </Group>
-            <Group grow>
+            <Group grow align="flex-start">
               <DateInput
                 clearable
                 label="Başlangıç Tarihi"
@@ -206,7 +206,7 @@ export default function CreateProductPriceModal({
               key={form.key('priceConfirmedById')}
               {...form.getInputProps('priceConfirmedById')}
             />
-            <Group grow>
+            <Group grow align="flex-start">
               <NumberInput
                 label="KDV Oranı"
                 placeholder="%20"
@@ -219,7 +219,7 @@ export default function CreateProductPriceModal({
                 {...form.getInputProps('vatRate')}
               />
               <NumberInput
-                label="Tevkifat Oranı"
+                label="Stopaj Oranı"
                 placeholder="%8"
                 min={0}
                 max={100}

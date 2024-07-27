@@ -15,7 +15,7 @@ import { IMaskInput } from 'react-imask';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import type { CreateCompanyRequest } from 'src/api/types/CompanyTypes';
-import { setInvalidParams, type ApiError } from 'src/api/types/Defaults';
+import { type ApiError, setInvalidParams } from 'src/api/types/Defaults';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -100,7 +100,7 @@ export default function CreateCompanyModal() {
               key={form.key('name')}
               {...form.getInputProps('name')}
             />
-            <Group grow>
+            <Group grow align="flex-start">
               <TextInput
                 label="Vergi Dairesi"
                 placeholder="Vergi Dairesi"
@@ -120,7 +120,7 @@ export default function CreateCompanyModal() {
               key={form.key('address')}
               {...form.getInputProps('address')}
             />
-            <Group grow>
+            <Group grow align="flex-start">
               <InputBase
                 label="Telefon"
                 component={IMaskInput}

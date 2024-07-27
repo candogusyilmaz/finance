@@ -43,12 +43,12 @@ public class EmployeeSalary {
     @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @CreatedBy
     @Setter(lombok.AccessLevel.NONE)
     private User createdBy;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @LastModifiedBy
     @Setter(lombok.AccessLevel.NONE)
     private User updatedBy;

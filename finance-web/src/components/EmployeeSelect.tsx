@@ -19,6 +19,7 @@ const EmployeeSelect = (props: SelectProps) => {
 
   return (
     <Select
+      comboboxProps={{ shadow: 'md' }}
       searchable
       nothingFoundMessage="Sonuç bulunamadı"
       maxDropdownHeight={200}

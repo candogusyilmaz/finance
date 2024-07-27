@@ -1,4 +1,4 @@
-import { Select, type ComboboxItem, type SelectProps } from '@mantine/core';
+import { type ComboboxItem, Select, type SelectProps } from '@mantine/core';
 import { IconCurrency } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
@@ -45,6 +45,7 @@ const CurrencySelect = ({ onCurrencyChange, ...props }: CustomSelectProps) => {
 
   return (
     <Select
+      comboboxProps={{ shadow: 'md' }}
       maxDropdownHeight={200}
       leftSection={<IconCurrency size={18} />}
       data={query.data}

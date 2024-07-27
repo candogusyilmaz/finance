@@ -1,4 +1,4 @@
-import { Select, rem, type SelectProps } from '@mantine/core';
+import { Select, type SelectProps, rem } from '@mantine/core';
 import { IconCategory } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
@@ -20,6 +20,7 @@ const ProductCategorySelect = (props: SelectProps) => {
 
   return (
     <Select
+      comboboxProps={{ shadow: 'md' }}
       label="Kategori"
       placeholder="Ürün kategorisi"
       searchable

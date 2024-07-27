@@ -34,6 +34,9 @@ public class Employee {
     @OrderBy("effectivePeriod.startDate DESC")
     private Set<EmployeeSalary> salaries = new HashSet<>();
 
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<WorksiteEmployee> worksites = new HashSet<>();
+
     @AttributeOverrides({
             @AttributeOverride(name = "startDate", column = @Column(name = "official_employment_start_date")),
             @AttributeOverride(name = "endDate", column = @Column(name = "official_employment_end_date"))
@@ -50,6 +53,11 @@ public class Employee {
     @JoinFormula("(SELECT ec.id FROM worksite_employees ec WHERE ec.employee_id = id and ec.start_date <= now() and now() <= ec.end_date ORDER BY ec.id DESC LIMIT 1)")
     @Setter(AccessLevel.NONE)
     private WorksiteEmployee currentWorksite;
+
+    @ManyToOne
+    @JoinFormula("(SELECT es.id FROM employee_salaries es WHERE es.employee_id = id and es.start_date <= now() and (es.end_date IS NULL OR now() <= es.end_date) ORDER BY es.id DESC LIMIT 1)")
+    @Setter(AccessLevel.NONE)
+    private EmployeeSalary currentSalary;
 
     @Setter(AccessLevel.NONE)
     private Timestamp timestamp;

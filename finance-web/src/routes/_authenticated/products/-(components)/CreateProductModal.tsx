@@ -14,7 +14,7 @@ import { notifications } from '@mantine/notifications';
 import type { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
-import { setInvalidParams, type ProblemDetail } from 'src/api/types/Defaults';
+import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import type {
   CreateProductRequest,
   ProductType
@@ -125,7 +125,7 @@ export default function CreateProductModal() {
               key={form.key('name')}
               {...form.getInputProps('name')}
             />
-            <Group grow>
+            <Group grow align="flex-start">
               <ProductUnitSelect
                 key={form.key('productUnitId')}
                 {...form.getInputProps('productUnitId')}

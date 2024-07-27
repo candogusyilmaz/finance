@@ -32,7 +32,7 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, ServletWebRequest request) {
-        var detail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
+        var detail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         detail.setTitle(ex.getClass().getSimpleName());
         detail.setInstance(URI.create(request.getRequest().getRequestURI()));
         this.logger.error("An unexpected error occurred.", ex);

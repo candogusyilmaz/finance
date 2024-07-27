@@ -14,10 +14,8 @@ public record CreateEmployeeRequest(
         @Size(min = 1, message = "En az bir meslek gereklidir.")
         Set<Long> professionIds,
         LocalDate officialEmploymentStartDate,
-        LocalDate officialEmploymentEndDate,
         @NotNull(message = "İşe başlama tarihi gereklidir.")
         LocalDate employmentStartDate,
-        LocalDate employmentEndDate,
         @Valid Salary salary
 ) {
     public record Salary(

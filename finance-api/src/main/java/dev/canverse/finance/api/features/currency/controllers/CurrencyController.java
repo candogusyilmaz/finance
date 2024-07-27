@@ -17,6 +17,6 @@ public class CurrencyController {
 
     @GetMapping
     public List<CurrencyResponse> getCurrenciesSimple() {
-        return currencyService.getCurrencies();
+        return currencyService.getCurrenciesSimple();
     }
 }

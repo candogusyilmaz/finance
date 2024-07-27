@@ -1,4 +1,4 @@
-import { Select, rem, type SelectProps } from '@mantine/core';
+import { Select, type SelectProps, rem } from '@mantine/core';
 import { IconBox } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
@@ -18,6 +18,7 @@ const ProductUnitSelect = (props: SelectProps) => {
 
   return (
     <Select
+      comboboxProps={{ shadow: 'md' }}
       label="Birim"
       placeholder="Ürün birimi"
       searchable
