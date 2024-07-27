@@ -1,6 +1,6 @@
 import { Flex } from '@mantine/core';
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
-import { Navbar } from '../components/Nav/Navbar';
+import { Navbar } from '../components/Shared/Nav/Navbar';
 
 export const Route = createFileRoute('/_authenticated')({
   component: Layout,

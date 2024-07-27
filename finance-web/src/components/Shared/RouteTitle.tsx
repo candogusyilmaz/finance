@@ -1,4 +1,4 @@
-import { Text, rem, type TextProps } from '@mantine/core';
+import { Text, type TextProps, rem } from '@mantine/core';
 
 interface Title1Props extends TextProps {
   children: React.ReactNode;

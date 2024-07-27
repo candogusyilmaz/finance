@@ -1,31 +1,11 @@
-import {
-  Anchor,
-  Button,
-  Checkbox,
-  Container,
-  Flex,
-  Group,
-  Paper,
-  PasswordInput,
-  Text,
-  TextInput,
-  Title
-} from '@mantine/core';
+import { Anchor, Button, Checkbox, Container, Flex, Group, Paper, PasswordInput, Text, TextInput, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import {
-  createFileRoute,
-  redirect,
-  useRouter,
-  useRouterState
-} from '@tanstack/react-router';
+import { createFileRoute, redirect, useRouter, useRouterState } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { api } from 'src/api/axios';
 import type { ApiError } from 'src/api/types/Defaults';
-import type {
-  CreateAccessTokenRequest,
-  CreateAccessTokenResponse
-} from 'src/api/types/TokenTypes';
+import type { CreateAccessTokenRequest, CreateAccessTokenResponse } from 'src/api/types/TokenTypes';
 import { z } from 'zod';
 import { useAuth } from '../utils/auth';
 
@@ -55,8 +35,7 @@ function Login() {
 
   const login = useMutation({
     mutationFn: async (data: CreateAccessTokenRequest) => {
-      return (await api.post<CreateAccessTokenResponse>('/auth/token', data))
-        .data;
+      return (await api.post<CreateAccessTokenResponse>('/auth/token', data)).data;
     },
     async onSuccess(data) {
       await auth.login(data);
@@ -114,12 +93,7 @@ function Login() {
               Forgot password?
             </Anchor>
           </Group>
-          <Button
-            fullWidth
-            mt="xl"
-            loading={login.isLoading || isRouterLoading}
-            onClick={handleLogin}
-          >
+          <Button fullWidth mt="xl" loading={login.isLoading || isRouterLoading} onClick={handleLogin}>
             Sign in
           </Button>
         </Paper>

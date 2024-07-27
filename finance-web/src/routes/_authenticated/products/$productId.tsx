@@ -1,21 +1,13 @@
-import {
-  LoadingOverlay,
-  SimpleGrid,
-  Stack,
-  Tabs,
-  Text,
-  Title,
-  rem
-} from '@mantine/core';
+import { LoadingOverlay, SimpleGrid, Stack, Tabs, Text, Title, rem } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
-import { PageSchema, type ApiError } from 'src/api/types/Defaults';
+import { type ApiError, PageSchema } from 'src/api/types/Defaults';
 import type { GetProductByIdResponse } from 'src/api/types/ProductTypes';
 import { FormatDateTime } from 'src/utils/formatter';
 import { z } from 'zod';
-import ProductPricesTable from './-(components)/ProductPricesTable';
-import ProductWarehousesTable from './-(components)/ProductWarehousesTable';
+import ProductPricesTable from './-components/ProductPricesTable';
+import ProductWarehousesTable from './-components/ProductWarehousesTable';
 
 export const Route = createFileRoute('/_authenticated/products/$productId')({
   component: Product,
@@ -37,8 +29,7 @@ function Product() {
     cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     queryFn: async () => {
-      return (await api.get<GetProductByIdResponse>(`/products/${productId}`))
-        .data;
+      return (await api.get<GetProductByIdResponse>(`/products/${productId}`)).data;
     },
     onError(err: ApiError) {
       if (err.response?.status === 404) {
@@ -59,20 +50,11 @@ function Product() {
       <Title>{query.data.name}</Title>
       <SimpleGrid cols={3} px={rem(32)}>
         <TextGroup label="ID" value={query.data.id} />
-        <TextGroup
-          label="Tür"
-          value={query.data.type === 'PRODUCT' ? 'Ürün' : 'Hizmet'}
-        />
+        <TextGroup label="Tür" value={query.data.type === 'PRODUCT' ? 'Ürün' : 'Hizmet'} />
         <TextGroup label="Birim" value={query.data.unit?.name} />
         <TextGroup label="Kategori" value={query.data.category?.name} />
-        <TextGroup
-          label="Oluşturulma Tarihi"
-          value={FormatDateTime(query.data.timestamp.createdAt)}
-        />
-        <TextGroup
-          label="Son Güncellenme Tarihi"
-          value={FormatDateTime(query.data.timestamp.updatedAt)}
-        />
+        <TextGroup label="Oluşturulma Tarihi" value={FormatDateTime(query.data.timestamp.createdAt)} />
+        <TextGroup label="Son Güncellenme Tarihi" value={FormatDateTime(query.data.timestamp.updatedAt)} />
       </SimpleGrid>
       <Tabs
         keepMounted={false}
@@ -87,8 +69,7 @@ function Product() {
               tab: s as 'warehouses' | 'prices'
             })
           })
-        }
-      >
+        }>
         <Tabs.List>
           <Tabs.Tab value="warehouses" p={20}>
             Bulunduğu Depolar

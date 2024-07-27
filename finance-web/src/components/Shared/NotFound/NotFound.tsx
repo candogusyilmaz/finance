@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  Flex,
-  Image,
-  SimpleGrid,
-  Text,
-  Title
-} from '@mantine/core';
+import { Button, Container, Flex, Image, SimpleGrid, Text, Title } from '@mantine/core';
 import { Link } from '@tanstack/react-router';
 import classes from './NotFound.module.css';
 
@@ -18,17 +10,11 @@ export default function NotFound() {
           <div>
             <Title className={classes.title}>Bir şeyler yanlış...</Title>
             <Text c="dimmed" size="lg">
-              Açmaya çalıştığınız sayfa mevcut değil. Adresi yanlış yazmış
-              olabilirsiniz veya sayfa başka bir URL'ye taşınmış olabilir. Bunun
-              bir hata olduğunu düşünüyorsanız, destek ile iletişime geçin.
+              Açmaya çalıştığınız sayfa mevcut değil. Adresi yanlış yazmış olabilirsiniz veya sayfa başka bir URL'ye taşınmış olabilir.
+              Bunun bir hata olduğunu düşünüyorsanız, destek ile iletişime geçin.
             </Text>
             <Link to="/dashboard">
-              <Button
-                variant="outline"
-                size="md"
-                mt="xl"
-                className={classes.control}
-              >
+              <Button variant="outline" size="md" mt="xl" className={classes.control}>
                 Ana sayfaya geri dön
               </Button>
             </Link>

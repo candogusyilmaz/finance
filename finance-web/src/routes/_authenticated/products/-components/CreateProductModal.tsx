@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Group,
-  Modal,
-  Select,
-  Stack,
-  TextInput,
-  Textarea
-} from '@mantine/core';
+import { Box, Button, Group, Modal, Select, Stack, TextInput, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
@@ -15,12 +6,9 @@ import type { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
-import type {
-  CreateProductRequest,
-  ProductType
-} from 'src/api/types/ProductTypes';
-import ProductCategorySelect from 'src/components/ProductCategorySelect';
-import ProductUnitSelect from 'src/components/ProductUnitSelect';
+import type { CreateProductRequest, ProductType } from 'src/api/types/ProductTypes';
+import ProductCategorySelect from 'src/components/Dropdowns/ProductCategorySelect';
+import ProductUnitSelect from 'src/components/Dropdowns/ProductUnitSelect';
 import { z } from 'zod';
 
 const productSchema = z.object({
@@ -54,12 +42,8 @@ export default function CreateProductModal() {
     transformValues(values) {
       return {
         ...values,
-        productUnitId: values.productUnitId
-          ? Number.parseInt(values.productUnitId)
-          : undefined,
-        productCategoryId: values.productCategoryId
-          ? Number.parseInt(values.productCategoryId)
-          : undefined
+        productUnitId: values.productUnitId ? Number.parseInt(values.productUnitId) : undefined,
+        productCategoryId: values.productCategoryId ? Number.parseInt(values.productCategoryId) : undefined
       };
     }
   });
@@ -79,10 +63,7 @@ export default function CreateProductModal() {
       });
     },
     onError(error: AxiosError<ProblemDetail>, _variables, _context) {
-      const invalidParams = setInvalidParams(
-        error.response?.data,
-        (field, msg) => form.setFieldError(field, msg)
-      );
+      const invalidParams = setInvalidParams(error.response?.data, (field, msg) => form.setFieldError(field, msg));
 
       if (!invalidParams && error.response?.data.detail) {
         notifications.show({
@@ -102,8 +83,7 @@ export default function CreateProductModal() {
           close();
         }}
         title="Ürün Hakkında"
-        centered
-      >
+        centered>
         <form onSubmit={form.onSubmit((data) => create.mutate(data))}>
           <Stack gap="md">
             <Select
@@ -118,22 +98,10 @@ export default function CreateProductModal() {
               {...form.getInputProps('productType')}
             />
 
-            <TextInput
-              label="Ürün"
-              placeholder="Ürün Adı"
-              withAsterisk
-              key={form.key('name')}
-              {...form.getInputProps('name')}
-            />
+            <TextInput label="Ürün" placeholder="Ürün Adı" withAsterisk key={form.key('name')} {...form.getInputProps('name')} />
             <Group grow align="flex-start">
-              <ProductUnitSelect
-                key={form.key('productUnitId')}
-                {...form.getInputProps('productUnitId')}
-              />
-              <ProductCategorySelect
-                key={form.key('productCategoryId')}
-                {...form.getInputProps('productCategoryId')}
-              />
+              <ProductUnitSelect key={form.key('productUnitId')} {...form.getInputProps('productUnitId')} />
+              <ProductCategorySelect key={form.key('productCategoryId')} {...form.getInputProps('productCategoryId')} />
             </Group>
             <Textarea
               label="Açıklama"

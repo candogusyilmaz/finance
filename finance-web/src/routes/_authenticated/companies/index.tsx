@@ -1,8 +1,8 @@
 import { Group, Stack } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router';
-import { RouteTitle } from 'src/components/RouteTitle';
-import CompaniesTable from 'src/routes/_authenticated/companies/-(components)/CompaniesTable';
-import CreateCompanyModal from 'src/routes/_authenticated/companies/-(components)/CreateCompanyModal';
+import { RouteTitle } from 'src/components/Shared/RouteTitle';
+import CompaniesTable from 'src/routes/_authenticated/companies/-components/CompaniesTable';
+import CreateCompanyModal from 'src/routes/_authenticated/companies/-components/CreateCompanyModal';
 
 export const Route = createFileRoute('/_authenticated/companies/')({
   component: Companies

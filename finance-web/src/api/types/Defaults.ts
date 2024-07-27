@@ -62,10 +62,7 @@ export function createURL(url: string, pageable?: Pageable, query?: any) {
   return `${url}?${params.toString()}`;
 }
 
-export function setInvalidParams(
-  problem: ProblemDetail | undefined,
-  setFieldError: (field: string, message: string) => void
-) {
+export function setInvalidParams(problem: ProblemDetail | undefined, setFieldError: (field: string, message: string) => void) {
   if (!problem) return false;
 
   const invalidParams = problem['invalid-params'];

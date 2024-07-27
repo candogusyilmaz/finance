@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Group,
-  Modal,
-  NumberInput,
-  Stack,
-  Textarea
-} from '@mantine/core';
+import { Box, Button, Group, Modal, NumberInput, Stack, Textarea } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
@@ -19,10 +11,10 @@ import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import type { CreateProductPriceRequest } from 'src/api/types/ProductPriceTypes';
-import CompanySelect from 'src/components/CompanySelect';
-import CurrencySelect from 'src/components/CurrencySelect';
-import EmployeeSelect from 'src/components/EmployeeSelect';
-import ProductSelect from 'src/components/ProductSelect';
+import CompanySelect from 'src/components/Dropdowns/CompanySelect';
+import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
+import EmployeeSelect from 'src/components/Dropdowns/EmployeeSelect';
+import ProductSelect from 'src/components/Dropdowns/ProductSelect';
 import { ConvertToNumber } from 'src/utils/utils';
 import { z } from 'zod';
 
@@ -35,16 +27,8 @@ const productPriceSchema = z
     endDate: z.date({ required_error: 'Bitiş tarihi gereklidir.' }),
     subcontractorId: z.string().optional(),
     priceConfirmedById: z.string().optional(),
-    vatRate: z
-      .number()
-      .min(0, 'En az 0 olabilir.')
-      .max(100, 'En fazla 100 olabilir.')
-      .optional(),
-    withholdingTaxRate: z
-      .number()
-      .min(0, 'En az 0 olabilir.')
-      .max(100, 'En fazla 100 olabilir.')
-      .optional(),
+    vatRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.').optional(),
+    withholdingTaxRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.').optional(),
     description: z.string().optional()
   })
   .refine(
@@ -60,14 +44,10 @@ const productPriceSchema = z
     }
   );
 
-export default function CreateProductPriceModal({
-  productId
-}: Readonly<{ productId: number }>) {
+export default function CreateProductPriceModal({ productId }: Readonly<{ productId: number }>) {
   const [opened, { open, close }] = useDisclosure(false);
   const client = useQueryClient();
-  const [selectedCurrencySymbol, setSelectedCurrencySymbol] = useState<
-    string | undefined
-  >();
+  const [selectedCurrencySymbol, setSelectedCurrencySymbol] = useState<string | undefined>();
 
   const form = useForm({
     initialValues: {
@@ -113,10 +93,7 @@ export default function CreateProductPriceModal({
       });
     },
     onError(error: AxiosError<ProblemDetail>, _variables, _context) {
-      const invalidParams = setInvalidParams(
-        error.response?.data,
-        (field, msg) => form.setFieldError(field, msg)
-      );
+      const invalidParams = setInvalidParams(error.response?.data, (field, msg) => form.setFieldError(field, msg));
 
       if (!invalidParams && error.response?.data.detail) {
         notifications.show({
@@ -136,8 +113,7 @@ export default function CreateProductPriceModal({
           close();
         }}
         title="Ürün Fiyat Tanımı"
-        centered
-      >
+        centered>
         <form onSubmit={form.onSubmit((data) => create.mutate(data))}>
           <Stack gap="md">
             <ProductSelect
@@ -154,9 +130,7 @@ export default function CreateProductPriceModal({
                 withAsterisk
                 key={form.key('currencyId')}
                 {...form.getInputProps('currencyId')}
-                onCurrencyChange={(opt) =>
-                  setSelectedCurrencySymbol(opt?.symbol)
-                }
+                onCurrencyChange={(opt) => setSelectedCurrencySymbol(opt?.symbol)}
               />
               <NumberInput
                 label="Fiyat"

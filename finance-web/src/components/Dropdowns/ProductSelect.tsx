@@ -1,20 +1,17 @@
 import { Select, type SelectProps } from '@mantine/core';
-import { IconBuildingCommunity } from '@tabler/icons-react';
+import { IconAsset } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 
-const CompanySelect = (props: SelectProps) => {
+const ProductSelect = (props: SelectProps) => {
   const query = useQuery({
-    queryKey: ['companies', 'simple'],
+    queryKey: ['products', 'simple'],
     queryFn: async () => {
-      return (
-        await api.get<{ id: number; name: string }[]>('/companies/simple')
-      ).data;
+      return (await api.get<{ id: number; name: string }[]>('/products/simple')).data;
     },
     cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
-    select: (data) =>
-      data.map((s) => ({ label: s.name, value: s.id.toString() }))
+    select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() }))
   });
 
   return (
@@ -23,11 +20,11 @@ const CompanySelect = (props: SelectProps) => {
       searchable
       nothingFoundMessage="Sonuç bulunamadı"
       maxDropdownHeight={200}
-      leftSection={<IconBuildingCommunity size={18} />}
+      leftSection={<IconAsset size={18} />}
       data={query.data}
       {...props}
     />
   );
 };
 
-export default CompanySelect;
+export default ProductSelect;

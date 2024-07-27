@@ -19,12 +19,7 @@ export default function ProductsTable() {
 
   const query = useQuery({
     queryKey: ['employees', pageable],
-    queryFn: async () =>
-      (
-        await api.get<Page<GetEmployeesResponse>>(
-          createURL('/employees', pageable)
-        )
-      ).data,
+    queryFn: async () => (await api.get<Page<GetEmployeesResponse>>(createURL('/employees', pageable))).data,
     cacheTime: 120000,
     staleTime: 120000
   });

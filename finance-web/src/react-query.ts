@@ -7,8 +7,7 @@ const mutationCache = new MutationCache({
     if (error instanceof AxiosError && error.code === 'ERR_NETWORK') {
       notifications.show({
         title: 'Bağlantı Hatası',
-        message:
-          'Sunucuya bağlanırken hata oluştu. Lütfen daha sonra tekrar deneyin.',
+        message: 'Sunucuya bağlanırken hata oluştu. Lütfen daha sonra tekrar deneyin.',
         color: 'red'
       });
     }

@@ -21,10 +21,7 @@ export const FormatDateTime = (params: string) => {
   })}`;
 };
 
-export const FormatPrice = (
-  price: number | undefined,
-  currencyCode = 'TRY'
-) => {
+export const FormatPrice = (price: number | undefined, currencyCode = 'TRY') => {
   if (!price) {
     return '';
   }

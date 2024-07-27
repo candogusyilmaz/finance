@@ -30,12 +30,8 @@ export function setStoredUser(user: CreateTokenResponse | null) {
   }
 }
 
-export function AuthProvider({
-  children
-}: Readonly<{ children: React.ReactNode }>) {
-  const [user, setUser] = React.useState<CreateTokenResponse | null>(
-    getStoredUser()
-  );
+export function AuthProvider({ children }: Readonly<{ children: React.ReactNode }>) {
+  const [user, setUser] = React.useState<CreateTokenResponse | null>(getStoredUser());
 
   const isAuthenticated = !!user;
 
@@ -53,11 +49,7 @@ export function AuthProvider({
     setUser(getStoredUser());
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

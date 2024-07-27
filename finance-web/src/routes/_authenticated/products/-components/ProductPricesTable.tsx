@@ -1,25 +1,16 @@
 import { Button, Group, Popover, Stack, rem } from '@mantine/core';
 import { DatePickerInput, type DateValue } from '@mantine/dates';
-import {
-  IconCalendarDown,
-  IconCalendarUp,
-  IconSearch
-} from '@tabler/icons-react';
+import { IconCalendarDown, IconCalendarUp, IconSearch } from '@tabler/icons-react';
 import { getRouteApi } from '@tanstack/react-router';
 import { formatISO } from 'date-fns';
 import { DataTable, type DataTableColumn } from 'mantine-datatable';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
-import { createURL, type Page } from 'src/api/types/Defaults';
+import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetProductPricesResponse } from 'src/api/types/ProductPriceTypes';
-import CompanySelect from 'src/components/CompanySelect';
-import {
-  FormatDate,
-  FormatDateTime,
-  FormatPercentage,
-  FormatPrice
-} from 'src/utils/formatter';
+import CompanySelect from 'src/components/Dropdowns/CompanySelect';
+import { FormatDate, FormatDateTime, FormatPercentage, FormatPrice } from 'src/utils/formatter';
 import CreateProductPriceModal from './CreateProductPriceModal';
 
 const route = getRouteApi('/_authenticated/products/$productId');
@@ -30,9 +21,7 @@ export default function ProductPricesTable() {
   const [startDate, setStartDate] = useState<DateValue | undefined>();
   const [endDate, setEndDate] = useState<DateValue | undefined>();
 
-  const [selectedRecords, setSelectedRecords] = useState<
-    GetProductPricesResponse[]
-  >([]);
+  const [selectedRecords, setSelectedRecords] = useState<GetProductPricesResponse[]>([]);
 
   const { page, sort, size } = route.useSearch();
   const { productId } = route.useParams();
@@ -48,15 +37,7 @@ export default function ProductPricesTable() {
   const query = useQuery({
     queryKey: [`product-${productId}-prices`, pageable, querySearchParams],
     queryFn: async () => {
-      return (
-        await api.get<Page<GetProductPricesResponse>>(
-          createURL(
-            `/products/${productId}/prices`,
-            pageable,
-            querySearchParams
-          )
-        )
-      ).data;
+      return (await api.get<Page<GetProductPricesResponse>>(createURL(`/products/${productId}/prices`, pageable, querySearchParams))).data;
     },
     cacheTime: 1200000,
     staleTime: 1200000
@@ -106,21 +87,9 @@ export default function ProductPricesTable() {
   return (
     <Stack>
       <Group justify="space-between">
-        <Popover
-          opened={opened}
-          onChange={setOpened}
-          trapFocus
-          width={200}
-          position="bottom-start"
-          shadow="md"
-        >
+        <Popover opened={opened} onChange={setOpened} trapFocus width={200} position="bottom-start" shadow="md">
           <Popover.Target>
-            <Button
-              onClick={() => setOpened((o) => !o)}
-              variant="default"
-              tt="uppercase"
-              miw={rem(200)}
-            >
+            <Button onClick={() => setOpened((o) => !o)} variant="default" tt="uppercase" miw={rem(200)}>
               Filtrele
             </Button>
           </Popover.Target>
@@ -164,8 +133,7 @@ export default function ProductPricesTable() {
                     setSubcontractorId(undefined);
                     setStartDate(undefined);
                     setEndDate(undefined);
-                  }}
-                >
+                  }}>
                   Sıfırla
                 </Button>
                 <Button
@@ -175,18 +143,12 @@ export default function ProductPricesTable() {
                   onClick={(e) => {
                     e.preventDefault();
                     setQuerySearchParams({
-                      subcontractorId:
-                        subcontractorId && Number.parseInt(subcontractorId),
-                      startDate:
-                        startDate &&
-                        formatISO(startDate, { representation: 'date' }),
-                      endDate:
-                        endDate &&
-                        formatISO(endDate, { representation: 'date' })
+                      subcontractorId: subcontractorId && Number.parseInt(subcontractorId),
+                      startDate: startDate && formatISO(startDate, { representation: 'date' }),
+                      endDate: endDate && formatISO(endDate, { representation: 'date' })
                     });
                     setOpened(false);
-                  }}
-                >
+                  }}>
                   Ara
                 </Button>
               </Group>

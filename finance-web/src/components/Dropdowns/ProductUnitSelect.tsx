@@ -10,8 +10,7 @@ const ProductUnitSelect = (props: SelectProps) => {
     queryFn: async () => {
       return (await api.get<GetProductUnitsResponse[]>('/product-units')).data;
     },
-    select: (data) =>
-      data.map((s) => ({ label: s.name, value: s.id.toString() })),
+    select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() })),
     staleTime: Number.POSITIVE_INFINITY,
     cacheTime: Number.POSITIVE_INFINITY
   });

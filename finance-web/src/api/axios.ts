@@ -1,6 +1,6 @@
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import axios, { type AxiosError, type AxiosResponse } from 'axios';
-import { useEffect, type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { getStoredUser, useAuth } from '../utils/auth';
 
 export const api = axios.create({
@@ -17,9 +17,7 @@ function responseInterceptorSuccess(response: AxiosResponse<any, any>) {
 
 api.interceptors.request.use((config) => {
   if (!config?.headers) {
-    throw new Error(
-      "Expected 'config' and 'config.headers' not to be undefined"
-    );
+    throw new Error("Expected 'config' and 'config.headers' not to be undefined");
   }
 
   if (config.url === '/auth/token' || config.url === '/auth/refresh-token') {
@@ -39,17 +37,10 @@ api.interceptors.request.use((config) => {
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function isUnauthorizedResponse(error: AxiosError<unknown, any>) {
-  return (
-    error.response?.status === 401 &&
-    error.response?.headers['www-authenticate']?.startsWith(
-      'Bearer error="invalid_token"'
-    )
-  );
+  return error.response?.status === 401 && error.response?.headers['www-authenticate']?.startsWith('Bearer error="invalid_token"');
 }
 
-export const AxiosResponseInterceptor = ({
-  children
-}: { children: ReactNode }) => {
+export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) => {
   const { logout, login } = useAuth();
   const navigate = useNavigate();
   const router = useRouter();

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Group,
-  InputBase,
-  Modal,
-  Stack,
-  TextInput
-} from '@mantine/core';
+import { Box, Button, Group, InputBase, Modal, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
@@ -19,10 +11,7 @@ import { type ApiError, setInvalidParams } from 'src/api/types/Defaults';
 import { z } from 'zod';
 
 const schema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, { message: 'Şirket adı en az 2 karakter olmalıdır.' }),
+  name: z.string().trim().min(2, { message: 'Şirket adı en az 2 karakter olmalıdır.' }),
   address: z.string().optional(),
   taxOffice: z.string().optional(),
   taxRegistrationNumber: z.string().optional(),
@@ -62,10 +51,7 @@ export default function CreateCompanyModal() {
       });
     },
     onError(error: ApiError, _variables, _context) {
-      const invalidParams = setInvalidParams(
-        error.response?.data,
-        (field, msg) => form.setFieldError(field, msg)
-      );
+      const invalidParams = setInvalidParams(error.response?.data, (field, msg) => form.setFieldError(field, msg));
 
       if (!invalidParams && error.response?.data.detail) {
         notifications.show({
@@ -85,21 +71,13 @@ export default function CreateCompanyModal() {
           close();
         }}
         title="Şirket Hakkında"
-        centered
-      >
+        centered>
         <form
           onSubmit={form.onSubmit((s) => {
             create.mutate(s);
-          })}
-        >
+          })}>
           <Stack gap="md">
-            <TextInput
-              label="Şirket"
-              placeholder="Şirket İsmi"
-              withAsterisk
-              key={form.key('name')}
-              {...form.getInputProps('name')}
-            />
+            <TextInput label="Şirket" placeholder="Şirket İsmi" withAsterisk key={form.key('name')} {...form.getInputProps('name')} />
             <Group grow align="flex-start">
               <TextInput
                 label="Vergi Dairesi"
@@ -114,12 +92,7 @@ export default function CreateCompanyModal() {
                 {...form.getInputProps('taxRegistrationNumber')}
               />
             </Group>
-            <TextInput
-              label="Adres"
-              placeholder="Adres"
-              key={form.key('address')}
-              {...form.getInputProps('address')}
-            />
+            <TextInput label="Adres" placeholder="Adres" key={form.key('address')} {...form.getInputProps('address')} />
             <Group grow align="flex-start">
               <InputBase
                 label="Telefon"
@@ -129,12 +102,7 @@ export default function CreateCompanyModal() {
                 key={form.key('phoneNumber')}
                 {...form.getInputProps('phoneNumber')}
               />
-              <TextInput
-                label="Email"
-                placeholder="abc@google.com"
-                key={form.key('email')}
-                {...form.getInputProps('email')}
-              />
+              <TextInput label="Email" placeholder="abc@google.com" key={form.key('email')} {...form.getInputProps('email')} />
             </Group>
             <Group justify="flex-end" mt="md">
               <Button type="submit" loading={create.isLoading}>

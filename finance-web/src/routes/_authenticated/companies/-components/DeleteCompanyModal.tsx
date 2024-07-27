@@ -6,10 +6,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import type { ApiError } from 'src/api/types/Defaults';
 
-export default function DeleteCompanyModal({
-  id,
-  name
-}: Readonly<{ id: number; name: string }>) {
+export default function DeleteCompanyModal({ id, name }: Readonly<{ id: number; name: string }>) {
   const client = useQueryClient();
 
   const deleteCompany = useMutation({
@@ -62,12 +59,7 @@ export default function DeleteCompanyModal({
     });
 
   return (
-    <ActionIcon
-      size="sm"
-      variant="subtle"
-      color="red"
-      onClick={openDeleteModal}
-    >
+    <ActionIcon size="sm" variant="subtle" color="red" onClick={openDeleteModal}>
       <IconTrash size={24} />
     </ActionIcon>
   );

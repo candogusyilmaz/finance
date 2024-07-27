@@ -14,16 +14,19 @@
   },
   "formatter": {
     "indentWidth": 2,
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "lineWidth": 140,
+    "attributePosition": "auto"
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
       "semicolons": "always",
-      "trailingCommas": "none"
+      "trailingCommas": "none",
+      "bracketSameLine": true
     }
   },
   "files": {
-    "ignore": ["./src/routeTree.gen.ts", "./src/api", "/generated"]
+    "ignore": ["./src/routeTree.gen.ts"]
   }
 }

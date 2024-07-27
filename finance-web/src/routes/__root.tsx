@@ -12,7 +12,7 @@ import 'mantine-datatable/styles.layer.css';
 import { QueryClientProvider } from 'react-query';
 import { DefaultQueryClient } from 'src/react-query';
 import { MantineTheme } from 'src/theme';
-import NotFound from '../components/NotFound/NotFound';
+import NotFound from '../components/Shared/NotFound/NotFound';
 import '../styles.css';
 import type { AuthContext } from '../utils/auth';
 

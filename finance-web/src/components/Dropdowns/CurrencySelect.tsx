@@ -29,8 +29,7 @@ const CurrencySelect = ({ onCurrencyChange, ...props }: CustomSelectProps) => {
     },
     cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
-    select: (data) =>
-      data.map((s) => ({ ...s, label: s.code, value: s.id.toString() }))
+    select: (data) => data.map((s) => ({ ...s, label: s.code, value: s.id.toString() }))
   });
 
   const handleChange = (value: string | null, item: ComboboxItem) => {

@@ -1,9 +1,9 @@
 import { Group, Stack } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
-import { RouteTitle } from 'src/components/RouteTitle';
-import CreateEmployeeModal from './-(components)/CreateEmployeeModal';
-import EmployeesTable from './-(components)/EmployeesTable';
+import { RouteTitle } from 'src/components/Shared/RouteTitle';
+import CreateEmployeeModal from './-components/CreateEmployeeModal';
+import EmployeesTable from './-components/EmployeesTable';
 
 export const Route = createFileRoute('/_authenticated/employees/')({
   component: Employees,

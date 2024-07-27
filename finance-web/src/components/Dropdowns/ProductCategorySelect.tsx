@@ -8,12 +8,9 @@ const ProductCategorySelect = (props: SelectProps) => {
   const categoriesQuery = useQuery({
     queryKey: ['product-categories'],
     queryFn: async () => {
-      return (
-        await api.get<GetProductCategoriesResponse[]>('/product-categories')
-      ).data;
+      return (await api.get<GetProductCategoriesResponse[]>('/product-categories')).data;
     },
-    select: (data) =>
-      data.map((s) => ({ label: s.name, value: s.id.toString() })),
+    select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() })),
     staleTime: Number.POSITIVE_INFINITY,
     cacheTime: Number.POSITIVE_INFINITY
   });
