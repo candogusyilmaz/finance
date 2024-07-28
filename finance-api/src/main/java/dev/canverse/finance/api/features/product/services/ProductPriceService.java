@@ -5,7 +5,7 @@ import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
 import dev.canverse.finance.api.features.employment.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.product.dtos.CreateProductPriceRequest;
-import dev.canverse.finance.api.features.product.dtos.GetProductPricesQuery;
+import dev.canverse.finance.api.features.product.dtos.GetProductPricesRequest;
 import dev.canverse.finance.api.features.product.dtos.GetProductPricesResponse;
 import dev.canverse.finance.api.features.product.entities.ProductPrice;
 import dev.canverse.finance.api.features.product.repository.ProductPriceRepository;
@@ -65,7 +65,7 @@ public class ProductPriceService {
         return productPriceRepository.getProductPrices(pageable).map(GetProductPricesResponse::from);
     }
 
-    public Page<GetProductPricesResponse> getProductPricesByProductId(Long productId, GetProductPricesQuery query, Pageable pageable) {
+    public Page<GetProductPricesResponse> getProductPricesByProductId(Long productId, GetProductPricesRequest query, Pageable pageable) {
         return productPriceRepository.findBy((root, criteriaQuery, criteriaBuilder) ->
         {
             final var predicates = new ArrayList<Predicate>();

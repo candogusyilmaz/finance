@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/prices")
-    public Page<GetProductPricesResponse> getProductPricesByProductId(@PathVariable Long id, GetProductPricesQuery query, Pageable pageable) {
+    public Page<GetProductPricesResponse> getProductPricesByProductId(@PathVariable Long id, GetProductPricesRequest query, Pageable pageable) {
         return productPriceService.getProductPricesByProductId(id, query, pageable);
     }
 }

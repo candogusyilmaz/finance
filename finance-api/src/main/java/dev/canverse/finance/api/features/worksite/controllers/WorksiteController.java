@@ -2,9 +2,12 @@ package dev.canverse.finance.api.features.worksite.controllers;
 
 import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import dev.canverse.finance.api.features.worksite.dtos.CreateWorksiteRequest;
+import dev.canverse.finance.api.features.worksite.dtos.GetWorksitesResponse;
 import dev.canverse.finance.api.features.worksite.services.WorksiteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +21,11 @@ public class WorksiteController {
     @GetMapping("/simple")
     public List<IdNameProjection> getWorksitesSimple() {
         return worksiteService.getWorksitesSimple();
+    }
+
+    @GetMapping
+    public Page<GetWorksitesResponse> getWorksitesSimple(Pageable page) {
+        return worksiteService.getWorksites(page);
     }
 
     @PostMapping

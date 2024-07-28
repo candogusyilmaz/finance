@@ -1,5 +1,5 @@
 import { Tooltip, UnstyledButton } from '@mantine/core';
-import { IconBuildingCommunity, IconBuildingWarehouse, IconHome, IconId, IconLogout } from '@tabler/icons-react';
+import { IconBuildingCommunity, IconBuildingFactory2, IconBuildingWarehouse, IconHome, IconId, IconLogout } from '@tabler/icons-react';
 import { Link, useNavigate, useRouter } from '@tanstack/react-router';
 import { useAuth } from '../../../utils/auth';
 import classes from './Navbar.module.css';
@@ -42,6 +42,18 @@ export function Navbar() {
             sort: { id: 'currentWorksite.id', direction: 'desc' }
           }}>
           <IconId style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+        </Link>
+      </Tooltip>
+      <Tooltip label="Çalışma Yerleri" position="right" transitionProps={{ duration: 200 }}>
+        <Link
+          className={classes.link}
+          to="/worksites"
+          search={{
+            page: 0,
+            size: 20,
+            sort: { id: 'id', direction: 'desc' }
+          }}>
+          <IconBuildingFactory2 style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
         </Link>
       </Tooltip>
       <Tooltip label="Çıkış" position="right" transitionProps={{ duration: 200 }}>

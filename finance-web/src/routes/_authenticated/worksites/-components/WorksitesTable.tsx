@@ -1,0 +1,74 @@
+import { rem } from '@mantine/core';
+import { getRouteApi } from '@tanstack/react-router';
+import { DataTable, useDataTableColumns } from 'mantine-datatable';
+import { useQuery } from 'react-query';
+import { api } from 'src/api/axios';
+import { type Page, createURL } from 'src/api/types/Defaults';
+
+const route = getRouteApi('/_authenticated/worksites/');
+
+export default function WorksitesTable() {
+  const { page, sort, size } = route.useSearch();
+  const navigate = route.useNavigate();
+  const pageable = {
+    page: page,
+    size: size,
+    sort: sort
+  };
+
+  const query = useQuery({
+    queryKey: ['worksites', pageable],
+    queryFn: async () => (await api.get<Page<GetWorksitesResponse>>(createURL('/worksites', pageable))).data,
+    cacheTime: 120000,
+    staleTime: 120000
+  });
+
+  const { effectiveColumns } = useDataTableColumns<GetWorksitesResponse>({
+    key: 'worksites',
+    columns: [
+      { accessor: 'name', title: 'Çalışma Yeri', sortable: true },
+      {
+        accessor: 'currentSupervisor.supervisor.individual.firstName',
+        title: 'Denetleyici',
+        sortable: true,
+        render: (record) => record.currentSupervisor?.name
+      }
+    ]
+  });
+
+  return (
+    <DataTable
+      borderRadius="sm"
+      withTableBorder
+      striped
+      highlightOnHover
+      columns={effectiveColumns}
+      records={query.data?.content}
+      fetching={query.isFetching}
+      sortStatus={{ columnAccessor: sort.id, direction: sort.direction }}
+      onSortStatusChange={(s) =>
+        navigate({
+          search: (prev) => ({
+            ...prev,
+            sort: { id: s.columnAccessor, direction: s.direction }
+          })
+        })
+      }
+      totalRecords={query.data?.totalElements}
+      recordsPerPage={size}
+      page={page}
+      onPageChange={(p) =>
+        navigate({
+          search: (prev) => ({ ...prev, page: p })
+        })
+      }
+      defaultColumnProps={{
+        cellsStyle: () => ({
+          paddingTop: rem(12),
+          paddingBottom: rem(12),
+          fontSize: rem(14)
+        })
+      }}
+    />
+  );
+}
