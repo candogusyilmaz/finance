@@ -17,8 +17,8 @@ const mutationCache = new MutationCache({
 export const DefaultQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 10000,
-      cacheTime: 10000,
+      staleTime: 30 * 1000,
+      cacheTime: 30 * 1000,
       retry: false
     }
   },
