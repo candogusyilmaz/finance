@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SoftDelete;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +16,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "companies")
 @NoArgsConstructor
-@SoftDelete
 @EntityListeners(AuditingEntityListener.class)
 public class Company {
     @Id
@@ -37,6 +35,7 @@ public class Company {
 
     private String email;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
     @ManyToOne(optional = false)

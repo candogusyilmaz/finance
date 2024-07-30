@@ -1,14 +1,10 @@
 package dev.canverse.finance.api.features.currency.entities;
 
+import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,7 +16,7 @@ public class Currency {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 3)
     private String code;
 
     @Column(nullable = false, unique = true)
@@ -38,13 +34,6 @@ public class Currency {
     @Column(nullable = false)
     private boolean invoiceCurrency;
 
-    @Column(nullable = false)
-    @CreationTimestamp
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    @UpdateTimestamp
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    private LocalDateTime updatedAt;
+    @Setter(lombok.AccessLevel.NONE)
+    private Timestamp timestamp;
 }

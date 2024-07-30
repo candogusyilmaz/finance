@@ -3,10 +3,10 @@ package dev.canverse.finance.api.features.product.entities;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SoftDelete;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,7 +16,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
-@SoftDelete
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
     @Id
@@ -40,11 +39,14 @@ public class Product {
 
     @ManyToOne(optional = false)
     @CreatedBy
+    @Setter(AccessLevel.NONE)
     private User createdBy;
 
     @ManyToOne(optional = false)
     @LastModifiedBy
+    @Setter(AccessLevel.NONE)
     private User updatedBy;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 }

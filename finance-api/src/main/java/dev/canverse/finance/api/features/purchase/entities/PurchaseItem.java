@@ -2,11 +2,14 @@ package dev.canverse.finance.api.features.purchase.entities;
 
 import dev.canverse.finance.api.features.product.entities.Product;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -18,29 +21,36 @@ public class PurchaseItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Purchase purchase;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Product product;
 
     private String description;
 
+    @Positive
     @Column(nullable = false)
     private int quantity;
 
+    @PositiveOrZero
     @Column(nullable = false)
-    private double unitPrice;
+    private BigDecimal unitPrice;
 
+    @PositiveOrZero
+    @ColumnDefault("0")
     @Column(nullable = false)
-    private String currency;
-
     private Double vatRate;
 
+    @PositiveOrZero
+    @ColumnDefault("0")
+    @Column(nullable = false)
     private Double withholdingTaxRate;
-
-    private LocalDateTime arrivalDate;
 
     @Column(nullable = false)
     private boolean official;
+
+    public BigDecimal getTotalItemsPrice() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
 }

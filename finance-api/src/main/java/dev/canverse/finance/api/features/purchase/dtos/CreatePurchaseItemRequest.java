@@ -3,6 +3,7 @@ package dev.canverse.finance.api.features.purchase.dtos;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record CreatePurchaseItemRequest
@@ -12,7 +13,7 @@ public record CreatePurchaseItemRequest
          @Positive(message = "Adet 0'dan büyük olmalıdır!")
          int quantity,
          @Positive(message = "Birim fiyat pozitif olmalıdır!")
-         double unitPrice,
+         BigDecimal unitPrice,
          @NotNull(message = "Para birimi boş olamaz!")
          String currency,
          Double vatRate,

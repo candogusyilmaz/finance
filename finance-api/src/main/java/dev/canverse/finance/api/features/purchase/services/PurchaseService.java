@@ -40,11 +40,11 @@ public class PurchaseService {
 
         var purchaseAction = new PurchaseAction();
         purchaseAction.setStatus(PurchaseStatus.APPROVED);
-        purchase.addAction(purchaseAction);
+        purchase.getActions().add(purchaseAction);
 
         var companyPurchase = new CompanyPurchase();
         companyPurchase.setCompany(company);
-        companyPurchase.setPurchase(purchase);
+        //companyPurchase.setPurchase(purchase);
 
         companyPurchaseRepository.save(companyPurchase);
         purchaseRepository.save(purchase);
@@ -59,10 +59,8 @@ public class PurchaseService {
                     .orElseThrow(() -> new NotFoundException("Ürün bulunamadı!")));
             purchaseItem.setQuantity(item.quantity());
             purchaseItem.setUnitPrice(item.unitPrice());
-            purchaseItem.setCurrency(item.currency());
             purchaseItem.setVatRate(item.vatRate());
             purchaseItem.setWithholdingTaxRate(item.withholdingTaxRate());
-            purchaseItem.setArrivalDate(item.arrivalDate());
             purchaseItem.setOfficial(item.official());
             purchaseItem.setDescription(item.description());
 

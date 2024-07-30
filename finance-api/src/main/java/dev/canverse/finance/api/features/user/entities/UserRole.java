@@ -25,6 +25,7 @@ public class UserRole {
     @Setter
     private DateTimePeriod dateTimePeriod;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
     public UserRole(User user, Role role) {

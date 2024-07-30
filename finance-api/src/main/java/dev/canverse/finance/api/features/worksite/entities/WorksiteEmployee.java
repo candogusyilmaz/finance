@@ -32,6 +32,7 @@ public class WorksiteEmployee {
     })
     private DatePeriod period;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
     public WorksiteEmployee(Worksite worksite, Employee employee, LocalDate startDate) {

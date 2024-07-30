@@ -29,6 +29,7 @@ public class Individual {
 
     private LocalDate birthDate;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
     public String getFullName() {

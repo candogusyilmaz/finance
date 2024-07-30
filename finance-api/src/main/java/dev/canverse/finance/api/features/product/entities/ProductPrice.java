@@ -48,6 +48,7 @@ public class ProductPrice {
 
     private DatePeriod timeperiod;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
     @Column(nullable = false)

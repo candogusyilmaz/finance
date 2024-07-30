@@ -37,6 +37,7 @@ public class WorksiteSupervisor {
     })
     private DatePeriod period;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
     private String comment;

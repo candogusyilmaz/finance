@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class CompanyBalanceService {
@@ -13,17 +15,17 @@ public class CompanyBalanceService {
     @TransactionalEventListener
     public void handleCompanyPurchaseCreatedEvent(CompanyPurchaseCreatedEvent event) {
         var company = event.companyPurchase().getCompany();
-        var purchase = event.companyPurchase().getPurchase();
+        var purchase = event.companyPurchase();
 
         var officialTotal = purchase.getPurchasedItems().stream()
                 .filter(PurchaseItem::isOfficial)
-                .mapToDouble(purchasedItem -> purchasedItem.getUnitPrice() * purchasedItem.getQuantity())
-                .sum();
+                .map(purchasedItem -> purchasedItem.getUnitPrice().multiply(BigDecimal.valueOf(purchasedItem.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         var unofficialTotal = purchase.getPurchasedItems().stream()
                 .filter(purchaseItem -> !purchaseItem.isOfficial())
-                .mapToDouble(purchasedItem -> purchasedItem.getUnitPrice() * purchasedItem.getQuantity())
-                .sum();
+                .map(purchasedItem -> purchasedItem.getUnitPrice().multiply(BigDecimal.valueOf(purchasedItem.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         //companyBalanceRepository.increaseTotalOfficialPurchaseAmount(company.getId(), officialTotal);
         //companyBalanceRepository.increaseTotalUnofficialPurchaseAmount(company.getId(), unofficialTotal);

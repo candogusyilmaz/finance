@@ -21,4 +21,7 @@ public class Timestamp {
     @UpdateTimestamp
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
+
+    protected Timestamp() {
+    }
 }

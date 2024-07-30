@@ -33,6 +33,7 @@ public class TransactionAction {
     @LastModifiedBy
     private User updatedBy;
 
+    @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
     public TransactionAction(Transaction transaction, TransactionStatus status) {
