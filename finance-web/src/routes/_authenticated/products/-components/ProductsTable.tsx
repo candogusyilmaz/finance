@@ -1,11 +1,10 @@
-import { rem } from '@mantine/core';
 import { getRouteApi } from '@tanstack/react-router';
-import { DataTable, type DataTableColumn } from 'mantine-datatable';
-import { useState } from 'react';
+import type { DataTableColumn } from 'mantine-datatable';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetProductsResponse } from 'src/api/types/ProductTypes';
+import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
 import { FormatDateTime } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/products/');
@@ -47,18 +46,11 @@ export default function ProductsTable() {
       render: (record) => FormatDateTime(record.updatedAt)
     }
   ];
-  const [selectedRecords, setSelectedRecords] = useState<GetProductsResponse[]>([]);
 
   return (
-    <DataTable
-      borderRadius="sm"
-      withTableBorder
-      striped
-      highlightOnHover
+    <PreconfiguredDataTable
       columns={columns}
       records={query.data?.content}
-      selectedRecords={selectedRecords}
-      onSelectedRecordsChange={setSelectedRecords}
       fetching={query.isFetching}
       sortStatus={{ columnAccessor: sort.id, direction: sort.direction }}
       onSortStatusChange={(s) =>
@@ -89,13 +81,6 @@ export default function ProductsTable() {
           }
         })
       }
-      defaultColumnProps={{
-        cellsStyle: () => ({
-          paddingTop: rem(12),
-          paddingBottom: rem(12),
-          fontSize: rem(14)
-        })
-      }}
     />
   );
 }

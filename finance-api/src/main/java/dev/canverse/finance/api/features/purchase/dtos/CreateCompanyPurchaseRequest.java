@@ -11,8 +11,9 @@ public record CreateCompanyPurchaseRequest(
         String description,
         @NotNull(message = "Satın alım tarihi boş olamaz!")
         LocalDateTime purchaseDate,
+        @NotNull(message = "Para birimi boş olamaz!")
+        Long currencyId,
         @Size(min = 1, message = "En az bir ürün eklemelisiniz!")
-        Set<CreatePurchaseItemRequest> purchasedItems) {
+        Set<CreatePurchaseItemRequest> purchasedItems,
+        Boolean official) {
 }
-
-

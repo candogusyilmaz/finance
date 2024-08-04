@@ -1,10 +1,11 @@
-import { Group, rem } from '@mantine/core';
-import { DataTable, type DataTableColumn, type DataTableSortStatus } from 'mantine-datatable';
+import { Group } from '@mantine/core';
+import type { DataTableColumn, DataTableSortStatus } from 'mantine-datatable';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import type { GetCompaniesResponse } from 'src/api/types/CompanyTypes';
 import { type Page, createURL } from 'src/api/types/Defaults';
+import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
 import DeleteCompanyModal from './DeleteCompanyModal';
 
 const dateFormatter = (params: string) => {
@@ -68,14 +69,9 @@ export default function CompaniesTable() {
       )
     }
   ];
-  const [selectedRecords, setSelectedRecords] = useState<GetCompaniesResponse[]>([]);
 
   return (
-    <DataTable
-      borderRadius="sm"
-      withTableBorder
-      striped
-      highlightOnHover
+    <PreconfiguredDataTable
       columns={columns}
       records={query.data?.content}
       sortStatus={sortStatus}
@@ -84,16 +80,7 @@ export default function CompaniesTable() {
       recordsPerPage={20}
       page={page + 1}
       onPageChange={(p) => setPage(p - 1)}
-      selectedRecords={selectedRecords}
-      onSelectedRecordsChange={setSelectedRecords}
       fetching={query.isFetching}
-      defaultColumnProps={{
-        cellsStyle: () => ({
-          paddingTop: rem(12),
-          paddingBottom: rem(12),
-          fontSize: rem(14)
-        })
-      }}
     />
   );
 }

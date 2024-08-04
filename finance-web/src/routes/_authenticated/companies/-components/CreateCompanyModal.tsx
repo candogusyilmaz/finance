@@ -2,6 +2,7 @@ import { Box, Button, Group, InputBase, Modal, Stack, TextInput } from '@mantine
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { IconPlus } from '@tabler/icons-react';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IMaskInput } from 'react-imask';
 import { useMutation, useQueryClient } from 'react-query';
@@ -63,7 +64,7 @@ export default function CreateCompanyModal() {
   });
 
   return (
-    <Box w={30}>
+    <Box>
       <Modal
         opened={opened}
         onClose={() => {
@@ -113,8 +114,8 @@ export default function CreateCompanyModal() {
         </form>
       </Modal>
 
-      <Button onClick={open} tt="uppercase">
-        Oluştur
+      <Button size="sm" px="lg" fz="sm" leftSection={<IconPlus size={18} color="white" />} onClick={open}>
+        Yeni şirket oluştur
       </Button>
     </Box>
   );

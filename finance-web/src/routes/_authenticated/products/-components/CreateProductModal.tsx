@@ -2,6 +2,7 @@ import { Box, Button, Group, Modal, Select, Stack, TextInput, Textarea } from '@
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { IconPlus } from '@tabler/icons-react';
 import type { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
@@ -75,7 +76,7 @@ export default function CreateProductModal() {
   });
 
   return (
-    <Box w={30}>
+    <Box>
       <Modal
         opened={opened}
         onClose={() => {
@@ -119,8 +120,8 @@ export default function CreateProductModal() {
         </form>
       </Modal>
 
-      <Button onClick={open} tt="uppercase">
-        Oluştur
+      <Button size="sm" px="lg" fz="sm" leftSection={<IconPlus size={18} color="white" />} onClick={open}>
+        Yeni ürün oluştur
       </Button>
     </Box>
   );

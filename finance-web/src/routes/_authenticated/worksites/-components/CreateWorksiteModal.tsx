@@ -2,6 +2,7 @@ import { Box, Button, Group, Modal, Stack, TextInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
+import { IconPlus } from '@tabler/icons-react';
 import type { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
@@ -57,7 +58,7 @@ export default function CreateWorksiteModal() {
   });
 
   return (
-    <Box w={30}>
+    <Box>
       <Modal
         opened={opened}
         onClose={() => {
@@ -91,8 +92,8 @@ export default function CreateWorksiteModal() {
         </form>
       </Modal>
 
-      <Button onClick={open} tt="uppercase">
-        Oluştur
+      <Button size="sm" px="lg" fz="sm" leftSection={<IconPlus size={18} color="white" />} onClick={open}>
+        Yeni çalışma yeri oluştur
       </Button>
     </Box>
   );

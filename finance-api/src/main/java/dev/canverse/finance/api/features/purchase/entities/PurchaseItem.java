@@ -47,9 +47,6 @@ public class PurchaseItem {
     @Column(nullable = false)
     private Double withholdingTaxRate;
 
-    @Column(nullable = false)
-    private boolean official;
-
     public BigDecimal getTotalItemsPrice() {
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }

@@ -1,13 +1,13 @@
 import { Text, type TextProps, rem } from '@mantine/core';
 
 interface Title1Props extends TextProps {
-  children: React.ReactNode;
+  title: string;
 }
 
-export function RouteTitle({ children, ...props }: Readonly<Title1Props>) {
+export function RouteTitle({ title, ...props }: Readonly<Title1Props>) {
   return (
-    <Text pl={rem(8)} size={rem(32)} w={rem(200)} {...props}>
-      {children}
+    <Text fw="800" size={rem(32)} {...props}>
+      {title}
     </Text>
   );
 }

@@ -2,6 +2,7 @@ package dev.canverse.finance.api.features.currency.entities;
 
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class Currency {
     private String symbol;
 
     @Column(nullable = false)
+    @Positive
     private double exchangeRate;
 
     @Column(nullable = false)

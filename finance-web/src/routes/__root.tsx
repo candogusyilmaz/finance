@@ -28,7 +28,7 @@ export const Route = createRootRouteWithContext<{
 function Root() {
   return (
     <QueryClientProvider client={DefaultQueryClient}>
-      <MantineProvider theme={MantineTheme} defaultColorScheme="light">
+      <MantineProvider theme={MantineTheme} defaultColorScheme="dark">
         <Notifications />
         <DatesProvider settings={{ locale: 'tr' }}>
           <ModalsProvider>

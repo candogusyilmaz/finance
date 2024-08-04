@@ -3,7 +3,7 @@ import { IconCurrency } from '@tabler/icons-react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 
-interface Currency {
+export interface Currency {
   id: number;
   name: string;
   code: string;
@@ -44,6 +44,8 @@ const CurrencySelect = ({ onCurrencyChange, ...props }: CustomSelectProps) => {
 
   return (
     <Select
+      label="Para Birimi"
+      placeholder="TRY"
       comboboxProps={{ shadow: 'md' }}
       maxDropdownHeight={200}
       leftSection={<IconCurrency size={18} />}

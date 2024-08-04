@@ -21,14 +21,17 @@ export const FormatDateTime = (params: string) => {
   })}`;
 };
 
-export const FormatPrice = (price: number | undefined, currencyCode = 'TRY') => {
+export const FormatPrice = (price: number | undefined, currencyCode: string | undefined = undefined) => {
   if (!price) {
     return '';
   }
 
+  let code = currencyCode;
+  if (!code || code.length !== 3) code = 'TRY';
+
   return new Intl.NumberFormat('tr-TR', {
     style: 'currency',
-    currency: currencyCode
+    currency: !currencyCode || currencyCode.length !== 3 ? 'TRY' : currencyCode
   }).format(price);
 };
 

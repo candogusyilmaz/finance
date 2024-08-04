@@ -45,6 +45,9 @@ public class Purchase {
     private String description;
 
     @Column(nullable = false)
+    private boolean official;
+
+    @Column(nullable = false)
     private LocalDateTime purchaseDate;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)

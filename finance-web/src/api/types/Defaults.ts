@@ -87,7 +87,7 @@ export type Timestamp = {
 
 export const PageSchema = z.object({
   page: z.number().min(1).catch(1),
-  size: z.number().min(5).max(50).catch(20),
+  size: z.number().min(2).max(50).catch(20),
   sort: z
     .object({
       id: z.string(),

@@ -1,4 +1,5 @@
 import { Group, Stack } from '@mantine/core';
+import { IconId } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
@@ -13,11 +14,16 @@ export const Route = createFileRoute('/_authenticated/employees/')({
 function Employees() {
   return (
     <Stack h="100%" w="100%" gap="lg">
-      <Group align="center">
-        <RouteTitle>Personeller</RouteTitle>
-        <CreateEmployeeModal />
+      <Group align="center" mb="lg">
+        <IconId size={36} />
+        <RouteTitle title="Personeller" />
       </Group>
-      <EmployeesTable />
+      <Stack>
+        <Group justify="flex-end">
+          <CreateEmployeeModal />
+        </Group>
+        <EmployeesTable />
+      </Stack>
     </Stack>
   );
 }

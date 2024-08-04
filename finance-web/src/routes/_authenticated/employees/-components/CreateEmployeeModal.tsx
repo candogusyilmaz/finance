@@ -1,18 +1,9 @@
-import {
-  Box,
-  Button,
-  Group,
-  Modal,
-  NumberInput,
-  Stack,
-  TextInput,
-  rem
-} from '@mantine/core';
+import { Box, Button, Group, Modal, NumberInput, Stack, TextInput, rem } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconCalendar, IconCash } from '@tabler/icons-react';
+import { IconCalendar, IconCash, IconPlus } from '@tabler/icons-react';
 import type { AxiosError } from 'axios';
 import { formatISO } from 'date-fns';
 import { useMutation, useQueryClient } from 'react-query';
@@ -40,9 +31,7 @@ const employeeSchema = z.object({
     required_error: 'İşe başlama tarihi gereklidir.'
   }),
   salary: z.object({
-    amount: z
-      .number({ required_error: 'Maaş tutarı gereklidir.' })
-      .positive('Maaş tutarı pozitif olmalıdır.'),
+    amount: z.number({ required_error: 'Maaş tutarı gereklidir.' }).positive('Maaş tutarı pozitif olmalıdır.'),
     currencyId: z.string({ required_error: 'Para birimi seçilmelidir.' }),
     startDate: z.date({ required_error: 'Maaş başlangıç tarihi gereklidir.' })
   })
@@ -76,14 +65,8 @@ export default function CreateEmployeeModal() {
       values.individual.birthDate = formatISO(values.individual.birthDate, {
         representation: 'date'
       });
-      values.employmentStartDate = formatISO(
-        values.officialEmploymentStartDate,
-        { representation: 'date' }
-      );
-      values.officialEmploymentStartDate = formatISO(
-        values.officialEmploymentStartDate,
-        { representation: 'date' }
-      );
+      values.employmentStartDate = formatISO(values.officialEmploymentStartDate, { representation: 'date' });
+      values.officialEmploymentStartDate = formatISO(values.officialEmploymentStartDate, { representation: 'date' });
       values.salary.startDate = formatISO(values.salary.startDate, {
         representation: 'date'
       });
@@ -107,10 +90,7 @@ export default function CreateEmployeeModal() {
       });
     },
     onError(error: AxiosError<ProblemDetail>, _variables, _context) {
-      const invalidParams = setInvalidParams(
-        error.response?.data,
-        (field, msg) => form.setFieldError(field, msg)
-      );
+      const invalidParams = setInvalidParams(error.response?.data, (field, msg) => form.setFieldError(field, msg));
 
       if (!invalidParams && error.response?.data.detail) {
         notifications.show({
@@ -122,7 +102,7 @@ export default function CreateEmployeeModal() {
   });
 
   return (
-    <Box w={30}>
+    <Box>
       <Modal
         size={rem(600)}
         opened={opened}
@@ -131,23 +111,12 @@ export default function CreateEmployeeModal() {
           close();
         }}
         title="Personel Hakkında"
-        centered
-      >
+        centered>
         <form onSubmit={form.onSubmit((data) => create.mutate(data))}>
           <Stack gap="md">
             <Group grow align="flex-start">
-              <TextInput
-                label="Ad"
-                placeholder="John"
-                withAsterisk
-                {...form.getInputProps('individual.firstName')}
-              />
-              <TextInput
-                label="Soyad"
-                placeholder="Doe"
-                withAsterisk
-                {...form.getInputProps('individual.lastName')}
-              />
+              <TextInput label="Ad" placeholder="John" withAsterisk {...form.getInputProps('individual.firstName')} />
+              <TextInput label="Soyad" placeholder="Doe" withAsterisk {...form.getInputProps('individual.lastName')} />
             </Group>
             <Group grow align="flex-start">
               <TextInput
@@ -166,17 +135,8 @@ export default function CreateEmployeeModal() {
               />
             </Group>
             <Group grow align="flex-start">
-              <ProfessionMultiSelect
-                label="Meslekler"
-                placeholder="Meslek seçiniz"
-                withAsterisk
-                {...form.getInputProps('professionIds')}
-              />
-              <WorksiteSelect
-                label="Çalışma Yeri"
-                placeholder="Urla"
-                {...form.getInputProps('worksiteId')}
-              />
+              <ProfessionMultiSelect label="Meslekler" placeholder="Meslek seçiniz" withAsterisk {...form.getInputProps('professionIds')} />
+              <WorksiteSelect label="Çalışma Yeri" placeholder="Urla" {...form.getInputProps('worksiteId')} />
             </Group>
             <Group grow align="flex-start">
               <DateInput
@@ -215,13 +175,7 @@ export default function CreateEmployeeModal() {
                 allowNegative={false}
                 {...form.getInputProps('salary.amount')}
               />
-              <CurrencySelect
-                label="Para Birimi"
-                placeholder="TRY"
-                withAsterisk
-                width="20%"
-                {...form.getInputProps('salary.currencyId')}
-              />
+              <CurrencySelect label="Para Birimi" placeholder="TRY" withAsterisk width="20%" {...form.getInputProps('salary.currencyId')} />
             </Group>
             <Group justify="flex-end" mt="md">
               <Button type="submit">Kaydet</Button>
@@ -230,8 +184,8 @@ export default function CreateEmployeeModal() {
         </form>
       </Modal>
 
-      <Button onClick={open} tt="uppercase">
-        Oluştur
+      <Button size="sm" px="lg" fz="sm" leftSection={<IconPlus size={18} color="white" />} onClick={open}>
+        Yeni personel oluştur
       </Button>
     </Box>
   );

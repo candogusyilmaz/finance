@@ -1,9 +1,9 @@
-import { rem } from '@mantine/core';
 import { getRouteApi } from '@tanstack/react-router';
-import { DataTable, useDataTableColumns } from 'mantine-datatable';
+import { useDataTableColumns } from 'mantine-datatable';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
+import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
 
 const route = getRouteApi('/_authenticated/worksites/');
 
@@ -37,11 +37,7 @@ export default function WorksitesTable() {
   });
 
   return (
-    <DataTable
-      borderRadius="sm"
-      withTableBorder
-      striped
-      highlightOnHover
+    <PreconfiguredDataTable
       columns={effectiveColumns}
       records={query.data?.content}
       fetching={query.isFetching}
@@ -62,13 +58,6 @@ export default function WorksitesTable() {
           search: (prev) => ({ ...prev, page: p })
         })
       }
-      defaultColumnProps={{
-        cellsStyle: () => ({
-          paddingTop: rem(12),
-          paddingBottom: rem(12),
-          fontSize: rem(14)
-        })
-      }}
     />
   );
 }

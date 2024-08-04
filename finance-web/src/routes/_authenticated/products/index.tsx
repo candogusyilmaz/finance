@@ -1,4 +1,5 @@
 import { Group, Stack } from '@mantine/core';
+import { IconBuildingWarehouse } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
@@ -13,11 +14,16 @@ export const Route = createFileRoute('/_authenticated/products/')({
 function Products() {
   return (
     <Stack h="100%" w="100%" gap="lg">
-      <Group align="center">
-        <RouteTitle>Ürünler</RouteTitle>
-        <CreateProductModal />
+      <Group align="center" mb="lg">
+        <IconBuildingWarehouse size={36} />
+        <RouteTitle title="Ürünler" />
       </Group>
-      <ProductsTable />
+      <Stack>
+        <Group justify="flex-end">
+          <CreateProductModal />
+        </Group>
+        <ProductsTable />
+      </Stack>
     </Stack>
   );
 }

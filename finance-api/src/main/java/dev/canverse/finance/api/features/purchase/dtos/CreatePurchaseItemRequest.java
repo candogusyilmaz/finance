@@ -2,9 +2,9 @@ package dev.canverse.finance.api.features.purchase.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public record CreatePurchaseItemRequest
         (@NotNull(message = "Ürün id'si boş olamaz!")
@@ -14,12 +14,12 @@ public record CreatePurchaseItemRequest
          int quantity,
          @Positive(message = "Birim fiyat pozitif olmalıdır!")
          BigDecimal unitPrice,
-         @NotNull(message = "Para birimi boş olamaz!")
-         String currency,
+         @NotNull(message = "KDV oranı boş olamaz!")
+         @PositiveOrZero(message = "KDV oranı pozitif veya sıfır olmalıdır!")
          Double vatRate,
-         Double withholdingTaxRate,
-         LocalDateTime arrivalDate,
-         @NotNull(message = "Resmiyet durumu boş olamaz!")
-         boolean official) {
+         @NotNull(message = "Stopaj oranı boş olamaz!")
+         @PositiveOrZero(message = "Stopaj oranı pozitif veya sıfır olmalıdır!")
+         Double withholdingTaxRate
+        ) {
 
 }
