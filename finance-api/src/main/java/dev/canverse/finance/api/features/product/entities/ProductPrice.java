@@ -42,8 +42,10 @@ public class ProductPrice {
     @ManyToOne(optional = false)
     private Currency currency;
 
+    @Column(nullable = false)
     private Double vatRate;
 
+    @Column(nullable = false)
     private Double withholdingTaxRate;
 
     private DatePeriod timeperiod;

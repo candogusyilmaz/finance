@@ -14,6 +14,6 @@ public record CreateCompanyPurchaseRequest(
         @NotNull(message = "Para birimi boş olamaz!")
         Long currencyId,
         @Size(min = 1, message = "En az bir ürün eklemelisiniz!")
-        Set<CreatePurchaseItemRequest> purchasedItems,
+        Set<CreatePurchaseItemRequest> purchaseItems,
         Boolean official) {
 }

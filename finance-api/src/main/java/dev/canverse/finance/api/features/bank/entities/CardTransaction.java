@@ -19,10 +19,10 @@ public class CardTransaction extends AbstractAggregateRoot<CardTransaction> {
     private Long id;
 
     @ManyToOne
-    private Card sender;
+    private Account sender;
 
     @ManyToOne
-    private Card receiver;
+    private Account receiver;
 
     @ManyToOne(optional = false)
     private Transaction transaction;

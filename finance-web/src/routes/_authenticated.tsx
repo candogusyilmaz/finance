@@ -1,6 +1,8 @@
-import { Flex } from '@mantine/core';
+import { AppShell, Burger, Group, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconBuildingArch } from '@tabler/icons-react';
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
-import { Navbar } from '../components/Shared/Nav/Navbar';
+import { Navbar } from 'src/components/Shared/Nav/Navbar';
 
 export const Route = createFileRoute('/_authenticated')({
   component: Layout,
@@ -17,12 +19,37 @@ export const Route = createFileRoute('/_authenticated')({
 });
 
 export function Layout() {
+  const [opened, { toggle }] = useDisclosure();
+
   return (
-    <Flex mih="100dvh">
-      <Navbar />
-      <Flex direction="column" p="xl" w="100%" h="100%">
+    <AppShell
+      padding="xl"
+      header={{ height: 64 }}
+      navbar={{ width: 255, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+      styles={(theme) => ({
+        header: {
+          backgroundColor: theme.colors.dark[6]
+        },
+        navbar: {
+          backgroundColor: theme.colors.dark[6]
+        },
+        main: {
+          backgroundColor: theme.colors.dark[8]
+        }
+      })}>
+      <AppShell.Header>
+        <Group h="100%" align="center" px="md">
+          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <IconBuildingArch size={36} />
+          <Title size="28">Finance</Title>
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="md">
+        <Navbar />
+      </AppShell.Navbar>
+      <AppShell.Main>
         <Outlet />
-      </Flex>
-    </Flex>
+      </AppShell.Main>
+    </AppShell>
   );
 }

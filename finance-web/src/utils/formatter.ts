@@ -1,5 +1,7 @@
+import { formatISO } from 'date-fns';
+
 export const FormatDate = (params: string) => {
-  if (!params) {
+  if (params === undefined) {
     return '';
   }
 
@@ -10,7 +12,7 @@ export const FormatDate = (params: string) => {
 };
 
 export const FormatDateTime = (params: string) => {
-  if (!params) {
+  if (params === undefined) {
     return '';
   }
 
@@ -26,19 +28,25 @@ export const FormatPrice = (price: number | undefined, currencyCode: string | un
     return '';
   }
 
-  let code = currencyCode;
-  if (!code || code.length !== 3) code = 'TRY';
-
   return new Intl.NumberFormat('tr-TR', {
     style: 'currency',
-    currency: !currencyCode || currencyCode.length !== 3 ? 'TRY' : currencyCode
+    currency: currencyCode === undefined || currencyCode.length !== 3 ? 'TRY' : currencyCode
   }).format(price);
 };
 
 export const FormatPercentage = (value: number | undefined) => {
-  if (!value || Number.isNaN(value)) {
+  console.log(value);
+  if (value === undefined || Number.isNaN(value)) {
     return '';
   }
 
   return `%${value.toFixed(2)}`;
+};
+
+export const FormatISODate = (value: string | number | Date) => {
+  return formatISO(value, { representation: 'date' });
+};
+
+export const FormatISODateTime = (value: string | number | Date) => {
+  return formatISO(value, { representation: 'complete' });
 };

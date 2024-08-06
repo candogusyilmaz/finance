@@ -4,7 +4,7 @@ import classes from './NotFound.module.css';
 
 export default function NotFound() {
   return (
-    <Flex style={{ height: '100%' }} justify="center" align="center">
+    <Flex style={{ height: '100vh' }} justify="center" align="center">
       <Container>
         <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
           <div>

@@ -1,4 +1,4 @@
-import { Text, UnstyledButton } from '@mantine/core';
+import { Stack, Text, UnstyledButton, rem } from '@mantine/core';
 import {
   IconBasket,
   IconBuildingCommunity,
@@ -24,56 +24,56 @@ export function Navbar() {
   };
 
   return (
-    <nav className={classes.navbar}>
+    <Stack h="100%" gap={rem(3)}>
       <Link className={classes.link} to="/dashboard">
-        <IconHome style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+        <IconHome size={18} />
         <Text size="sm">Anasayfa</Text>
       </Link>
-      <Link className={classes.link} to="/companies">
-        <IconBuildingCommunity style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+      <Link className={classes.link} to="/companies" search={{ page: 1, size: 20, sort: { id: 'name', direction: 'asc' } }}>
+        <IconBuildingCommunity size={18} />
         <Text size="sm">Şirketler</Text>
       </Link>
-      <Link className={classes.link} to="/products" search={{ page: 0, size: 20, sort: { id: 'id', direction: 'desc' } }}>
-        <IconBuildingWarehouse style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+      <Link className={classes.link} to="/products" search={{ page: 1, size: 20, sort: { id: 'id', direction: 'desc' } }}>
+        <IconBuildingWarehouse size={18} />
         <Text size="sm">Ürünler</Text>
       </Link>
       <Link
         className={classes.link}
         to="/employees"
         search={{
-          page: 0,
+          page: 1,
           size: 20,
           sort: { id: 'currentWorksite.id', direction: 'desc' }
         }}>
-        <IconId style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+        <IconId size={18} />
         <Text size="sm">Personeller</Text>
       </Link>
       <Link
         className={classes.link}
         to="/worksites"
         search={{
-          page: 0,
+          page: 1,
           size: 20,
           sort: { id: 'id', direction: 'desc' }
         }}>
-        <IconBuildingFactory2 style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+        <IconBuildingFactory2 size={18} />
         <Text size="sm">Çalışma Yerleri</Text>
       </Link>
       <Link
         className={classes.link}
         to="/purchases"
         search={{
-          page: 0,
+          page: 1,
           size: 20,
           sort: { id: 'id', direction: 'desc' }
         }}>
-        <IconBasket style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+        <IconBasket size={18} />
         <Text size="sm">Satın Alımlar</Text>
       </Link>
       <UnstyledButton mt="auto" className={classes.link} onClick={handleLogout}>
-        <IconLogout style={{ width: '1.25rem', height: '1.25rem' }} stroke={1.5} />
+        <IconLogout size={18} />
         <Text size="sm">Çıkış</Text>
       </UnstyledButton>
-    </nav>
+    </Stack>
   );
 }

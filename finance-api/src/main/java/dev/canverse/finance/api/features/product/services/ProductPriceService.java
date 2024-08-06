@@ -4,20 +4,21 @@ import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
 import dev.canverse.finance.api.features.employment.repositories.EmployeeRepository;
-import dev.canverse.finance.api.features.product.dtos.CreateProductPriceRequest;
-import dev.canverse.finance.api.features.product.dtos.GetProductPricesRequest;
-import dev.canverse.finance.api.features.product.dtos.GetProductPricesResponse;
+import dev.canverse.finance.api.features.product.dtos.*;
 import dev.canverse.finance.api.features.product.entities.ProductPrice;
 import dev.canverse.finance.api.features.product.repository.ProductPriceRepository;
 import dev.canverse.finance.api.features.product.repository.ProductRepository;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class ProductPriceService {
     private final EmployeeRepository employeeRepository;
     private final CompanyRepository companyRepository;
     private final CurrencyRepository currencyRepository;
+    private final EntityManager em;
 
     public void createProductPrice(CreateProductPriceRequest request) {
         var product = productRepository.findById(request.productId())
@@ -77,5 +79,35 @@ public class ProductPriceService {
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
         }, r -> r.project("product", "subcontractor", "priceConfirmedBy", "currency", "createdBy", "updatedBy").sortBy(pageable.getSort()).page(pageable).map(GetProductPricesResponse::from));
+    }
+
+    public List<GetProductPricesForPurchaseResponse> getProductPrices(GetProductPricesForPurchaseRequest req) {
+        var query = em.createQuery("""
+                        select pp.id, pp.product.id, pp.product.name, pp.price, pp.currency.id, pp.currency.code, pp.currency.exchangeRate, pp.vatRate, pp.withholdingTaxRate,
+                        pp.priceConfirmedBy.id, concat(pp.priceConfirmedBy.individual.firstName, ' ', pp.priceConfirmedBy.individual.lastName)
+                        from ProductPrice pp
+                        left join pp.product
+                        left join pp.currency
+                        left join pp.priceConfirmedBy.individual
+                        where pp.subcontractor.id = :companyId
+                        and :date between pp.timeperiod.startDate and pp.timeperiod.endDate
+                        """, Object[].class)
+                .setParameter("companyId", req.companyId())
+                .setParameter("date", req.date())
+                .getResultList();
+
+        return query.stream().map(r -> new GetProductPricesForPurchaseResponse(
+                (Long) r[0],
+                (Long) r[1],
+                (String) r[2],
+                (BigDecimal) r[3],
+                (Long) r[4],
+                (String) r[5],
+                (Double) r[6],
+                (Double) r[7],
+                (Double) r[8],
+                (Long) r[9],
+                (String) r[10]
+        )).toList();
     }
 }

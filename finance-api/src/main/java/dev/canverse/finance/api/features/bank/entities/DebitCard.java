@@ -1,24 +1,32 @@
 package dev.canverse.finance.api.features.bank.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "debit_cards")
-public class DebitCard extends Card {
-    private LocalDateTime expiryDate;
+@NoArgsConstructor
+public class DebitCard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Account account;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Bank bank;
 
     @Column(nullable = false)
-    private double balance = 0;
+    private String name;
 
-    public DebitCard() {
-        this.cardType = CardType.DEBIT;
-    }
+    private String cardNumber;
+
+    private LocalDate expiryDate;
 }

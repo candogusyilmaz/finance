@@ -13,7 +13,6 @@ import dev.canverse.finance.api.features.purchase.entities.Purchase;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseAction;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseItem;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseStatus;
-import dev.canverse.finance.api.features.purchase.repositories.PurchaseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,6 @@ public class PurchaseService {
     private final CompanyPurchaseRepository companyPurchaseRepository;
     private final ProductRepository productRepository;
     private final CurrencyRepository currencyRepository;
-    private final PurchaseRepository purchaseRepository;
     private final EntityManager session;
 
     @Transactional
@@ -54,7 +52,7 @@ public class PurchaseService {
         purchase.setCurrency(currency);
 
         var purchaseItems = createPurchaseItems(request, purchase);
-        purchase.setPurchasedItems(purchaseItems);
+        purchase.setPurchaseItems(purchaseItems);
 
         var purchaseAction = new PurchaseAction();
         purchaseAction.setPurchase(purchase);
@@ -67,7 +65,7 @@ public class PurchaseService {
     private Set<PurchaseItem> createPurchaseItems(CreateCompanyPurchaseRequest request, Purchase purchase) {
         var purchaseItems = new HashSet<PurchaseItem>();
 
-        for (var item : request.purchasedItems()) {
+        for (var item : request.purchaseItems()) {
             var purchaseItem = new PurchaseItem();
             purchaseItem.setPurchase(purchase);
             purchaseItem.setProduct(productRepository.getReference(item.productId(), "Ürün bulunamadı!"));
@@ -92,7 +90,7 @@ public class PurchaseService {
                     FROM Purchase p
                     INNER JOIN PurchaseAction pa ON pa.id = (select max(pa2.id) from PurchaseAction pa2 where pa2.purchase.id = p.id)
                     INNER JOIN Currency c ON c.code = p.currencyCode
-                    INNER JOIN p.purchasedItems pi
+                    INNER JOIN p.purchaseItems pi
                     LEFT JOIN Company company on company.id = (select cp.company.id from CompanyPurchase cp where cp.id = p.id)
                     WHERE 1=1
                 """);

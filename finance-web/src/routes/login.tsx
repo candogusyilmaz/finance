@@ -1,4 +1,4 @@
-import { Button, Container, Flex, Paper, PasswordInput, Text, TextInput, Title } from '@mantine/core';
+import { Button, Container, Flex, Paper, PasswordInput, Text, TextInput, Title, rem } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconLock, IconUser } from '@tabler/icons-react';
@@ -53,6 +53,7 @@ function Login() {
     async onSuccess(data) {
       console.log(search.redirect);
       await auth.login(data);
+      await router.invalidate();
       await navigate({ to: search.redirect ?? '/dashboard' });
       await router.invalidate();
     },
@@ -68,16 +69,15 @@ function Login() {
   });
 
   return (
-    <Flex justify="center" align="center" h="100%">
-      <Container size={420} w={600}>
-        <Title ta="center" fw={900}>
-          Tekrar Hoşgeldin
-        </Title>
-        <Text c="dimmed" size="sm" ta="center" mt={5}>
-          Uygulamayı kullanmaya başlamak için giriş yap!
-        </Text>
-
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+    <Flex justify="center" align="center" h="100dvh" bg="dark.8">
+      <Container w={rem(520)}>
+        <Paper withBorder shadow="md" px={40} py={60} mt={30} radius="md">
+          <Title ta="center" fw={900}>
+            Tekrar Hoşgeldin
+          </Title>
+          <Text c="dimmed" size="sm" ta="center" mt={5} mb={rem(40)}>
+            Uygulamayı kullanmaya başlamak için giriş yap!
+          </Text>
           <form onSubmit={form.onSubmit((data) => login.mutate(data))}>
             <TextInput
               label="Kullanıcı Adı"

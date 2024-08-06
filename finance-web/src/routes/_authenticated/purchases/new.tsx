@@ -1,20 +1,39 @@
-import { Button, Divider, Group, Modal, NumberInput, Paper, Stack, Table, Text, Textarea } from '@mantine/core';
+import {
+  ActionIcon,
+  Alert,
+  Badge,
+  Button,
+  Card,
+  Divider,
+  Group,
+  Modal,
+  NumberInput,
+  Paper,
+  SimpleGrid,
+  Stack,
+  Table,
+  Text,
+  Textarea,
+  Title,
+  Tooltip
+} from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconBasket, IconCalendar, IconPackage, IconPlus, IconReceiptTax, IconTrash } from '@tabler/icons-react';
+import { IconBasket, IconBasketPlus, IconCalendar, IconPackage, IconPlus, IconReceiptTax, IconTrash } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
-import { type ApiError, setInvalidParams } from 'src/api/types/Defaults';
+import { type ApiError, createURL, setInvalidParams } from 'src/api/types/Defaults';
+import type { GetProductPricesForPurchaseResponse } from 'src/api/types/ProductPriceTypes';
 import type { CreateCompanyPurchaseRequest, CreatePurchaseItemRequest } from 'src/api/types/PurchaseTypes';
 import CompanySelect from 'src/components/Dropdowns/CompanySelect';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
 import ProductSelect from 'src/components/Dropdowns/ProductSelect';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
-import { FormatPrice } from 'src/utils/formatter';
+import { FormatISODate, FormatPercentage, FormatPrice } from 'src/utils/formatter';
 import { FieldErrorMessage } from 'src/utils/zod-messages';
 import { z } from 'zod';
 
@@ -35,7 +54,7 @@ function New() {
   const navigate = Route.useNavigate();
 
   const form = useForm({
-    mode: 'uncontrolled',
+    mode: 'controlled',
     initialValues: {
       companyId: '',
       description: '',
@@ -95,6 +114,8 @@ function New() {
       </Group>
       <Group grow align="flex-start">
         <Stack>
+          <Title order={3}>Satın Alım Bilgileri</Title>
+          <Divider mb="md" />
           <Group grow align="flex-start">
             <CompanySelect label="Şirket" placeholder="Şirket seçin" withAsterisk {...form.getInputProps('companyId')} />
             <DateInput
@@ -143,14 +164,18 @@ function New() {
               onClick={() =>
                 create.mutate({
                   ...form.getValues(),
-                  purchasedItems: products
+                  purchaseItems: products
                 })
               }>
               Oluştur
             </Button>
           </Group>
         </Stack>
-        <Stack>secilen tarih araligindaki urun fiyatlarini listele</Stack>
+        <Stack>
+          <Title order={3}>Ürün-Fiyat Tanımlamaları</Title>
+          <Divider mb="md" />
+          <PurchaseProductPricesDisplayTable companyId={form.getValues().companyId} date={form.getValues().purchaseDate} />
+        </Stack>
       </Group>
     </Stack>
   );
@@ -345,5 +370,72 @@ function PurchaseProductDisplayTable({
         )}
       </Table.Tbody>
     </Table>
+  );
+}
+
+function PurchaseProductPricesDisplayTable({ companyId, date }: Readonly<{ companyId: string | number; date: Date }>) {
+  const query = useQuery({
+    queryKey: ['product-prices', companyId, date],
+    queryFn: async () =>
+      (
+        await api.get<GetProductPricesForPurchaseResponse[]>(
+          createURL('/product-prices/purchase', undefined, { companyId, date: FormatISODate(date) })
+        )
+      ).data,
+    cacheTime: 120000,
+    staleTime: 120000,
+    enabled: !!companyId && !!date
+  });
+
+  if (query.data === undefined || query.data?.length === 0)
+    return <Alert variant="light">Seçilen şirket için satın alım tarihine denk gelen ürün-fiyat tanımlaması bulunmuyor.</Alert>;
+
+  return (
+    <SimpleGrid cols={4} spacing="xs">
+      {query.data &&
+        query.data.length > 0 &&
+        query.data?.map((product, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          <Card key={index} padding="xs" radius="xs" withBorder>
+            <Group justify="space-between" wrap="nowrap">
+              <Group wrap="nowrap">
+                <IconPackage size={16} />
+                <Text size="sm" lineClamp={1}>
+                  {product.productName}
+                </Text>
+              </Group>
+              <ActionIcon variant="subtle" color="green" onClick={() => {}}>
+                <IconBasketPlus size={16} />
+              </ActionIcon>
+            </Group>
+
+            <Group grow mt="xs" gap="xs">
+              <Tooltip label="KDV" transitionProps={{ transition: 'fade', duration: 400 }}>
+                <Badge size="sm" color="blue" variant="light">
+                  {FormatPercentage(product.vatRate)}
+                </Badge>
+              </Tooltip>
+              <Tooltip label="Stopaj" transitionProps={{ transition: 'fade', duration: 400 }}>
+                <Badge size="sm" color="green" variant="light">
+                  {FormatPercentage(product.withholdingTaxRate)}
+                </Badge>
+              </Tooltip>
+            </Group>
+
+            <Group justify="space-between" mt="xs">
+              {!!product.priceConfirmedByFullName && (
+                <Tooltip label="Teyit Alınan Kişi" transitionProps={{ transition: 'fade', duration: 400 }}>
+                  <Text size="xs" c="dimmed">
+                    {product.priceConfirmedByFullName}
+                  </Text>
+                </Tooltip>
+              )}
+              <Text size="sm" fw={700} c="blue" ml="auto">
+                {FormatPrice(product.price, product.currencyCode)}
+              </Text>
+            </Group>
+          </Card>
+        ))}
+    </SimpleGrid>
   );
 }

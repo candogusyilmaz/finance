@@ -52,16 +52,16 @@ public class Purchase {
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     @Size(min = 1)
-    private Set<PurchaseItem> purchasedItems = new HashSet<>();
+    private Set<PurchaseItem> purchaseItems = new HashSet<>();
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     private Set<PurchaseAction> actions = new HashSet<>();
 
     public BigDecimal getTotalPurchasePrice() {
-        Assert.isTrue(Hibernate.isInitialized(purchasedItems), "Purchased items must be initialized");
+        Assert.isTrue(Hibernate.isInitialized(purchaseItems), "Purchase items must be initialized");
 
-        return purchasedItems.stream()
+        return purchaseItems.stream()
                 .map(PurchaseItem::getTotalItemsPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

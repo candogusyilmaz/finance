@@ -47,7 +47,8 @@ public class ProductService {
     }
 
     public Page<GetProductsResponse> getProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(GetProductsResponse::from);
+        return productRepository.findBy((a, b, c) -> null, r -> r.project("unit", "category")
+                .sortBy(pageable.getSort()).page(pageable).map(GetProductsResponse::from));
     }
 
     public List<IdNameProjection> getProductsSimple() {

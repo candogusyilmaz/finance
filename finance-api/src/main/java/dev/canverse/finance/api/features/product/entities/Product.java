@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "products")
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE products SET deleted = true WHERE id = ?")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,4 +51,7 @@ public class Product {
 
     @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 }

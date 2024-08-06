@@ -1,28 +1,7 @@
-.navbar {
-  min-height: 100dvh;
-  padding-top: var(--mantine-spacing-md);
-  padding-bottom: var(--mantine-spacing-md);
-  padding-left: var(--mantine-spacing-sm);
-  padding-right: var(--mantine-spacing-sm);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(6px);
-  border-right: rem(1px) solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-9));
-}
-
-.navbarMain {
-  flex: 1;
-  margin-top: rem(50px);
-}
-
 .link {
   padding-left: var(--mantine-spacing-lg);
   padding-right: var(--mantine-spacing-lg);
-  width: 12rem;
-  height: 2.5rem;
+  height: 2rem;
   border-radius: var(--mantine-radius-md);
   display: flex;
   align-items: center;
@@ -30,6 +9,7 @@
   justify-content: flex-start;
   color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-gray-5));
   text-decoration: none;
+  transition: 0.15s;
   &:hover {
     background-color: light-dark(
       var(--mantine-color-gray-3),

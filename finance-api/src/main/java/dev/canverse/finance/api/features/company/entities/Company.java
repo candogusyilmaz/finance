@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +19,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Table(name = "companies")
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@SQLRestriction("deleted = false")
+@SQLDelete(sql = "UPDATE companies SET deleted = true WHERE id = ?")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +42,16 @@ public class Company {
     @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @CreatedBy
     @Setter(AccessLevel.NONE)
     private User createdBy;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @LastModifiedBy
     @Setter(AccessLevel.NONE)
     private User updatedBy;
+
+    @Column(nullable = false)
+    private boolean deleted;
 }

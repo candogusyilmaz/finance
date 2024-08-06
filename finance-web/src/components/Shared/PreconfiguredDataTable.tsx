@@ -15,6 +15,11 @@ export default function PreconfiguredDataTable<T>(props: DataTableProps<T>) {
           fontSize: rem(14)
         })
       }}
+      styles={{
+        header: {
+          height: rem(48)
+        }
+      }}
       height={rem(600)}
       {...props}
     />

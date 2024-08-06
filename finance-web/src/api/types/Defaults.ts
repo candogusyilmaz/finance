@@ -86,12 +86,17 @@ export type Timestamp = {
 };
 
 export const PageSchema = z.object({
-  page: z.number().min(1).catch(1),
-  size: z.number().min(2).max(50).catch(20),
+  page: z.number().min(1).optional().default(1).catch(1),
+  size: z.number().min(2).max(50).optional().default(20).catch(20),
   sort: z
     .object({
       id: z.string(),
       direction: z.enum(['asc', 'desc'])
+    })
+    .optional()
+    .default({
+      id: 'id',
+      direction: 'desc'
     })
     .catch({
       id: 'id',

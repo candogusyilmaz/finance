@@ -1,13 +1,4 @@
-import {
-  Card,
-  Group,
-  LoadingOverlay,
-  Stack,
-  Tabs,
-  Text,
-  Title,
-  rem
-} from '@mantine/core';
+import { Card, Grid, LoadingOverlay, Stack, Tabs, Text, Title } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
@@ -38,8 +29,7 @@ function Product() {
     cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     queryFn: async () => {
-      return (await api.get<GetProductByIdResponse>(`/products/${productId}`))
-        .data;
+      return (await api.get<GetProductByIdResponse>(`/products/${productId}`)).data;
     },
     onError(err: ApiError) {
       if (err.response?.status === 404) {
@@ -56,61 +46,55 @@ function Product() {
   if (query.isError || !query.data) return <>error</>;
 
   return (
-    <Stack h="100%">
+    <Stack>
       <Title>Ürün Detayı</Title>
-      <Group align="flex-start" wrap="nowrap">
-        <Card padding="lg" radius="md" withBorder w={rem(400)}>
-          <Stack gap={8}>
-            <TextGroup label="ID" value={query.data.id} />
-            <TextGroup label="Ürün" value={query.data.name} />
-            <TextGroup
-              label="Tür"
-              value={query.data.type === 'PRODUCT' ? 'Ürün' : 'Hizmet'}
-            />
-            <TextGroup label="Birim" value={query.data.unit?.name} />
-            <TextGroup label="Kategori" value={query.data.category?.name} />
-            <TextGroup
-              label="Oluşturulma Tarihi"
-              value={FormatDateTime(query.data.timestamp.createdAt)}
-            />
-            <TextGroup
-              label="Son Güncellenme Tarihi"
-              value={FormatDateTime(query.data.timestamp.updatedAt)}
-            />
-          </Stack>
-        </Card>
-        <Tabs
-          w="100%"
-          keepMounted={false}
-          variant="default"
-          orientation="horizontal"
-          value={tab}
-          radius="md"
-          onChange={(s) =>
-            navigate({
-              search: (prev) => ({
-                ...prev,
-                tab: s as 'warehouses' | 'prices'
+      <Grid align="flex-start">
+        <Grid.Col span={{ base: 12, md: 4, lg: 2 }}>
+          <Card padding="lg" radius="md" withBorder>
+            <Stack gap={8}>
+              <TextGroup label="ID" value={query.data.id} />
+              <TextGroup label="Ürün" value={query.data.name} />
+              <TextGroup label="Tür" value={query.data.type === 'PRODUCT' ? 'Ürün' : 'Hizmet'} />
+              <TextGroup label="Birim" value={query.data.unit?.name} />
+              <TextGroup label="Kategori" value={query.data.category?.name} />
+              <TextGroup label="Oluşturulma Tarihi" value={FormatDateTime(query.data.timestamp.createdAt)} />
+              <TextGroup label="Son Güncellenme Tarihi" value={FormatDateTime(query.data.timestamp.updatedAt)} />
+            </Stack>
+          </Card>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 8, lg: 10 }}>
+          <Tabs
+            w="100%"
+            keepMounted={false}
+            variant="default"
+            orientation="horizontal"
+            value={tab}
+            radius="md"
+            onChange={(s) =>
+              navigate({
+                search: (prev) => ({
+                  ...prev,
+                  tab: s as 'warehouses' | 'prices'
+                })
               })
-            })
-          }
-          styles={{
-            list: { marginBottom: 'var(--mantine-spacing-md)' },
-            panel: { height: '100%' }
-          }}
-        >
-          <Tabs.List>
-            <Tabs.Tab value="warehouses">Bulunduğu Depolar</Tabs.Tab>
-            <Tabs.Tab value="prices">Alınan Fiyatlar</Tabs.Tab>
-          </Tabs.List>
-          <Tabs.Panel value="warehouses">
-            <ProductWarehousesTable />
-          </Tabs.Panel>
-          <Tabs.Panel value="prices">
-            <ProductPricesTable />
-          </Tabs.Panel>
-        </Tabs>
-      </Group>
+            }
+            styles={{
+              list: { marginBottom: 'var(--mantine-spacing-md)' },
+              panel: { height: '100%' }
+            }}>
+            <Tabs.List>
+              <Tabs.Tab value="warehouses">Bulunduğu Depolar</Tabs.Tab>
+              <Tabs.Tab value="prices">Alınan Fiyatlar</Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="warehouses">
+              <ProductWarehousesTable />
+            </Tabs.Panel>
+            <Tabs.Panel value="prices">
+              <ProductPricesTable />
+            </Tabs.Panel>
+          </Tabs>
+        </Grid.Col>
+      </Grid>
     </Stack>
   );
 }

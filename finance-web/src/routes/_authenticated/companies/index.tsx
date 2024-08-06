@@ -1,12 +1,14 @@
 import { Group, Stack } from '@mantine/core';
 import { IconBuildingCommunity } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
+import { PageSchema } from 'src/api/types/Defaults';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
 import CompaniesTable from 'src/routes/_authenticated/companies/-components/CompaniesTable';
 import CreateCompanyModal from 'src/routes/_authenticated/companies/-components/CreateCompanyModal';
 
 export const Route = createFileRoute('/_authenticated/companies/')({
-  component: Companies
+  component: Companies,
+  validateSearch: PageSchema
 });
 
 function Companies() {

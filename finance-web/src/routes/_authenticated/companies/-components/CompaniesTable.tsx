@@ -1,36 +1,23 @@
 import { Group } from '@mantine/core';
-import type { DataTableColumn, DataTableSortStatus } from 'mantine-datatable';
-import { useState } from 'react';
+import { getRouteApi } from '@tanstack/react-router';
+import type { DataTableColumn } from 'mantine-datatable';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import type { GetCompaniesResponse } from 'src/api/types/CompanyTypes';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
+import { FormatDateTime } from 'src/utils/formatter';
 import DeleteCompanyModal from './DeleteCompanyModal';
 
-const dateFormatter = (params: string) => {
-  if (!params) {
-    return '';
-  }
-
-  const date = new Date(params);
-  return `${date.toLocaleString('tr-TR', {
-    dateStyle: 'long',
-    timeStyle: 'short'
-  })}`;
-};
+const route = getRouteApi('/_authenticated/companies/');
 
 export default function CompaniesTable() {
-  const [page, setPage] = useState(0);
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<GetCompaniesResponse>>({
-    columnAccessor: 'name',
-    direction: 'asc'
-  });
-
+  const { page, sort, size } = route.useSearch();
+  const navigate = route.useNavigate();
   const pageable = {
     page: page,
-    size: 20,
-    sort: { id: sortStatus.columnAccessor, direction: sortStatus.direction }
+    size: size,
+    sort: sort
   };
 
   const query = useQuery({
@@ -52,12 +39,12 @@ export default function CompaniesTable() {
     {
       accessor: 'createdAt',
       title: 'Oluşturulma Tarihi',
-      render: (record) => dateFormatter(record.createdAt)
+      render: (record) => FormatDateTime(record.createdAt)
     },
     {
       accessor: 'updatedAt',
       title: 'Son Güncelleme Tarihi',
-      render: (record) => dateFormatter(record.updatedAt)
+      render: (record) => FormatDateTime(record.updatedAt)
     },
     {
       accessor: 'actions',
@@ -74,12 +61,23 @@ export default function CompaniesTable() {
     <PreconfiguredDataTable
       columns={columns}
       records={query.data?.content}
-      sortStatus={sortStatus}
-      onSortStatusChange={setSortStatus}
+      sortStatus={{ columnAccessor: sort.id, direction: sort.direction }}
+      onSortStatusChange={(s) =>
+        navigate({
+          search: (prev) => ({
+            ...prev,
+            sort: { id: s.columnAccessor, direction: s.direction }
+          })
+        })
+      }
       totalRecords={query.data?.totalElements}
       recordsPerPage={20}
-      page={page + 1}
-      onPageChange={(p) => setPage(p - 1)}
+      page={page}
+      onPageChange={(p) =>
+        navigate({
+          search: (prev) => ({ ...prev, page: p })
+        })
+      }
       fetching={query.isFetching}
     />
   );

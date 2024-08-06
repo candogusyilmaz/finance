@@ -48,3 +48,22 @@ export type CreateProductPriceRequest = {
   endDate: string;
   description?: string;
 };
+
+export type GetProductPricesForPurchaseRequest = {
+  companyId: string | number;
+  date: string;
+};
+
+export type GetProductPricesForPurchaseResponse = {
+  id: number;
+  productId: number;
+  productName: string;
+  price: number;
+  currencyId: number;
+  currencyCode: string;
+  currencyRate: string;
+  vatRate: number;
+  withholdingTaxRate: number;
+  priceConfirmedById?: number;
+  priceConfirmedByFullName?: string;
+};

@@ -21,7 +21,7 @@ public class CompanyService {
 
     public void createCompany(CreateCompanyRequest request) {
         if (companyRepository.existsByName(request.name())) {
-            throw new BadRequestException("Firma ismi zaten kullanımda.");
+            throw new BadRequestException("Şirket ismi zaten kullanımda.");
         }
 
         var company = new Company();
@@ -37,8 +37,7 @@ public class CompanyService {
 
     public Page<GetCompaniesResponse> getCompanies(Pageable page) {
         return companyRepository
-                .findAll(page)
-                .map(GetCompaniesResponse::from);
+                .findBy((root, query, cb) -> cb.conjunction(), r -> r.sortBy(page.getSort()).page(page).map(GetCompaniesResponse::from));
     }
 
     public List<IdNameProjection> getCompaniesByName(String name) {

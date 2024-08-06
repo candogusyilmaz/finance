@@ -1,32 +1,39 @@
 package dev.canverse.finance.api.features.bank.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "credit_cards")
-public class CreditCard extends Card {
+@NoArgsConstructor
+public class CreditCard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Account account;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Bank bank;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String cardNumber;
+
+    private LocalDate dueDate;
+
+    private LocalDate statementDate;
 
     private BigDecimal minimumPayment;
 
-    private LocalDateTime dueDate;
-
-    private LocalDateTime statementDate;
-
     private BigDecimal maxLimit;
-
-    @Column(nullable = false)
-    private BigDecimal expense;
-
-    public CreditCard() {
-        this.cardType = CardType.CREDIT;
-    }
 }
