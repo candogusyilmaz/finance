@@ -1,6 +1,5 @@
 type CreateIndividualRequest = {
   socialSecurityNumber: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   birthDate: string;
 };

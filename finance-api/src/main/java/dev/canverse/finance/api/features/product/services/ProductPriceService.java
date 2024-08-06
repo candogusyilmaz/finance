@@ -3,7 +3,7 @@ package dev.canverse.finance.api.features.product.services;
 import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
-import dev.canverse.finance.api.features.employment.repositories.EmployeeRepository;
+import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.product.dtos.*;
 import dev.canverse.finance.api.features.product.entities.ProductPrice;
 import dev.canverse.finance.api.features.product.repository.ProductPriceRepository;
@@ -84,11 +84,11 @@ public class ProductPriceService {
     public List<GetProductPricesForPurchaseResponse> getProductPrices(GetProductPricesForPurchaseRequest req) {
         var query = em.createQuery("""
                         select pp.id, pp.product.id, pp.product.name, pp.price, pp.currency.id, pp.currency.code, pp.currency.exchangeRate, pp.vatRate, pp.withholdingTaxRate,
-                        pp.priceConfirmedBy.id, concat(pp.priceConfirmedBy.individual.firstName, ' ', pp.priceConfirmedBy.individual.lastName)
+                        pp.priceConfirmedBy.id, pp.priceConfirmedBy.name
                         from ProductPrice pp
                         left join pp.product
                         left join pp.currency
-                        left join pp.priceConfirmedBy.individual
+                        left join pp.priceConfirmedBy
                         where pp.subcontractor.id = :companyId
                         and :date between pp.timeperiod.startDate and pp.timeperiod.endDate
                         """, Object[].class)

@@ -2,7 +2,7 @@ package dev.canverse.finance.api.features.worksite.services;
 
 import dev.canverse.finance.api.exceptions.BadRequestException;
 import dev.canverse.finance.api.exceptions.NotFoundException;
-import dev.canverse.finance.api.features.employment.repositories.EmployeeRepository;
+import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.worksite.dtos.CreateWorksiteEmployeeRequest;
 import dev.canverse.finance.api.features.worksite.entities.WorksiteEmployee;

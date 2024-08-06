@@ -10,19 +10,19 @@ import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
+import OrganizationSelect from 'src/components/Dropdowns/OrganizationSelect';
 import ProfessionMultiSelect from 'src/components/Dropdowns/ProfessionMultiSelect';
 import WorksiteSelect from 'src/components/Dropdowns/WorksiteSelect';
+import { FieldErrorMessage } from 'src/utils/zod-messages';
 import { z } from 'zod';
 
 const employeeSchema = z.object({
   individual: z.object({
-    socialSecurityNumber: z.string().min(1, 'Kimlik numarası gereklidir.'),
-    firstName: z.string().min(1, 'Ad gereklidir.'),
-    lastName: z.string().min(1, 'Soyad gereklidir.'),
-    birthDate: z.date({
-      required_error: 'İşe başlama tarihi gereklidir.'
-    })
+    socialSecurityNumber: z.string(FieldErrorMessage('Kimlik numarası')),
+    name: z.string(FieldErrorMessage('Ad Soyad')),
+    birthDate: z.date(FieldErrorMessage('Doğum tarihi'))
   }),
+  organizationId: z.string(FieldErrorMessage('Organizasyon')),
   professionIds: z.array(z.string()).min(1, 'En az bir meslek gereklidir.'),
   officialEmploymentStartDate: z.date({
     required_error: 'Resmi işe başlama tarihi gereklidir.'
@@ -47,10 +47,10 @@ export default function CreateEmployeeModal() {
     initialValues: {
       individual: {
         socialSecurityNumber: '',
-        firstName: '',
-        lastName: '',
+        name: '',
         birthDate: undefined!
       },
+      organizationId: undefined!,
       employmentStartDate: undefined!,
       officialEmploymentStartDate: undefined!,
       worksiteId: undefined,
@@ -81,7 +81,7 @@ export default function CreateEmployeeModal() {
     },
     onSuccess(_data, variables) {
       notifications.show({
-        message: `${variables.individual.firstName} ${variables.individual.lastName} isimli personel başarıyla oluşturuldu.`,
+        message: `${variables.individual.name} isimli personel oluşturuldu.`,
         color: 'green'
       });
       close();
@@ -115,8 +115,13 @@ export default function CreateEmployeeModal() {
         <form onSubmit={form.onSubmit((data) => create.mutate(data))}>
           <Stack gap="md">
             <Group grow align="flex-start">
-              <TextInput label="Ad" placeholder="John" withAsterisk {...form.getInputProps('individual.firstName')} />
-              <TextInput label="Soyad" placeholder="Doe" withAsterisk {...form.getInputProps('individual.lastName')} />
+              <OrganizationSelect
+                label="Organizasyon"
+                placeholder="Organizasyon seçiniz"
+                withAsterisk
+                {...form.getInputProps('organizationId')}
+              />
+              <TextInput label="Ad Soyad" placeholder="John" withAsterisk {...form.getInputProps('individual.name')} />
             </Group>
             <Group grow align="flex-start">
               <TextInput

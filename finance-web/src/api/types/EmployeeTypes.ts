@@ -6,9 +6,7 @@ type WorksiteResponse = {
 type GetEmployeesResponse = {
   id: number;
   socialSecurityNumber: string;
-  firstName: string;
-  lastName: string;
-  fullname: string;
+  name: string;
   officialEmploymentStartDate: string; // ISO 8601 date string
   officialEmploymentEndDate: string; // ISO 8601 date string
   employmentStartDate: string; // ISO 8601 date string
@@ -17,6 +15,7 @@ type GetEmployeesResponse = {
 };
 
 type CreateEmployeeRequest = {
+  organizationId: number | string;
   individual: CreateIndividualRequest;
   worksiteId?: number;
   professionIds: number[];

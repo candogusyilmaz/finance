@@ -30,7 +30,7 @@ public record GetProductPricesResponse(Long id, CompanyResponse subcontractor, P
                 price.getSubcontractor() != null ? new CompanyResponse(price.getSubcontractor().getId(), price.getSubcontractor().getName()) : null,
                 new ProductResponse(price.getProduct().getId(), price.getProduct().getName()),
                 new CurrencyResponse(price.getCurrency().getId(), price.getCurrency().getCode(), price.getCurrency().getName()), price.getPrice(),
-                price.getPriceConfirmedBy() != null ? new UserResponse(price.getPriceConfirmedBy().getId(), price.getPriceConfirmedBy().getIndividual().getFullName()) : null,
+                price.getPriceConfirmedBy() != null ? new UserResponse(price.getPriceConfirmedBy().getId(), price.getPriceConfirmedBy().getName()) : null,
                 price.getVatRate(),
                 price.getWithholdingTaxRate(),
                 price.getTimeperiod().getStartDate(),

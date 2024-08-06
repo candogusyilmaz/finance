@@ -10,7 +10,7 @@ public record GetWorksitesResponse(Long id, String name, WorksiteSupervisorRespo
 
             return new WorksiteSupervisorResponse(
                     worksite.getCurrentSupervisor().getSupervisor().getId(),
-                    worksite.getCurrentSupervisor().getSupervisor().getIndividual().getFullName());
+                    worksite.getCurrentSupervisor().getSupervisor().getName());
         }
     }
 

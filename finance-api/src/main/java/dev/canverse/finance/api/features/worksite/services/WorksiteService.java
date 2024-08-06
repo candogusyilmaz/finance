@@ -1,7 +1,7 @@
 package dev.canverse.finance.api.features.worksite.services;
 
 import dev.canverse.finance.api.exceptions.BadRequestException;
-import dev.canverse.finance.api.features.employment.repositories.EmployeeRepository;
+import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import dev.canverse.finance.api.features.worksite.dtos.CreateWorksiteRequest;
 import dev.canverse.finance.api.features.worksite.dtos.GetWorksitesResponse;
@@ -41,7 +41,7 @@ public class WorksiteService {
 
     public Page<GetWorksitesResponse> getWorksites(Pageable page) {
         return worksiteRepository.findBy((root, query, criteriaBuilder) -> null,
-                r -> r.project("currentSupervisor.supervisor.individual")
+                r -> r.project("currentSupervisor.supervisor")
                         .sortBy(page.getSort()).page(page).map(GetWorksitesResponse::from));
     }
 }

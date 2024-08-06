@@ -1,7 +1,7 @@
 import { formatISO } from 'date-fns';
 
 export const FormatDate = (params: string) => {
-  if (params === undefined) {
+  if (!params) {
     return '';
   }
 
@@ -12,7 +12,7 @@ export const FormatDate = (params: string) => {
 };
 
 export const FormatDateTime = (params: string) => {
-  if (params === undefined) {
+  if (!params) {
     return '';
   }
 
@@ -35,7 +35,6 @@ export const FormatPrice = (price: number | undefined, currencyCode: string | un
 };
 
 export const FormatPercentage = (value: number | undefined) => {
-  console.log(value);
   if (value === undefined || Number.isNaN(value)) {
     return '';
   }

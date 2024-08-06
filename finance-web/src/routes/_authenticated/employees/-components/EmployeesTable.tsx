@@ -28,7 +28,7 @@ export default function ProductsTable() {
     key: 'employees',
     columns: [
       {
-        accessor: 'individual.socialSecurityNumber',
+        accessor: 'socialSecurityNumber',
         title: 'Kimlik Numarası',
         sortable: true,
         ellipsis: true,
@@ -36,10 +36,10 @@ export default function ProductsTable() {
         render: (record) => record.socialSecurityNumber
       },
       {
-        accessor: 'individual.firstName',
+        accessor: 'name',
         title: 'Personel',
         sortable: true,
-        render: (record) => record.fullname,
+        render: (record) => record.name,
         ellipsis: true,
         resizable: true
       },

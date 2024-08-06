@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.features.worksite.entities;
 
-import dev.canverse.finance.api.features.employment.entities.Employee;
+import dev.canverse.finance.api.features.employee.entities.Employee;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;

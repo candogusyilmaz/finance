@@ -1,8 +1,6 @@
-package dev.canverse.finance.api.features.product.entities;
+package dev.canverse.finance.api.features.employee.entities;
 
-import dev.canverse.finance.api.features.company.entities.Company;
 import dev.canverse.finance.api.features.currency.entities.Currency;
-import dev.canverse.finance.api.features.employee.entities.Employee;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
@@ -19,48 +17,39 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@Table(name = "product_prices")
+@Table(name = "employee_salaries")
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class ProductPrice {
+public class EmployeeSalary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Company subcontractor;
-
     @ManyToOne(optional = false)
-    private Product product;
+    private Employee employee;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
-
-    @ManyToOne
-    private Employee priceConfirmedBy;
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal salary;
 
     @ManyToOne(optional = false)
     private Currency currency;
 
-    @Column(nullable = false)
-    private Double vatRate;
-
-    @Column(nullable = false)
-    private Double withholdingTaxRate;
-
-    private DatePeriod timeperiod;
+    @AttributeOverrides({
+            @AttributeOverride(name = "startDate", column = @Column(name = "start_date", nullable = false)),
+            @AttributeOverride(name = "endDate", column = @Column(name = "end_date"))
+    })
+    private DatePeriod effectivePeriod;
 
     @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
-    @Column(nullable = false)
-    private boolean active = true;
-
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @CreatedBy
+    @Setter(lombok.AccessLevel.NONE)
     private User createdBy;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @LastModifiedBy
+    @Setter(lombok.AccessLevel.NONE)
     private User updatedBy;
 }

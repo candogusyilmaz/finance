@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.features.worksite.entities;
 
-import dev.canverse.finance.api.features.employment.entities.Employee;
+import dev.canverse.finance.api.features.employee.entities.Employee;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import jakarta.persistence.*;
@@ -20,10 +20,10 @@ public class WorksiteEmployee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Worksite worksite;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
 
     @AttributeOverrides({
