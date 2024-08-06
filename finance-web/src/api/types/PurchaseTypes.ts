@@ -28,7 +28,7 @@ export type CreateCompanyPurchaseRequest = {
   description: string;
   purchaseDate: Date;
   currencyId: number | string;
-  purchasedItems: CreatePurchaseItemRequest[];
+  purchaseItems: CreatePurchaseItemRequest[];
   official: boolean;
 };
 

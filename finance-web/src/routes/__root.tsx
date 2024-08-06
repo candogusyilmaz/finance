@@ -8,6 +8,9 @@ import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 
 import { DatesProvider } from '@mantine/dates';
+import dayjs from 'dayjs';
+import 'dayjs/locale/tr';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import 'mantine-datatable/styles.layer.css';
 import { QueryClientProvider } from 'react-query';
 import { DefaultQueryClient } from 'src/react-query';
@@ -16,7 +19,7 @@ import NotFound from '../components/Shared/NotFound/NotFound';
 import '../styles.css';
 import type { AuthContext } from '../utils/auth';
 
-import 'dayjs/locale/tr';
+dayjs.extend(customParseFormat);
 
 export const Route = createRootRouteWithContext<{
   auth: AuthContext;
