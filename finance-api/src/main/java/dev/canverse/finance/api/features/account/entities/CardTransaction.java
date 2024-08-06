@@ -1,6 +1,6 @@
-package dev.canverse.finance.api.features.bank.entities;
+package dev.canverse.finance.api.features.account.entities;
 
-import dev.canverse.finance.api.features.bank.events.CardTransactionCreatedEvent;
+import dev.canverse.finance.api.features.account.events.CardTransactionCreatedEvent;
 import dev.canverse.finance.api.features.transaction.entities.Transaction;
 import jakarta.persistence.*;
 import lombok.Getter;

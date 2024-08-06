@@ -6,6 +6,7 @@ import dev.canverse.finance.api.properties.RsaKeyProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.envers.repository.config.EnableEnversRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,6 +18,7 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
+@EnableEnversRepositories
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 @EnableConfigurationProperties({RsaKeyProperties.class, CorsProperties.class, JwtProperties.class})
 public class FinanceApi {

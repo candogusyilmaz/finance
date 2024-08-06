@@ -1,19 +1,18 @@
-package dev.canverse.finance.api.features.bank.entities;
+package dev.canverse.finance.api.features.account.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "credit_cards")
+@Table(name = "debit_cards")
 @NoArgsConstructor
-public class CreditCard {
+public class DebitCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,11 +28,5 @@ public class CreditCard {
 
     private String cardNumber;
 
-    private LocalDate dueDate;
-
-    private LocalDate statementDate;
-
-    private BigDecimal minimumPayment;
-
-    private BigDecimal maxLimit;
+    private LocalDate expiryDate;
 }

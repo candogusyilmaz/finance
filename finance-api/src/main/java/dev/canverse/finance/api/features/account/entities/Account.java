@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.bank.entities;
+package dev.canverse.finance.api.features.account.entities;
 
 import dev.canverse.finance.api.features.currency.entities.Currency;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;

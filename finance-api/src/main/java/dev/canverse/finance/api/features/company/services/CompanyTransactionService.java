@@ -1,9 +1,9 @@
 package dev.canverse.finance.api.features.company.services;
 
 import dev.canverse.finance.api.exceptions.NotFoundException;
-import dev.canverse.finance.api.features.bank.entities.CardTransaction;
-import dev.canverse.finance.api.features.bank.repositories.CardRepository;
-import dev.canverse.finance.api.features.bank.repositories.CardTransactionRepository;
+import dev.canverse.finance.api.features.account.entities.CardTransaction;
+import dev.canverse.finance.api.features.account.repositories.CardRepository;
+import dev.canverse.finance.api.features.account.repositories.CardTransactionRepository;
 import dev.canverse.finance.api.features.company.dtos.CreateCompanyPaymentTransactionRequest;
 import dev.canverse.finance.api.features.company.entities.CompanyTransaction;
 import dev.canverse.finance.api.features.company.repositories.CompanyRepository;

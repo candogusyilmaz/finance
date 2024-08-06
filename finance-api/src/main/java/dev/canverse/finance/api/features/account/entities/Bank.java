@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.bank.entities;
+package dev.canverse.finance.api.features.account.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
