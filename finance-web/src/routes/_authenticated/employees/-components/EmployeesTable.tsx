@@ -28,6 +28,13 @@ export default function ProductsTable() {
     key: 'employees',
     columns: [
       {
+        accessor: 'organization.name',
+        title: 'Organizasyon',
+        sortable: true,
+        ellipsis: true,
+        resizable: true
+      },
+      {
         accessor: 'socialSecurityNumber',
         title: 'Kimlik Numarası',
         sortable: true,

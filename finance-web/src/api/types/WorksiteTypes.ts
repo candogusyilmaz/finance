@@ -1,7 +1,11 @@
 type GetWorksitesResponse = {
   id: number;
   name: string;
-  currentSupervisor?: {
+  supervisor?: {
+    id: number;
+    name: string;
+  };
+  organization: {
     id: number;
     name: string;
   };
@@ -10,4 +14,5 @@ type GetWorksitesResponse = {
 type CreateWorksiteRequest = {
   name: string;
   supervisorId?: number | string;
+  organizationId: number | string;
 };

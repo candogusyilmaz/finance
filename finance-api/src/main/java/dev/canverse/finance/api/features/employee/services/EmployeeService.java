@@ -69,6 +69,6 @@ public class EmployeeService {
     public Page<GetEmployeesResponse> getEmployees(Pageable pageable) {
         return employeeRepository.findBy(
                 (root, query, cb) -> cb.conjunction(),
-                f -> f.project("currentWorksite.worksite").sortBy(pageable.getSort()).page(pageable).map(GetEmployeesResponse::from));
+                f -> f.project("currentWorksite.worksite", "organization").sortBy(pageable.getSort()).page(pageable).map(GetEmployeesResponse::from));
     }
 }

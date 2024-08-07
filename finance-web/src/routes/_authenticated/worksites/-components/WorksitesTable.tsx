@@ -26,12 +26,13 @@ export default function WorksitesTable() {
   const { effectiveColumns } = useDataTableColumns<GetWorksitesResponse>({
     key: 'worksites',
     columns: [
+      { accessor: 'organization.name', title: 'Organizasyon', sortable: true },
       { accessor: 'name', title: 'Çalışma Yeri', sortable: true },
       {
-        accessor: 'currentSupervisor.supervisor.individual.firstName',
+        accessor: 'currentSupervisor.supervisor.firstName',
         title: 'Denetleyici',
         sortable: true,
-        render: (record) => record.currentSupervisor?.name
+        render: (record) => record.supervisor?.name
       }
     ]
   });

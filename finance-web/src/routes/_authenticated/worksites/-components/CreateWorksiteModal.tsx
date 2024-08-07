@@ -8,14 +8,17 @@ import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import EmployeeSelect from 'src/components/Dropdowns/EmployeeSelect';
+import OrganizationSelect from 'src/components/Dropdowns/OrganizationSelect';
+import { FieldErrorMessage } from 'src/utils/zod-messages';
 import { z } from 'zod';
 
 const worksiteSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, 'Ürün ismi 1 ila 255 karakter arasında olmalıdır.')
-    .max(255, 'Ürün ismi 1 ila 255 karakter arasında olmalıdır.')
+    .min(1, 'Çalışma yeri ismi 1 ila 255 karakter arasında olmalıdır.')
+    .max(255, 'Çalışma yeri ismi 1 ila 255 karakter arasında olmalıdır.'),
+  organizationId: z.string(FieldErrorMessage('Organizasyon'))
 });
 
 export default function CreateWorksiteModal() {
@@ -26,7 +29,8 @@ export default function CreateWorksiteModal() {
     mode: 'uncontrolled',
     initialValues: {
       name: '',
-      supervisorId: undefined
+      supervisorId: undefined,
+      organizationId: undefined!
     },
     validate: zodResolver(worksiteSchema)
   });
@@ -37,7 +41,7 @@ export default function CreateWorksiteModal() {
     },
     onSuccess(_data, variables) {
       notifications.show({
-        message: `${variables.name} çalışma yeri başarıyla oluşturuldu.`,
+        message: `${variables.name} çalışma yeri oluşturuldu.`,
         color: 'green'
       });
       close();
@@ -69,6 +73,12 @@ export default function CreateWorksiteModal() {
         centered>
         <form onSubmit={form.onSubmit((data) => create.mutate(data))}>
           <Stack gap="md">
+            <OrganizationSelect
+              label="Organizasyon"
+              placeholder="Organizasyon seçiniz"
+              withAsterisk
+              {...form.getInputProps('organizationId')}
+            />
             <TextInput
               label="Çalışma Yeri"
               placeholder="Çalışma Yeri"

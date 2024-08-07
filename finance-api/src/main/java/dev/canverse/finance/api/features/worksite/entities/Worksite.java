@@ -1,5 +1,6 @@
 package dev.canverse.finance.api.features.worksite.entities;
 
+import dev.canverse.finance.api.features.party.entities.Organization;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,6 +20,9 @@ public class Worksite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Organization organization;
 
     @Column(nullable = false, unique = true)
     private String name;
