@@ -1,18 +1,19 @@
 package dev.canverse.finance.api.features.purchase.services;
 
+import dev.canverse.finance.api.exceptions.BadRequestException;
 import dev.canverse.finance.api.exceptions.NotFoundException;
-import dev.canverse.finance.api.features.company.entities.CompanyPurchase;
-import dev.canverse.finance.api.features.company.repositories.CompanyPurchaseRepository;
-import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
+import dev.canverse.finance.api.features.party.entities.Party;
+import dev.canverse.finance.api.features.party.repositories.PartyRepository;
 import dev.canverse.finance.api.features.product.repository.ProductRepository;
-import dev.canverse.finance.api.features.purchase.dtos.CreateCompanyPurchaseRequest;
+import dev.canverse.finance.api.features.purchase.dtos.CreatePurchaseRequest;
 import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesRequest;
 import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesResponse;
 import dev.canverse.finance.api.features.purchase.entities.Purchase;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseAction;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseItem;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseStatus;
+import dev.canverse.finance.api.features.purchase.repositories.PurchaseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,19 +33,23 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class PurchaseService {
-    private final CompanyRepository companyRepository;
-    private final CompanyPurchaseRepository companyPurchaseRepository;
     private final ProductRepository productRepository;
     private final CurrencyRepository currencyRepository;
     private final EntityManager session;
 
+    private final PartyRepository partyRepository;
+    private final PurchaseRepository purchaseRepository;
+
     @Transactional
-    public void createCompanyPurchase(CreateCompanyPurchaseRequest request) {
+    public void createPurchase(CreatePurchaseRequest request) {
         var baseCurrency = currencyRepository.getBaseCurrency();
         var currency = currencyRepository.findById(request.currencyId()).orElseThrow(() -> new NotFoundException("Para birimi bulunamadı!"));
 
-        var purchase = new CompanyPurchase();
-        purchase.setCompany(companyRepository.getReference(request.companyId(), "Firma bulunamadı!"));
+        if (!partyRepository.existsByRole(request.supplierId(), Party.Role.SUPPLIER))
+            throw new BadRequestException("Tedarikçi bulunamadı.");
+
+        var purchase = new Purchase();
+        purchase.setSupplier(partyRepository.getReferenceById(request.supplierId()));
         purchase.setPurchaseDate(request.purchaseDate());
         purchase.setDescription(request.description());
         purchase.setOfficial(request.official());
@@ -56,19 +61,19 @@ public class PurchaseService {
 
         var purchaseAction = new PurchaseAction();
         purchaseAction.setPurchase(purchase);
-        purchaseAction.setStatus(PurchaseStatus.APPROVED);
+        purchaseAction.setStatus(PurchaseStatus.PENDING);
         purchase.getActions().add(purchaseAction);
 
-        companyPurchaseRepository.save(purchase);
+        purchaseRepository.save(purchase);
     }
 
-    private Set<PurchaseItem> createPurchaseItems(CreateCompanyPurchaseRequest request, Purchase purchase) {
+    private Set<PurchaseItem> createPurchaseItems(CreatePurchaseRequest request, Purchase purchase) {
         var purchaseItems = new HashSet<PurchaseItem>();
 
         for (var item : request.purchaseItems()) {
             var purchaseItem = new PurchaseItem();
             purchaseItem.setPurchase(purchase);
-            purchaseItem.setProduct(productRepository.getReference(item.productId(), "Ürün bulunamadı!"));
+            purchaseItem.setProduct(productRepository.getReference(item.productId(), "Ürün bulunamadı."));
             purchaseItem.setQuantity(item.quantity());
             purchaseItem.setUnitPrice(item.unitPrice());
             purchaseItem.setVatRate(item.vatRate());
@@ -84,25 +89,25 @@ public class PurchaseService {
     public Page<GetPurchasesResponse> getPurchases(GetPurchasesRequest req, Pageable page) {
         final var queryBuilder = new StringBuilder("""
                     SELECT p.id as id,  p.description, p.purchaseDate, p.official, sum(pi.quantity * pi.unitPrice),
-                           company.id, company.name,
+                           p.supplier.id, p.supplier.name,
                            c.id, c.code, c.exchangeRate,
                            pa.id, pa.status, pa.comment, pa.createdAt
                     FROM Purchase p
                     INNER JOIN PurchaseAction pa ON pa.id = (select max(pa2.id) from PurchaseAction pa2 where pa2.purchase.id = p.id)
                     INNER JOIN Currency c ON c.code = p.currencyCode
                     INNER JOIN p.purchaseItems pi
-                    LEFT JOIN Company company on company.id = (select cp.company.id from CompanyPurchase cp where cp.id = p.id)
+                    INNER JOIN p.supplier
                     WHERE 1=1
                 """);
 
         final var parameters = new HashMap<String, Object>();
-        req.companyId().ifPresent(companyId -> {
-            queryBuilder.append("AND company.id = :companyId ");
-            parameters.put("companyId", companyId);
+        req.supplierId().ifPresent(supplierId -> {
+            queryBuilder.append("AND p.supplier.id = :supplierId ");
+            parameters.put("supplierId", supplierId);
         });
 
         queryBuilder.append("""
-                    GROUP BY p.id, company.id, company.name, p.description, c.id, c.code, c.exchangeRate, p.purchaseDate,
+                    GROUP BY p.id, p.supplier.id, p.supplier.name, p.description, c.id, c.code, c.exchangeRate, p.purchaseDate,
                              p.official, pa.id, pa.status, pa.comment, pa.createdAt
                     ORDER BY :orderBy
                 """);
@@ -119,7 +124,7 @@ public class PurchaseService {
         final var result = new ArrayList<GetPurchasesResponse>();
 
         for (var row : query.getResultList()) {
-            var company = new GetPurchasesResponse.CompanyResponse((Long) row[5], (String) row[6]);
+            var company = new GetPurchasesResponse.SupplierResponse((Long) row[5], (String) row[6]);
             var currency = new GetPurchasesResponse.CurrencyResponse((Long) row[7], (String) row[8], (Double) row[9]);
             var lastAction = new GetPurchasesResponse.PurchaseActionResponse((Long) row[10], (PurchaseStatus) row[11], (String) row[12], (LocalDateTime) row[13]);
             result.add(new GetPurchasesResponse((Long) row[0], (String) row[1], (LocalDateTime) row[2], (boolean) row[3], (BigDecimal) row[4], company, currency, lastAction));

@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.features.purchase.controllers;
 
-import dev.canverse.finance.api.features.purchase.dtos.CreateCompanyPurchaseRequest;
+import dev.canverse.finance.api.features.purchase.dtos.CreatePurchaseRequest;
 import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesRequest;
 import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesResponse;
 import dev.canverse.finance.api.features.purchase.services.PurchaseService;
@@ -22,7 +22,7 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public void createCompanyPurchase(@Valid @RequestBody CreateCompanyPurchaseRequest req) {
-        purchaseService.createCompanyPurchase(req);
+    public void createPurchase(@Valid @RequestBody CreatePurchaseRequest req) {
+        purchaseService.createPurchase(req);
     }
 }

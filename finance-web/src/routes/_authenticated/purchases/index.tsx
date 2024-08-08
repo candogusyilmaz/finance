@@ -2,7 +2,8 @@ import { Button, Group, Stack } from '@mantine/core';
 import { IconBasket, IconPlus } from '@tabler/icons-react';
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
-import CompanySelect from 'src/components/Dropdowns/CompanySelect';
+import { PartyRoles } from 'src/api/types/PartyTypes';
+import PartySelect from 'src/components/Dropdowns/PartySelect';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
 import { z } from 'zod';
 import PurchasesTable from './-components/PurchasesTable';
@@ -10,7 +11,7 @@ import PurchasesTable from './-components/PurchasesTable';
 export const Route = createFileRoute('/_authenticated/purchases/')({
   component: Purchases,
   validateSearch: PageSchema.extend({
-    companyId: z.string().nullable().optional()
+    supplierId: z.string().nullable().optional()
   })
 });
 
@@ -25,12 +26,13 @@ function Purchases() {
       </Group>
       <Stack>
         <Group>
-          <CompanySelect
+          <PartySelect
+            partyRoles={[PartyRoles.SUPPLIER]}
             clearable
-            placeholder="Şirkete göre filtrele"
+            placeholder="Tedarikçiye göre filtrele"
             onChange={(val) =>
               navigate({
-                search: (prev) => ({ ...prev, companyId: val as string | undefined })
+                search: (prev) => ({ ...prev, supplierId: val as string | undefined })
               })
             }
           />

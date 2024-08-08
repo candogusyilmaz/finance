@@ -10,7 +10,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
-import OrganizationSelect from 'src/components/Dropdowns/OrganizationSelect';
+import PartySelect from 'src/components/Dropdowns/PartySelect';
 import ProfessionMultiSelect from 'src/components/Dropdowns/ProfessionMultiSelect';
 import WorksiteSelect from 'src/components/Dropdowns/WorksiteSelect';
 import { FieldErrorMessage } from 'src/utils/zod-messages';
@@ -20,20 +20,20 @@ const employeeSchema = z.object({
   individual: z.object({
     socialSecurityNumber: z.string(FieldErrorMessage('Kimlik numarası')),
     name: z.string(FieldErrorMessage('Ad Soyad')),
-    birthDate: z.date(FieldErrorMessage('Doğum tarihi'))
+    birthDate: z.coerce.date(FieldErrorMessage('Doğum tarihi'))
   }),
   organizationId: z.string(FieldErrorMessage('Organizasyon')),
   professionIds: z.array(z.string()).min(1, 'En az bir meslek gereklidir.'),
-  officialEmploymentStartDate: z.date({
+  officialEmploymentStartDate: z.coerce.date({
     required_error: 'Resmi işe başlama tarihi gereklidir.'
   }),
-  employmentStartDate: z.date({
+  employmentStartDate: z.coerce.date({
     required_error: 'İşe başlama tarihi gereklidir.'
   }),
   salary: z.object({
     amount: z.number({ required_error: 'Maaş tutarı gereklidir.' }).positive('Maaş tutarı pozitif olmalıdır.'),
     currencyId: z.string({ required_error: 'Para birimi seçilmelidir.' }),
-    startDate: z.date({ required_error: 'Maaş başlangıç tarihi gereklidir.' })
+    startDate: z.coerce.date({ required_error: 'Maaş başlangıç tarihi gereklidir.' })
   })
 });
 
@@ -115,7 +115,8 @@ export default function CreateEmployeeModal() {
         <form onSubmit={form.onSubmit((data) => create.mutate(data))}>
           <Stack gap="md">
             <Group grow align="flex-start">
-              <OrganizationSelect
+              <PartySelect
+                partyRoles={['ORGANIZATION', 'AFFILIATE']}
                 label="Organizasyon"
                 placeholder="Organizasyon seçiniz"
                 withAsterisk

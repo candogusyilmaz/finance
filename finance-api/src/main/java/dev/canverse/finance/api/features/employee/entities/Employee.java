@@ -7,7 +7,6 @@ import dev.canverse.finance.api.features.worksite.entities.WorksiteEmployee;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JoinFormula;
 
@@ -18,7 +17,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "employees")
-@NoArgsConstructor
 public class Employee extends Individual {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Organization organization;
@@ -54,4 +52,8 @@ public class Employee extends Individual {
     @JoinFormula("(SELECT es.id FROM employee_salaries es WHERE es.employee_id = id and es.start_date <= now() and (es.end_date IS NULL OR now() <= es.end_date) ORDER BY es.id DESC LIMIT 1)")
     @Setter(AccessLevel.NONE)
     private EmployeeSalary currentSalary;
+
+    public Employee() {
+        this.addRole(Role.EMPLOYEE);
+    }
 }

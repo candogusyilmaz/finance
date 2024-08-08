@@ -1,18 +1,16 @@
-import { Group } from '@mantine/core';
 import { getRouteApi } from '@tanstack/react-router';
 import type { DataTableColumn } from 'mantine-datatable';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
-import type { GetCompaniesResponse } from 'src/api/types/CompanyTypes';
 import { type Page, createURL } from 'src/api/types/Defaults';
+import type { GetOrganizationsResponse } from 'src/api/types/OrganizationTypes';
 import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
 import { FormatDateTime } from 'src/utils/formatter';
-import DeleteCompanyModal from './DeleteCompanyModal';
 
-const route = getRouteApi('/_authenticated/companies/');
+const route = getRouteApi('/_authenticated/organizations/');
 
-export default function CompaniesTable() {
-  const { page, sort, size } = route.useSearch();
+export default function OrganizationsTable() {
+  const { page, sort, size, role } = route.useSearch();
   const navigate = route.useNavigate();
   const pageable = {
     page: page,
@@ -21,14 +19,14 @@ export default function CompaniesTable() {
   };
 
   const query = useQuery({
-    queryKey: ['companies', pageable],
+    queryKey: ['organizations', pageable, role],
     queryFn: async () => {
-      return (await api.get<Page<GetCompaniesResponse>>(createURL('/companies', pageable))).data;
+      return (await api.get<Page<GetOrganizationsResponse>>(createURL('/organizations', pageable, { role }))).data;
     },
     cacheTime: 6000
   });
 
-  const columns: DataTableColumn<GetCompaniesResponse>[] = [
+  const columns: DataTableColumn<GetOrganizationsResponse>[] = [
     { accessor: 'name', title: 'Şirket', sortable: true },
     {
       accessor: 'phoneNumber',
@@ -45,15 +43,6 @@ export default function CompaniesTable() {
       accessor: 'updatedAt',
       title: 'Son Güncelleme Tarihi',
       render: (record) => FormatDateTime(record.updatedAt)
-    },
-    {
-      accessor: 'actions',
-      title: '',
-      render: (company) => (
-        <Group gap={4} justify="right" wrap="nowrap">
-          <DeleteCompanyModal id={company.id} name={company.name} />
-        </Group>
-      )
     }
   ];
 

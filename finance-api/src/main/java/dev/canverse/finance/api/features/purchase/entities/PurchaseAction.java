@@ -27,6 +27,7 @@ public class PurchaseAction {
     private Purchase purchase;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private PurchaseStatus status;
 
     private String comment;

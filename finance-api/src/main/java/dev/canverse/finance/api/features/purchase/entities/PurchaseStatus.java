@@ -1,8 +1,11 @@
 package dev.canverse.finance.api.features.purchase.entities;
 
 public enum PurchaseStatus {
-    PENDING,
     APPROVED,
     CANCELLED,
+    COMPLETED,
+    IN_PROGRESS,
+    PENDING,
     RETURNED
+
 }

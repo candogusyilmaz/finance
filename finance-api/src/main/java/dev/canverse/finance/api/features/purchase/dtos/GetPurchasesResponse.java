@@ -11,7 +11,7 @@ public record GetPurchasesResponse(
         LocalDateTime purchaseDate,
         boolean official,
         BigDecimal total,
-        CompanyResponse company,
+        SupplierResponse supplier,
         CurrencyResponse currency,
         PurchaseActionResponse lastAction
 ) {
@@ -22,7 +22,7 @@ public record GetPurchasesResponse(
     ) {
     }
 
-    public record CompanyResponse(
+    public record SupplierResponse(
             Long id,
             String name
     ) {

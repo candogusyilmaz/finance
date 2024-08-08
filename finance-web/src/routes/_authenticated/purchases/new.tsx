@@ -4,6 +4,7 @@ import {
   Badge,
   Button,
   Card,
+  Checkbox,
   Divider,
   Group,
   Modal,
@@ -28,9 +29,9 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ApiError, createURL, setInvalidParams } from 'src/api/types/Defaults';
 import type { GetProductPricesForPurchaseResponse } from 'src/api/types/ProductPriceTypes';
-import type { CreateCompanyPurchaseRequest, CreatePurchaseItemRequest } from 'src/api/types/PurchaseTypes';
-import CompanySelect from 'src/components/Dropdowns/CompanySelect';
+import type { CreatePurchaseItemRequest, CreatePurchaseRequest } from 'src/api/types/PurchaseTypes';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
+import PartySelect from 'src/components/Dropdowns/PartySelect';
 import ProductSelect from 'src/components/Dropdowns/ProductSelect';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
 import { FormatISODate, FormatPercentage, FormatPrice } from 'src/utils/formatter';
@@ -42,7 +43,7 @@ export const Route = createFileRoute('/_authenticated/purchases/new')({
 });
 
 const purchaseSchema = z.object({
-  companyId: z.string(FieldErrorMessage('Şirket')),
+  supplierId: z.string(FieldErrorMessage('Tedarikçi')),
   purchaseDate: z.date(FieldErrorMessage('Satın alım tarihi')),
   currencyId: z.string(FieldErrorMessage('Para birimi'))
 });
@@ -56,7 +57,7 @@ function New() {
   const form = useForm({
     mode: 'controlled',
     initialValues: {
-      companyId: '',
+      supplierId: undefined!,
       description: '',
       purchaseDate: new Date(),
       currencyId: '',
@@ -70,7 +71,7 @@ function New() {
   };
 
   const create = useMutation({
-    mutationFn: async (data: CreateCompanyPurchaseRequest) => {
+    mutationFn: async (data: CreatePurchaseRequest) => {
       return await api.post('/purchases', data);
     },
     onSuccess(_data, _variables) {
@@ -117,7 +118,13 @@ function New() {
           <Title order={3}>Satın Alım Bilgileri</Title>
           <Divider mb="md" />
           <Group grow align="flex-start">
-            <CompanySelect label="Şirket" placeholder="Şirket seçin" withAsterisk {...form.getInputProps('companyId')} />
+            <PartySelect
+              partyRoles={['SUPPLIER']}
+              label="Tedarikçi"
+              placeholder="Tedarikçi seçin"
+              withAsterisk
+              {...form.getInputProps('supplierId')}
+            />
             <DateInput
               label="Satın Alım Tarihi"
               placeholder="GG/AA/YYYY"
@@ -145,7 +152,7 @@ function New() {
             placeholder="Satın alım ile ilgili açıklama"
             {...form.getInputProps('description')}
           />
-
+          <Checkbox mt="sm" radius="sm" defaultChecked label="Bu satın alım resmi olarak yapılmıştır." />
           <Divider my="lg" label="Ürünler" labelPosition="center" />
 
           <Group mb="sm">
@@ -161,20 +168,24 @@ function New() {
               Toplam: {FormatPrice(calculateTotal(), currencyCode)}
             </Text>
             <Button
-              onClick={() =>
+              onClick={() => {
+                if (products.length === 0) {
+                  notifications.show({ message: 'En az 1 adet ürün eklenmelidir.', color: 'red' });
+                  return;
+                }
                 create.mutate({
                   ...form.getValues(),
                   purchaseItems: products
-                })
-              }>
+                });
+              }}>
               Oluştur
             </Button>
           </Group>
         </Stack>
         <Stack>
-          <Title order={3}>Ürün-Fiyat Tanımlamaları</Title>
+          <Title order={3}>Ürün Anlaşmaları</Title>
           <Divider mb="md" />
-          <PurchaseProductPricesDisplayTable companyId={form.getValues().companyId} date={form.getValues().purchaseDate} />
+          <PurchaseProductPricesDisplayTable supplierId={form.getValues().supplierId} date={form.getValues().purchaseDate} />
         </Stack>
       </Group>
     </Stack>
@@ -373,22 +384,22 @@ function PurchaseProductDisplayTable({
   );
 }
 
-function PurchaseProductPricesDisplayTable({ companyId, date }: Readonly<{ companyId: string | number; date: Date }>) {
+function PurchaseProductPricesDisplayTable({ supplierId, date }: Readonly<{ supplierId: string | number; date: Date }>) {
   const query = useQuery({
-    queryKey: ['product-prices', companyId, date],
+    queryKey: ['product-prices', supplierId, date],
     queryFn: async () =>
       (
         await api.get<GetProductPricesForPurchaseResponse[]>(
-          createURL('/product-prices/purchase', undefined, { companyId, date: FormatISODate(date) })
+          createURL('/product-prices/purchase', undefined, { supplierId, date: FormatISODate(date) })
         )
       ).data,
     cacheTime: 120000,
     staleTime: 120000,
-    enabled: !!companyId && !!date
+    enabled: !!supplierId && !!date
   });
 
   if (query.data === undefined || query.data?.length === 0)
-    return <Alert variant="light">Seçilen şirket için satın alım tarihine denk gelen ürün-fiyat tanımlaması bulunmuyor.</Alert>;
+    return <Alert variant="light">Seçilen tedarikçi için satın alım tarihine denk gelen ürün anlaşması bulunmuyor.</Alert>;
 
   return (
     <SimpleGrid cols={4} spacing="xs">

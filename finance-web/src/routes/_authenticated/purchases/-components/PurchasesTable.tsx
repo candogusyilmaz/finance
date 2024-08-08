@@ -1,17 +1,18 @@
-import { Checkbox, Text, Tooltip } from '@mantine/core';
+import { Checkbox, Text } from '@mantine/core';
 import { getRouteApi } from '@tanstack/react-router';
 import { useDataTableColumns } from 'mantine-datatable';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
-import type { GetPurchasesView } from 'src/api/types/PurchaseTypes';
+import type { GetPurchasesResponse } from 'src/api/types/PurchaseTypes';
 import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
+import { Tooltippable } from 'src/components/Shared/Tooptippable';
 import { FormatDateTime, FormatPrice } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/purchases/');
 
 export default function PurchasesTable() {
-  const { page, sort, size, companyId } = route.useSearch();
+  const { page, sort, size, supplierId } = route.useSearch();
   const navigate = route.useNavigate();
   const pageable = {
     page: page,
@@ -20,17 +21,17 @@ export default function PurchasesTable() {
   };
 
   const query = useQuery({
-    queryKey: ['purchases', pageable, companyId],
-    queryFn: async () => (await api.get<Page<GetPurchasesView>>(createURL('/purchases', pageable, { companyId }))).data,
+    queryKey: ['purchases', pageable, supplierId],
+    queryFn: async () => (await api.get<Page<GetPurchasesResponse>>(createURL('/purchases', pageable, { supplierId }))).data,
     cacheTime: 120000,
     staleTime: 120000
   });
 
-  const { effectiveColumns } = useDataTableColumns<GetPurchasesView>({
+  const { effectiveColumns } = useDataTableColumns<GetPurchasesResponse>({
     key: 'purchases',
     columns: [
       { accessor: 'id', title: 'ID', sortable: true },
-      { accessor: 'company.name', title: 'Satıcı', sortable: true, render: (record) => record.company?.name },
+      { accessor: 'supplier.name', title: 'Tedarikçi', sortable: true, render: (record) => record.supplier.name },
       { accessor: 'description', title: 'Aciklama' },
       { accessor: 'purchaseDate', title: 'Tarih', render: (record) => FormatDateTime(record.purchaseDate) },
       { accessor: 'official', title: 'Resmi', render: (record) => <Checkbox readOnly checked={record.official} /> },
@@ -39,9 +40,9 @@ export default function PurchasesTable() {
         accessor: 'lastAction.status',
         title: 'Durum',
         render: (record) => (
-          <Tooltip label={record.lastAction.comment ?? ''}>
+          <Tooltippable label={record.lastAction.comment}>
             <Text>{record.lastAction.status}</Text>
-          </Tooltip>
+          </Tooltippable>
         )
       },
       { accessor: 'lastAction.createdAt', title: 'Guncellenme Tarihi', render: (record) => FormatDateTime(record.lastAction.createdAt) }

@@ -1,4 +1,4 @@
-import { Box, Button, Group, InputBase, Modal, Stack, TextInput } from '@mantine/core';
+import { Box, Button, Group, InputBase, Modal, MultiSelect, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
@@ -7,48 +7,53 @@ import { zodResolver } from 'mantine-form-zod-resolver';
 import { IMaskInput } from 'react-imask';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
-import type { CreateCompanyRequest } from 'src/api/types/CompanyTypes';
 import { type ApiError, setInvalidParams } from 'src/api/types/Defaults';
+import type { CreateOrganizationRequest } from 'src/api/types/OrganizationTypes';
+import { type PartyRole, PartyRoles } from 'src/api/types/PartyTypes';
+import { FieldErrorMessage } from 'src/utils/zod-messages';
 import { z } from 'zod';
 
 const schema = z.object({
-  name: z.string().trim().min(2, { message: 'Şirket adı en az 2 karakter olmalıdır.' }),
+  name: z.string(FieldErrorMessage('İsim')).trim().min(2, { message: 'Organizasyon adı en az 2 karakter olmalıdır.' }),
   address: z.string().optional(),
   taxOffice: z.string().optional(),
   taxRegistrationNumber: z.string().optional(),
   phoneNumber: z.string().optional(),
-  email: z.string().optional()
+  email: z.string().optional(),
+  roles: z.array(z.enum([PartyRoles.AFFILIATE, PartyRoles.SUPPLIER]), FieldErrorMessage('Tür'))
 });
 
-export default function CreateCompanyModal() {
+export default function CreateOrganizationModal() {
   const [opened, { open, close }] = useDisclosure(false);
   const client = useQueryClient();
 
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      name: '',
-      address: '',
-      taxOffice: '',
-      taxRegistrationNumber: '',
-      phoneNumber: '',
-      email: ''
+      name: undefined!,
+      address: undefined,
+      taxOffice: undefined,
+      taxRegistrationNumber: undefined,
+      phoneNumber: undefined,
+      email: undefined,
+      roles: undefined! as PartyRole[]
     },
     validate: zodResolver(schema)
   });
 
   const create = useMutation({
-    mutationFn: async (data: CreateCompanyRequest) => {
-      return await api.post('/companies', data);
+    mutationFn: async (data: CreateOrganizationRequest) => {
+      return await api.post('/organizations', data);
     },
     onSuccess(_data, variables) {
       notifications.show({
-        message: `${variables.name} şirketi başarıyla oluşturuldu.`,
+        message: `${variables.name} oluşturuldu.`,
         color: 'green'
       });
+      form.reset();
       close();
       client.invalidateQueries({
-        queryKey: 'companies'
+        queryKey: 'organizations'
       });
     },
     onError(error: ApiError, _variables, _context) {
@@ -71,14 +76,38 @@ export default function CreateCompanyModal() {
           form.reset();
           close();
         }}
-        title="Şirket Hakkında"
+        title="Yeni Organizasyon Oluştur"
         centered>
         <form
           onSubmit={form.onSubmit((s) => {
             create.mutate(s);
           })}>
           <Stack gap="md">
-            <TextInput label="Şirket" placeholder="Şirket İsmi" withAsterisk key={form.key('name')} {...form.getInputProps('name')} />
+            <MultiSelect
+              label="Tür"
+              withAsterisk
+              maxValues={1}
+              placeholder="Organizasyon türü"
+              data={[
+                {
+                  label: 'Organizasyon',
+                  value: PartyRoles.AFFILIATE
+                },
+                {
+                  label: 'Tedarikçi',
+                  value: PartyRoles.SUPPLIER
+                }
+              ]}
+              key={form.key('roles')}
+              {...form.getInputProps('roles')}
+            />
+            <TextInput
+              label="Organizasyon"
+              placeholder="Organizasyon İsmi"
+              withAsterisk
+              key={form.key('name')}
+              {...form.getInputProps('name')}
+            />
             <Group grow align="flex-start">
               <TextInput
                 label="Vergi Dairesi"
@@ -115,7 +144,7 @@ export default function CreateCompanyModal() {
       </Modal>
 
       <Button size="sm" px="lg" fz="sm" leftSection={<IconPlus size={18} color="white" />} onClick={open}>
-        Yeni şirket oluştur
+        Yeni organizasyon oluştur
       </Button>
     </Box>
   );

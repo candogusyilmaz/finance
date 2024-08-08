@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -13,10 +12,13 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "individuals")
-@NoArgsConstructor
 public class Individual extends Party {
     @Column(unique = true)
     private String socialSecurityNumber;
 
     private LocalDate birthDate;
+
+    public Individual() {
+        this.addRole(Role.INDIVIDUAL);
+    }
 }

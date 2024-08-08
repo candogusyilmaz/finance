@@ -1,6 +1,7 @@
 package dev.canverse.finance.api.features.purchase.entities;
 
 import dev.canverse.finance.api.features.currency.entities.Currency;
+import dev.canverse.finance.api.features.party.entities.Party;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -25,6 +26,9 @@ public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Party supplier;
 
     @Column(nullable = false)
     @Setter(AccessLevel.NONE)

@@ -1,6 +1,6 @@
-export type GetPurchasesView = {
+export type GetPurchasesResponse = {
   id: number;
-  company?: {
+  supplier: {
     id: number;
     name: string;
   };
@@ -23,8 +23,8 @@ export type GetPurchasesView = {
 
 export type PurchaseStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'RETURNED';
 
-export type CreateCompanyPurchaseRequest = {
-  companyId: number | string;
+export type CreatePurchaseRequest = {
+  supplierId: number | string;
   description: string;
   purchaseDate: Date;
   currencyId: number | string;

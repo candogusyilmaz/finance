@@ -1,14 +1,14 @@
 package dev.canverse.finance.api.features.party.controllers;
 
-import dev.canverse.finance.api.features.party.dtos.GetOrganizationRequest;
+import dev.canverse.finance.api.features.party.dtos.CreateOrganizationRequest;
+import dev.canverse.finance.api.features.party.dtos.GetOrganization;
 import dev.canverse.finance.api.features.party.services.OrganizationService;
-import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/organizations")
@@ -16,18 +16,13 @@ import java.util.List;
 public class OrganizationController {
     private final OrganizationService organizationService;
 
-    /*@PostMapping
-    public void createOrganization(@RequestBody @Valid CreateSupplierRequest request) {
-        supplierService.createSupplier(request);
-    }*/
+    @GetMapping
+    public Page<GetOrganization.Response> getOrganizations(GetOrganization.Filter filter, @PageableDefault Pageable page) {
+        return organizationService.getOrganizations(filter, page);
+    }
 
-    /*@GetMapping
-    public Page<GetSupplierResponse> getOrganizations(@PageableDefault Pageable page) {
-        return organizationService.getOrganizations(page);
-    }*/
-
-    @GetMapping("/simple")
-    public List<IdNameProjection> getOrganizationsSimple(GetOrganizationRequest request) {
-        return organizationService.getOrganizationsSimple(request);
+    @PostMapping
+    public void createOrganization(@Valid @RequestBody CreateOrganizationRequest request) {
+        organizationService.createOrganization(request);
     }
 }

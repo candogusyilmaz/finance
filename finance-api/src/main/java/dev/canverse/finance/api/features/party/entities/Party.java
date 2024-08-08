@@ -10,6 +10,9 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -24,6 +27,13 @@ public abstract class Party {
     @Column(nullable = false)
     private String name;
 
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(name = "party_roles", joinColumns = @JoinColumn(name = "party_id"))
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Setter(AccessLevel.NONE)
+    private Set<Role> roles = new HashSet<>();
+
     @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
@@ -36,4 +46,21 @@ public abstract class Party {
     @LastModifiedBy
     @Setter(AccessLevel.NONE)
     private User updatedBy;
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public void addRoles(Set<Role> roles) {
+        this.roles.addAll(roles);
+    }
+
+    public enum Role {
+        AFFILIATE,
+        INDIVIDUAL,
+        ORGANIZATION,
+        SUPPLIER,
+        EMPLOYEE,
+        CUSTOMER
+    }
 }

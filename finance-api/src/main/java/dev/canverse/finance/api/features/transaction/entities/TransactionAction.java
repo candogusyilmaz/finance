@@ -23,6 +23,7 @@ public class TransactionAction {
     private Transaction transaction;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
     @ManyToOne(optional = false)

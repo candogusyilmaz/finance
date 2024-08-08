@@ -9,6 +9,7 @@ import {
   IconLogout
 } from '@tabler/icons-react';
 import { Link, useNavigate, useRouter } from '@tanstack/react-router';
+import { PartyRoles } from 'src/api/types/PartyTypes';
 import { useAuth } from '../../../utils/auth';
 import classes from './Navbar.module.css';
 
@@ -29,9 +30,12 @@ export function Navbar() {
         <IconHome size={18} />
         <Text size="sm">Anasayfa</Text>
       </Link>
-      <Link className={classes.link} to="/companies" search={{ page: 1, size: 20, sort: { id: 'name', direction: 'asc' } }}>
+      <Link
+        className={classes.link}
+        to="/organizations"
+        search={{ page: 1, size: 20, sort: { id: 'name', direction: 'asc' }, role: PartyRoles.AFFILIATE }}>
         <IconBuildingCommunity size={18} />
-        <Text size="sm">Şirketler</Text>
+        <Text size="sm">Organizasyonlar</Text>
       </Link>
       <Link className={classes.link} to="/products" search={{ page: 1, size: 20, sort: { id: 'id', direction: 'desc' } }}>
         <IconBuildingWarehouse size={18} />
