@@ -1,6 +1,6 @@
 export type GetPurchasesResponse = {
   id: number;
-  organization: {
+  worksite: {
     id: number;
     name: string;
   };
@@ -28,10 +28,11 @@ export type GetPurchasesResponse = {
 export type PurchaseStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'RETURNED';
 
 export type CreatePurchaseRequest = {
-  supplierId: number | string;
+  worksiteId: number;
+  supplierId: number;
   description: string;
   purchaseDate: Date;
-  currencyId: number | string;
+  currencyId: number;
   purchaseItems: CreatePurchaseItemRequest[];
   official: boolean;
 };

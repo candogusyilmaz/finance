@@ -1,8 +1,8 @@
 package dev.canverse.finance.api.features.purchase.entities;
 
 import dev.canverse.finance.api.features.currency.entities.Currency;
-import dev.canverse.finance.api.features.party.entities.Organization;
 import dev.canverse.finance.api.features.party.entities.Party;
+import dev.canverse.finance.api.features.worksite.entities.Worksite;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -29,7 +29,7 @@ public class Purchase {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Organization organization;
+    private Worksite worksite;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Party supplier;

@@ -31,7 +31,7 @@ export default function PurchasesTable() {
     key: 'purchases',
     columns: [
       { accessor: 'id', title: 'ID', sortable: true },
-      { accessor: 'organization.name', title: 'Organizasyon', sortable: true, render: (record) => record.organization.name },
+      { accessor: 'worksite.name', title: 'Çalışma Yeri', sortable: true, render: (record) => record.worksite.name, ellipsis: true },
       { accessor: 'supplier.name', title: 'Tedarikçi', sortable: true, render: (record) => record.supplier.name },
       { accessor: 'description', title: 'Aciklama' },
       { accessor: 'purchaseDate', title: 'Tarih', render: (record) => FormatDateTime(record.purchaseDate) },

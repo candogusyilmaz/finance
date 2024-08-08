@@ -33,6 +33,7 @@ import type { CreatePurchaseItemRequest, CreatePurchaseRequest } from 'src/api/t
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
 import PartySelect from 'src/components/Dropdowns/PartySelect';
 import ProductSelect from 'src/components/Dropdowns/ProductSelect';
+import WorksiteSelect from 'src/components/Dropdowns/WorksiteSelect';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
 import { FormatISODate, FormatPercentage, FormatPrice } from 'src/utils/formatter';
 import { FieldErrorMessage } from 'src/utils/zod-messages';
@@ -43,10 +44,10 @@ export const Route = createFileRoute('/_authenticated/purchases/new')({
 });
 
 const purchaseSchema = z.object({
-  organizationId: z.coerce.number(FieldErrorMessage('Organizasyon')),
-  supplierId: z.string(FieldErrorMessage('Tedarikçi')),
-  purchaseDate: z.date(FieldErrorMessage('Satın alım tarihi')),
-  currencyId: z.string(FieldErrorMessage('Para birimi'))
+  worksiteId: z.coerce.number(FieldErrorMessage('Çalışma yeri')),
+  supplierId: z.coerce.number(FieldErrorMessage('Tedarikçi')),
+  purchaseDate: z.coerce.date(FieldErrorMessage('Satın alım tarihi')),
+  currencyId: z.coerce.number(FieldErrorMessage('Para birimi'))
 });
 
 function New() {
@@ -56,14 +57,14 @@ function New() {
   const navigate = Route.useNavigate();
 
   const form = useForm({
-    mode: 'controlled',
+    mode: 'uncontrolled',
     initialValues: {
-      organizationId: undefined!,
+      worksiteId: undefined!,
       supplierId: undefined!,
       description: '',
       purchaseDate: new Date(),
-      currencyId: '',
-      official: false
+      currencyId: undefined!,
+      official: true
     },
     validate: zodResolver(purchaseSchema)
   });
@@ -120,13 +121,12 @@ function New() {
           <Title order={3}>Satın Alım Bilgileri</Title>
           <Divider mb="md" />
           <Group grow align="flex-start">
-            <PartySelect
-              partyRoles={['AFFILIATE', 'ORGANIZATION']}
-              label="Organizasyon"
-              placeholder="Organizasyon seçiniz"
+            <WorksiteSelect
+              label="Çalışma Yeri"
+              placeholder="Çalışma yeri seçiniz"
               withAsterisk
-              key={form.key('organizationId')}
-              {...form.getInputProps('organizationId')}
+              key={form.key('worksiteId')}
+              {...form.getInputProps('worksiteId')}
             />
             <PartySelect
               partyRoles={['SUPPLIER']}
@@ -169,7 +169,6 @@ function New() {
           <Checkbox
             mt="sm"
             radius="sm"
-            defaultChecked
             label="Bu satın alım resmi olarak yapılmıştır."
             key={form.key('official')}
             {...form.getInputProps('official')}
@@ -190,6 +189,9 @@ function New() {
             </Text>
             <Button
               onClick={() => {
+                if (form.validate().hasErrors) {
+                  return;
+                }
                 if (products.length === 0) {
                   notifications.show({ message: 'En az 1 adet ürün eklenmelidir.', color: 'red' });
                   return;
