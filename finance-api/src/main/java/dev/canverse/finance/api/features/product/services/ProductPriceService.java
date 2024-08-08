@@ -1,9 +1,10 @@
 package dev.canverse.finance.api.features.product.services;
 
 import dev.canverse.finance.api.exceptions.NotFoundException;
-import dev.canverse.finance.api.features.company.repositories.CompanyRepository;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
 import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
+import dev.canverse.finance.api.features.party.entities.Party;
+import dev.canverse.finance.api.features.party.repositories.PartyRepository;
 import dev.canverse.finance.api.features.product.dtos.*;
 import dev.canverse.finance.api.features.product.entities.ProductPrice;
 import dev.canverse.finance.api.features.product.repository.ProductPriceRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,9 +28,10 @@ public class ProductPriceService {
     private final ProductPriceRepository productPriceRepository;
     private final ProductRepository productRepository;
     private final EmployeeRepository employeeRepository;
-    private final CompanyRepository companyRepository;
     private final CurrencyRepository currencyRepository;
     private final EntityManager em;
+
+    private final PartyRepository partyRepository;
 
     public void createProductPrice(CreateProductPriceRequest request) {
         var product = productRepository.findById(request.productId())
@@ -39,19 +42,12 @@ public class ProductPriceService {
 
         var productPrice = new ProductPrice();
 
-        if (request.priceConfirmedById() != null) {
-            var priceConfirmedBy = employeeRepository.findById(request.priceConfirmedById())
-                    .orElseThrow(() -> new NotFoundException("Fiyat teyit alınan kullanıcı bulunamadı."));
+        request.priceConfirmedById().ifPresent(id -> productPrice.setPriceConfirmedBy(employeeRepository.getReference(id, "Fiyat teyit alınan kullanıcı bulunamadı.")));
 
-            productPrice.setPriceConfirmedBy(priceConfirmedBy);
-        }
-
-        if (request.subcontractorId() != null) {
-            var subcontractor = companyRepository.findById(request.subcontractorId())
-                    .orElseThrow(() -> new NotFoundException("Taşeron bulunamadı."));
-
-            productPrice.setSubcontractor(subcontractor);
-        }
+        request.supplierId().ifPresent(id -> {
+            Assert.isTrue(partyRepository.existsByRole(id, Party.Role.SUPPLIER), "Tedarikçi bulunamadı.");
+            productPrice.setSupplier(partyRepository.getReferenceById(id));
+        });
 
         productPrice.setProduct(product);
         productPrice.setPrice(request.price());
@@ -73,12 +69,12 @@ public class ProductPriceService {
             final var predicates = new ArrayList<Predicate>();
 
             predicates.add(criteriaBuilder.equal(root.get("product").get("id"), productId));
-            query.subcontractorId().ifPresent(id -> predicates.add(criteriaBuilder.equal(root.get("subcontractor").get("id"), id)));
+            query.subcontractorId().ifPresent(id -> predicates.add(criteriaBuilder.equal(root.get("supplier").get("id"), id)));
             query.startDate().ifPresent(date -> predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("timeperiod").get("startDate"), date)));
             query.endDate().ifPresent(date -> predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("timeperiod").get("endDate"), date)));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
-        }, r -> r.project("product", "subcontractor", "priceConfirmedBy", "currency", "createdBy", "updatedBy").sortBy(pageable.getSort()).page(pageable).map(GetProductPricesResponse::from));
+        }, r -> r.project("product", "supplier", "priceConfirmedBy", "currency", "createdBy", "updatedBy").sortBy(pageable.getSort()).page(pageable).map(GetProductPricesResponse::from));
     }
 
     public List<GetProductPricesForPurchaseResponse> getProductPrices(GetProductPricesForPurchaseRequest req) {
@@ -89,10 +85,10 @@ public class ProductPriceService {
                         left join pp.product
                         left join pp.currency
                         left join pp.priceConfirmedBy
-                        where pp.subcontractor.id = :companyId
+                        where pp.supplier.id = :supplierId
                         and :date between pp.timeperiod.startDate and pp.timeperiod.endDate
                         """, Object[].class)
-                .setParameter("companyId", req.companyId())
+                .setParameter("supplierId", req.supplierId())
                 .setParameter("date", req.date())
                 .getResultList();
 

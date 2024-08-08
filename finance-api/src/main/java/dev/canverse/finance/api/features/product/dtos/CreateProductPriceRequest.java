@@ -5,15 +5,16 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public record CreateProductPriceRequest(
-        Long subcontractorId,
+        Optional<Long> supplierId,
         @NotNull(message = "Ürün boş olamaz!")
         Long productId,
         @NotNull(message = "Ürün fiyatı boş olamaz!")
         @PositiveOrZero(message = "Ürün fiyatı pozitif olmalıdır!")
         BigDecimal price,
-        Long priceConfirmedById,
+        Optional<Long> priceConfirmedById,
         @NotNull(message = "Para birimi boş olamaz!")
         Long currencyId,
         Double vatRate,

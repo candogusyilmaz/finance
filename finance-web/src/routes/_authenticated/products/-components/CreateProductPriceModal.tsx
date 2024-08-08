@@ -3,17 +3,18 @@ import { DateInput } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconCalendar, IconCash, IconReceiptTax } from '@tabler/icons-react';
+import { IconCalendar, IconCash, IconPlus, IconReceiptTax } from '@tabler/icons-react';
 import type { AxiosError } from 'axios';
 import { formatISO } from 'date-fns';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
+import { PartyRoles } from 'src/api/types/PartyTypes';
 import type { CreateProductPriceRequest } from 'src/api/types/ProductPriceTypes';
-import CompanySelect from 'src/components/Dropdowns/CompanySelect';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
 import EmployeeSelect from 'src/components/Dropdowns/EmployeeSelect';
+import PartySelect from 'src/components/Dropdowns/PartySelect';
 import ProductSelect from 'src/components/Dropdowns/ProductSelect';
 import { ConvertToNumber } from 'src/utils/utils';
 import { z } from 'zod';
@@ -25,7 +26,7 @@ const productPriceSchema = z
     price: z.number({ required_error: 'Fiyat 0 veya daha büyük olmalıdır.' }),
     startDate: z.date({ required_error: 'Başlangıç tarihi gereklidir.' }),
     endDate: z.date({ required_error: 'Bitiş tarihi gereklidir.' }),
-    subcontractorId: z.string().optional(),
+    supplierId: z.string().optional(),
     priceConfirmedById: z.string().optional(),
     vatRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.').optional(),
     withholdingTaxRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.').optional(),
@@ -56,7 +57,7 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
       price: undefined!,
       startDate: undefined!,
       endDate: undefined!,
-      subcontractorId: '' as string | undefined,
+      supplierId: '' as string | undefined,
       priceConfirmedById: '' as string | undefined,
       vatRate: undefined as number | undefined,
       withholdingTaxRate: undefined as number | undefined,
@@ -69,7 +70,7 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
       price: values.price,
       startDate: formatISO(values.startDate, { representation: 'date' }),
       endDate: formatISO(values.endDate, { representation: 'date' }),
-      subcontractorId: ConvertToNumber(values.subcontractorId),
+      supplierId: ConvertToNumber(values.supplierId),
       priceConfirmedById: ConvertToNumber(values.priceConfirmedById),
       vatRate: values.vatRate,
       withholdingTaxRate: values.withholdingTaxRate,
@@ -83,7 +84,7 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
     },
     onSuccess(_data, variables) {
       notifications.show({
-        message: 'Ürün fiyatı başarıyla oluşturuldu.',
+        message: 'Ürün fiyatı oluşturuldu.',
         color: 'green'
       });
       form.reset();
@@ -168,11 +169,12 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
                 {...form.getInputProps('endDate')}
               />
             </Group>
-            <CompanySelect
-              label="Taşeron"
-              placeholder="Taşeron"
-              key={form.key('subcontractorId')}
-              {...form.getInputProps('subcontractorId')}
+            <PartySelect
+              label="Tedarikçi"
+              placeholder="Tedarikçi"
+              partyRoles={[PartyRoles.SUPPLIER]}
+              key={form.key('supplierId')}
+              {...form.getInputProps('supplierId')}
             />
             <EmployeeSelect
               label="Onaylayan"
@@ -220,8 +222,8 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
           </Stack>
         </form>
       </Modal>
-      <Button onClick={open} tt="uppercase">
-        Oluştur
+      <Button size="sm" px="lg" fz="sm" leftSection={<IconPlus size={18} color="white" />} onClick={open}>
+        Yeni fiyat oluştur
       </Button>
     </Box>
   );

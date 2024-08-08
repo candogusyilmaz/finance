@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public record GetProductPricesForPurchaseRequest(
         @NotNull
-        Long companyId,
+        Long supplierId,
         @NotNull
         LocalDate date
 ) {

@@ -43,6 +43,7 @@ export const Route = createFileRoute('/_authenticated/purchases/new')({
 });
 
 const purchaseSchema = z.object({
+  organizationId: z.coerce.number(FieldErrorMessage('Organizasyon')),
   supplierId: z.string(FieldErrorMessage('Tedarikçi')),
   purchaseDate: z.date(FieldErrorMessage('Satın alım tarihi')),
   currencyId: z.string(FieldErrorMessage('Para birimi'))
@@ -57,6 +58,7 @@ function New() {
   const form = useForm({
     mode: 'controlled',
     initialValues: {
+      organizationId: undefined!,
       supplierId: undefined!,
       description: '',
       purchaseDate: new Date(),
@@ -119,11 +121,31 @@ function New() {
           <Divider mb="md" />
           <Group grow align="flex-start">
             <PartySelect
+              partyRoles={['AFFILIATE', 'ORGANIZATION']}
+              label="Organizasyon"
+              placeholder="Organizasyon seçiniz"
+              withAsterisk
+              key={form.key('organizationId')}
+              {...form.getInputProps('organizationId')}
+            />
+            <PartySelect
               partyRoles={['SUPPLIER']}
               label="Tedarikçi"
               placeholder="Tedarikçi seçin"
               withAsterisk
+              key={form.key('supplierId')}
               {...form.getInputProps('supplierId')}
+            />
+          </Group>
+          <Group grow align="flex-start">
+            <CurrencySelect
+              withAsterisk
+              key={form.key('currencyId')}
+              {...form.getInputProps('currencyId')}
+              onChange={(val, opt) => {
+                form.getInputProps('currencyId').onChange(val);
+                setCurrencyCode(opt?.label);
+              }}
             />
             <DateInput
               label="Satın Alım Tarihi"
@@ -131,17 +153,8 @@ function New() {
               valueFormat="DD/MM/YYYY HH:mm"
               leftSection={<IconCalendar size={18} />}
               withAsterisk
+              key={form.key('purchaseDate')}
               {...form.getInputProps('purchaseDate')}
-            />
-          </Group>
-          <Group>
-            <CurrencySelect
-              withAsterisk
-              {...form.getInputProps('currencyId')}
-              onChange={(val, opt) => {
-                form.getInputProps('currencyId').onChange(val);
-                setCurrencyCode(opt?.label);
-              }}
             />
           </Group>
           <Textarea
@@ -150,9 +163,17 @@ function New() {
             minRows={4}
             maxRows={5}
             placeholder="Satın alım ile ilgili açıklama"
+            key={form.key('description')}
             {...form.getInputProps('description')}
           />
-          <Checkbox mt="sm" radius="sm" defaultChecked label="Bu satın alım resmi olarak yapılmıştır." />
+          <Checkbox
+            mt="sm"
+            radius="sm"
+            defaultChecked
+            label="Bu satın alım resmi olarak yapılmıştır."
+            key={form.key('official')}
+            {...form.getInputProps('official')}
+          />
           <Divider my="lg" label="Ürünler" labelPosition="center" />
 
           <Group mb="sm">

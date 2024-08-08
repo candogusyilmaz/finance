@@ -1,5 +1,9 @@
 export type GetPurchasesResponse = {
   id: number;
+  organization: {
+    id: number;
+    name: string;
+  };
   supplier: {
     id: number;
     name: string;

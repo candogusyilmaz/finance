@@ -9,6 +9,8 @@ import java.util.Set;
 public record CreatePurchaseRequest(
         @NotNull(message = "Tedarikçi boş olamaz.")
         Long supplierId,
+        @NotNull(message = "Organizasyon boş olamaz.")
+        Long organizationId,
         String description,
         @NotNull(message = "Satın alım tarihi boş olamaz.")
         LocalDateTime purchaseDate,

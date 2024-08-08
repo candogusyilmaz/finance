@@ -11,7 +11,7 @@ interface PartyProps extends SelectProps {
 
 const PartySelect = ({ partyRoles, ...props }: PartyProps) => {
   const query = useQuery({
-    queryKey: ['parties', 'simple'],
+    queryKey: ['parties', 'simple', partyRoles],
     queryFn: async () => {
       return (await api.get<{ id: number; name: string }[]>(createURL('/parties/simple', undefined, { roles: partyRoles }))).data;
     },

@@ -1,43 +1,41 @@
 export type GetProductPricesResponse = {
   id: number;
-  subcontractor?: CompanyResponse;
-  product: ProductResponse;
-  currency: CurrencyResponse;
+  supplier?: {
+    id: number;
+    name: string;
+  };
+  product: {
+    id: number;
+    name: string;
+  };
+  currency: {
+    id: number;
+    code: string;
+    name: string;
+  };
   price: number;
-  priceConfirmedBy?: UserResponse;
+  priceConfirmedBy?: {
+    id: number;
+    displayName: string;
+  };
   vatRate?: number;
   withholdingTaxRate?: number;
   startDate: string;
   endDate: string;
   createdAt: string;
   updatedAt: string;
-  createdBy: UserResponse;
-  updatedBy: UserResponse;
-};
-
-export type CompanyResponse = {
-  id: number;
-  name: string;
-};
-
-export type ProductResponse = {
-  id: number;
-  name: string;
-};
-
-export type CurrencyResponse = {
-  id: number;
-  code: string;
-  name: string;
-};
-
-export type UserResponse = {
-  id: number;
-  displayName: string;
+  createdBy: {
+    id: number;
+    displayName: string;
+  };
+  updatedBy: {
+    id: number;
+    displayName: string;
+  };
 };
 
 export type CreateProductPriceRequest = {
-  subcontractorId?: number;
+  supplierId?: number;
   productId: number;
   price: number;
   priceConfirmedById?: number;
@@ -50,7 +48,7 @@ export type CreateProductPriceRequest = {
 };
 
 export type GetProductPricesForPurchaseRequest = {
-  companyId: string | number;
+  supplierId: string | number;
   date: string;
 };
 

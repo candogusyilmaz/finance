@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record GetProductPricesResponse(Long id, CompanyResponse subcontractor, ProductResponse product,
+public record GetProductPricesResponse(Long id, SupplierResponse supplier, ProductResponse product,
                                        CurrencyResponse currency, BigDecimal price, UserResponse priceConfirmedBy,
                                        Double vatRate, Double withholdingTaxRate, LocalDate startDate,
                                        LocalDate endDate, LocalDateTime createdAt, LocalDateTime updatedAt,
                                        UserResponse createdBy, UserResponse updatedBy) {
 
-    private record CompanyResponse(Long id, String name) {
+    private record SupplierResponse(Long id, String name) {
     }
 
     private record ProductResponse(Long id, String name) {
@@ -27,7 +27,7 @@ public record GetProductPricesResponse(Long id, CompanyResponse subcontractor, P
     public static GetProductPricesResponse from(ProductPrice price) {
         return new GetProductPricesResponse(
                 price.getId(),
-                price.getSubcontractor() != null ? new CompanyResponse(price.getSubcontractor().getId(), price.getSubcontractor().getName()) : null,
+                price.getSupplier() != null ? new SupplierResponse(price.getSupplier().getId(), price.getSupplier().getName()) : null,
                 new ProductResponse(price.getProduct().getId(), price.getProduct().getName()),
                 new CurrencyResponse(price.getCurrency().getId(), price.getCurrency().getCode(), price.getCurrency().getName()), price.getPrice(),
                 price.getPriceConfirmedBy() != null ? new UserResponse(price.getPriceConfirmedBy().getId(), price.getPriceConfirmedBy().getName()) : null,

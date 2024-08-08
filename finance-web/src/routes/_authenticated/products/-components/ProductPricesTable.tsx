@@ -2,15 +2,16 @@ import { Button, Group, Popover, Stack, rem } from '@mantine/core';
 import { DatePickerInput, type DateValue } from '@mantine/dates';
 import { IconCalendarDown, IconCalendarUp, IconSearch } from '@tabler/icons-react';
 import { getRouteApi } from '@tanstack/react-router';
-import { formatISO } from 'date-fns';
-import { DataTable, type DataTableColumn } from 'mantine-datatable';
+import type { DataTableColumn } from 'mantine-datatable';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
+import { PartyRoles } from 'src/api/types/PartyTypes';
 import type { GetProductPricesResponse } from 'src/api/types/ProductPriceTypes';
-import CompanySelect from 'src/components/Dropdowns/CompanySelect';
-import { FormatDate, FormatDateTime, FormatPercentage, FormatPrice } from 'src/utils/formatter';
+import PartySelect from 'src/components/Dropdowns/PartySelect';
+import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
+import { FormatDate, FormatDateTime, FormatISODate, FormatPercentage, FormatPrice } from 'src/utils/formatter';
 import CreateProductPriceModal from './CreateProductPriceModal';
 
 const route = getRouteApi('/_authenticated/products/$productId');
@@ -20,8 +21,6 @@ export default function ProductPricesTable() {
   const [subcontractorId, setSubcontractorId] = useState<string | undefined>();
   const [startDate, setStartDate] = useState<DateValue | undefined>();
   const [endDate, setEndDate] = useState<DateValue | undefined>();
-
-  const [selectedRecords, setSelectedRecords] = useState<GetProductPricesResponse[]>([]);
 
   const { page, sort, size } = route.useSearch();
   const { productId } = route.useParams();
@@ -44,7 +43,7 @@ export default function ProductPricesTable() {
   });
 
   const columns: DataTableColumn<GetProductPricesResponse>[] = [
-    { accessor: 'subcontractor.name', title: 'Taşeron', sortable: true },
+    { accessor: 'supplier.name', title: 'Tedarikçi', sortable: true },
     {
       accessor: 'price',
       title: 'Fiyat',
@@ -89,16 +88,16 @@ export default function ProductPricesTable() {
       <Group justify="space-between">
         <Popover opened={opened} onChange={setOpened} trapFocus width={200} position="bottom-start" shadow="md">
           <Popover.Target>
-            <Button onClick={() => setOpened((o) => !o)} variant="default" tt="uppercase" miw={rem(200)}>
+            <Button onClick={() => setOpened((o) => !o)} variant="default" px="xl">
               Filtrele
             </Button>
           </Popover.Target>
           <Popover.Dropdown miw={rem(300)}>
             <Stack gap="md">
-              <CompanySelect
+              <PartySelect
                 clearable
                 onClear={() => setSubcontractorId(undefined)}
-                label="Taşeron"
+                label="Tedarikçi"
                 value={subcontractorId}
                 onChange={(value) => {
                   if (value) setSubcontractorId(value);
@@ -106,6 +105,7 @@ export default function ProductPricesTable() {
                 comboboxProps={{
                   withinPortal: false
                 }}
+                partyRoles={[PartyRoles.SUPPLIER]}
               />
               <DatePickerInput
                 label="Başlangıç Tarihi"
@@ -144,8 +144,8 @@ export default function ProductPricesTable() {
                     e.preventDefault();
                     setQuerySearchParams({
                       subcontractorId: subcontractorId && Number.parseInt(subcontractorId),
-                      startDate: startDate && formatISO(startDate, { representation: 'date' }),
-                      endDate: endDate && formatISO(endDate, { representation: 'date' })
+                      startDate: startDate && FormatISODate(startDate),
+                      endDate: endDate && FormatISODate(endDate)
                     });
                     setOpened(false);
                   }}>
@@ -157,17 +157,10 @@ export default function ProductPricesTable() {
         </Popover>
         <CreateProductPriceModal productId={productId} />
       </Group>
-      <DataTable
-        noRecordsText="Kayıt bulunamadı"
+      <PreconfiguredDataTable
         minHeight={rem(300)}
-        borderRadius="sm"
-        withTableBorder
-        striped
-        highlightOnHover
         columns={columns}
         records={query.data?.content}
-        selectedRecords={selectedRecords}
-        onSelectedRecordsChange={setSelectedRecords}
         fetching={query.isFetching}
         sortStatus={{ columnAccessor: sort.id, direction: sort.direction }}
         onSortStatusChange={(s) =>
@@ -186,13 +179,6 @@ export default function ProductPricesTable() {
             search: (prev) => ({ ...prev, page: p })
           })
         }
-        defaultColumnProps={{
-          cellsStyle: () => ({
-            paddingTop: rem(12),
-            paddingBottom: rem(12),
-            fontSize: rem(14)
-          })
-        }}
       />
     </Stack>
   );

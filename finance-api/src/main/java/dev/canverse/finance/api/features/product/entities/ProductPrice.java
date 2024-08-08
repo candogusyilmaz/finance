@@ -1,8 +1,8 @@
 package dev.canverse.finance.api.features.product.entities;
 
-import dev.canverse.finance.api.features.company.entities.Company;
 import dev.canverse.finance.api.features.currency.entities.Currency;
 import dev.canverse.finance.api.features.employee.entities.Employee;
+import dev.canverse.finance.api.features.party.entities.Party;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
@@ -28,7 +28,7 @@ public class ProductPrice {
     private Long id;
 
     @ManyToOne
-    private Company subcontractor;
+    private Party supplier;
 
     @ManyToOne(optional = false)
     private Product product;
