@@ -28,7 +28,7 @@ public class PurchaseAction {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private PurchaseStatus status;
+    private Purchase.Status status;
 
     private String comment;
 

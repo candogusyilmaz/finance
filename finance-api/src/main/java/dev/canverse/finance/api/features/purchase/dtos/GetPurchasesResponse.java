@@ -1,6 +1,6 @@
 package dev.canverse.finance.api.features.purchase.dtos;
 
-import dev.canverse.finance.api.features.purchase.entities.PurchaseStatus;
+import dev.canverse.finance.api.features.purchase.entities.Purchase;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,7 +37,7 @@ public record GetPurchasesResponse(
 
     public record PurchaseActionResponse(
             Long id,
-            PurchaseStatus status,
+            Purchase.Status status,
             String comment,
             LocalDateTime createdAt
     ) {

@@ -22,7 +22,6 @@ import java.util.Set;
 @Entity
 @Table(name = "purchases")
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,6 +65,10 @@ public class Purchase {
     @Setter(AccessLevel.NONE)
     private Set<PurchaseAction> actions = new HashSet<>();
 
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter(AccessLevel.NONE)
+    private Set<Delivery> deliveries = new HashSet<>();
+
     public BigDecimal getTotalPurchasePrice() {
         Assert.isTrue(Hibernate.isInitialized(purchaseItems), "Purchase items must be initialized");
 
@@ -84,5 +87,14 @@ public class Purchase {
         Assert.isTrue(Hibernate.isInitialized(currency), "Currency must be initialized");
         this.baseCurrencyCode = currency.getCode();
         this.baseCurrencyRate = currency.getExchangeRate();
+    }
+
+    public enum Status {
+        APPROVED,
+        CANCELLED,
+        COMPLETED,
+        IN_PROGRESS,
+        PENDING,
+        RETURNED
     }
 }

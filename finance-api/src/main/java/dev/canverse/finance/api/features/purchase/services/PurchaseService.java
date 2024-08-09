@@ -12,7 +12,6 @@ import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesResponse;
 import dev.canverse.finance.api.features.purchase.entities.Purchase;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseAction;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseItem;
-import dev.canverse.finance.api.features.purchase.entities.PurchaseStatus;
 import dev.canverse.finance.api.features.purchase.repositories.PurchaseRepository;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
 import jakarta.persistence.EntityManager;
@@ -64,7 +63,7 @@ public class PurchaseService {
 
         var purchaseAction = new PurchaseAction();
         purchaseAction.setPurchase(purchase);
-        purchaseAction.setStatus(PurchaseStatus.PENDING);
+        purchaseAction.setStatus(Purchase.Status.IN_PROGRESS);
         purchase.getActions().add(purchaseAction);
 
         purchaseRepository.save(purchase);
@@ -132,7 +131,7 @@ public class PurchaseService {
             var supplier = new GetPurchasesResponse.SupplierResponse((Long) row[5], (String) row[6]);
             var worksite = new GetPurchasesResponse.WorksiteResponse((Long) row[14], (String) row[15]);
             var currency = new GetPurchasesResponse.CurrencyResponse((Long) row[7], (String) row[8], (Double) row[9]);
-            var lastAction = new GetPurchasesResponse.PurchaseActionResponse((Long) row[10], (PurchaseStatus) row[11], (String) row[12], (LocalDateTime) row[13]);
+            var lastAction = new GetPurchasesResponse.PurchaseActionResponse((Long) row[10], (Purchase.Status) row[11], (String) row[12], (LocalDateTime) row[13]);
             result.add(new GetPurchasesResponse((Long) row[0], (String) row[1], (LocalDateTime) row[2], (boolean) row[3], (BigDecimal) row[4], worksite, supplier, currency, lastAction));
         }
 
