@@ -57,7 +57,7 @@ function New() {
   const navigate = Route.useNavigate();
 
   const form = useForm({
-    mode: 'uncontrolled',
+    mode: 'controlled', // if not set controlled then making changes to the form does not trigger re-render thus we cant get the product prices
     initialValues: {
       worksiteId: undefined!,
       supplierId: undefined!,

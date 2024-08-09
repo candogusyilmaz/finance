@@ -25,7 +25,7 @@ export type GetPurchasesResponse = {
   };
 };
 
-export type PurchaseStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'RETURNED';
+export type PurchaseStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'RETURNED' | 'IN_PROGRESS';
 
 export type CreatePurchaseRequest = {
   worksiteId: number;

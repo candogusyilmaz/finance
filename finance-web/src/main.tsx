@@ -4,14 +4,28 @@ import ReactDOM from 'react-dom/client';
 
 import { AuthProvider, useAuth } from './utils/auth';
 
+import i18n from 'i18next';
+import Backend from 'i18next-http-backend';
+import { initReactI18next } from 'react-i18next';
+
 import { routeTree } from './routeTree.gen';
+
+i18n
+  .use(Backend)
+  .use(initReactI18next)
+  .init({
+    lng: 'tr',
+    fallbackLng: 'tr',
+    interpolation: {
+      escapeValue: false
+    }
+  });
 
 const router = createRouter({
   routeTree,
   defaultPendingComponent: () => <div className={'p-2 text-2xl'}>loading</div>,
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   context: {
-    // biome-ignore lint/style/noNonNullAssertion: We'll inject this when we render
     auth: undefined!
   },
   defaultPreload: 'intent'
