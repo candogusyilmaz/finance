@@ -2,9 +2,11 @@ package dev.canverse.finance.api.features.purchase.services;
 
 import dev.canverse.finance.api.exceptions.BadRequestException;
 import dev.canverse.finance.api.exceptions.NotFoundException;
+import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
 import dev.canverse.finance.api.features.party.repositories.PartyRepository;
 import dev.canverse.finance.api.features.purchase.dtos.CreateDeliveryRequest;
 import dev.canverse.finance.api.features.purchase.dtos.GetDeliveriesResponse;
+import dev.canverse.finance.api.features.purchase.dtos.GetUndeliveredItemsReponse;
 import dev.canverse.finance.api.features.purchase.entities.Delivery;
 import dev.canverse.finance.api.features.purchase.entities.DeliveryItem;
 import dev.canverse.finance.api.features.purchase.entities.Purchase;
@@ -17,26 +19,34 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DeliveryService {
     private final PartyRepository partyRepository;
     private final PurchaseRepository purchaseRepository;
     private final DeliveryRepository deliveryRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Transactional
     public void createDelivery(Long purchaseId, CreateDeliveryRequest request) {
         if (!purchaseRepository.lastStatusEqualTo(purchaseId, Purchase.Status.IN_PROGRESS))
             throw new BadRequestException("Satın alım işlemi devam ediyor durumunda olmadığı için teslimat yapılamaz.");
 
+        var baseCurrency = currencyRepository.getBaseCurrency();
+        var currency = currencyRepository.findById(request.currencyId()).orElseThrow(() -> new NotFoundException("Para birimi bulunamadı."));
+
         var purchase = purchaseRepository
                 .findBy((root, query, cb) -> cb.equal(root.get("id"), purchaseId),
-                        r -> r.project("purchaseItems.deliveries").firstValue());
+                        r -> r.project("purchaseItems.deliveryItems").firstValue());
 
         var delivery = new Delivery();
         delivery.setPurchase(purchase);
         delivery.setSender(partyRepository.getReference(request.senderId(), "Gönderici bulunamadı."));
-        delivery.setAmount(request.amount());
+        delivery.setPrice(request.price());
+        delivery.setBaseCurrency(baseCurrency);
+        delivery.setCurrency(currency);
         delivery.setDescription(request.description());
         delivery.setDeliveryDate(request.deliveryDate());
         purchase.getDeliveries().add(delivery);
@@ -91,5 +101,11 @@ public class DeliveryService {
     public Page<GetDeliveriesResponse> getDeliveries(Long purchaseId, Pageable page) {
         return deliveryRepository.findBy((root, query, cb) -> cb.equal(root.get("purchase").get("id"), purchaseId),
                 r -> r.project("sender", "createdBy", "updatedBy").sortBy(page.getSort()).page(page).map(GetDeliveriesResponse::from));
+    }
+
+    public List<GetUndeliveredItemsReponse> getUndeliveredItems(Long purchaseId) {
+
+        return purchaseRepository.findRemainingPurchaseItems(purchaseId)
+                .stream().map(s -> new GetUndeliveredItemsReponse((Long) s[0], (String) s[1], (Long) s[2])).toList();
     }
 }

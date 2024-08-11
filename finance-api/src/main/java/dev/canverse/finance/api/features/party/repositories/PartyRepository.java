@@ -18,6 +18,10 @@ public interface PartyRepository extends ExtendedJpaRepository<Party, Long> {
             "having count(role) = (:#{#roles.size()})")
     List<IdNameProjection> findPartiesSimple(Collection<Party.Role> roles);
 
+    @Query("select o.id as id, o.name as name from Party o " +
+            "group by o.id, o.name")
+    List<IdNameProjection> findPartiesSimple();
+
     @Query("select (count(p) > 0) from Party p where p.id = :partyId and :role in elements(p.roles)")
     boolean existsByRole(Long partyId, Party.Role role);
 }

@@ -14,9 +14,11 @@ public record CreateDeliveryRequest(
         @NotNull(message = "Teslim eden taraf boş olamaz.")
         Long senderId,
         String description,
+        @NotNull(message = "Para birimi boş olamaz.")
+        Long currencyId,
         @NotNull(message = "Teslim tutarı boş olamaz.")
         @Positive(message = "Teslim tutarı pozitif olmalıdır.")
-        BigDecimal amount,
+        BigDecimal price,
         @NotNull(message = "Teslim tarihi boş olamaz.")
         LocalDate deliveryDate,
         @Valid

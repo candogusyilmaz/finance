@@ -46,6 +46,6 @@ export const FormatISODate = (value: string | number | Date) => {
   return formatISO(value, { representation: 'date' });
 };
 
-export const FormatISODateTime = (value: string | number | Date) => {
-  return formatISO(value, { representation: 'complete' });
+export const FormatISODateTime = (value: Date) => {
+  return value.toISOString();
 };

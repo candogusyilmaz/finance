@@ -1,5 +1,7 @@
 {
   "COMPLETED": "Tamamlandı",
   "PENDING": "Bekliyor",
-  "IN_PROGRESS": "Devam ediyor"
+  "IN_PROGRESS": "Devam ediyor",
+  "DELIVERED": "Teslim edildi",
+  "RETURNED": "İade edildi"
 }

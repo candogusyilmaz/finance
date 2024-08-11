@@ -15,6 +15,10 @@ public class PartyService {
     private final PartyRepository partyRepository;
 
     public List<IdNameProjection> getPartiesSimple(Set<Party.Role> roles) {
+        if (roles.isEmpty()) {
+            return partyRepository.findPartiesSimple();
+        }
+        
         return partyRepository.findPartiesSimple(roles);
     }
 }

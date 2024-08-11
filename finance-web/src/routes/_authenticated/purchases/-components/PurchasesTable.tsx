@@ -1,6 +1,6 @@
 import { ActionIcon, Badge, Menu, Text } from '@mantine/core';
 import { IconDotsVertical, IconTruckDelivery } from '@tabler/icons-react';
-import { getRouteApi } from '@tanstack/react-router';
+import { Link, getRouteApi } from '@tanstack/react-router';
 import { useDataTableColumns } from 'mantine-datatable';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
@@ -9,6 +9,7 @@ import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetPurchasesResponse } from 'src/api/types/PurchaseTypes';
 import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
 import { Tooltippable } from 'src/components/Shared/Tooptippable';
+import { StatusColorMap } from 'src/utils/color-helper';
 import { FormatDateTime, FormatPrice } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/purchases/');
@@ -52,7 +53,7 @@ export default function PurchasesTable() {
         title: 'Durum',
         render: (record) => (
           <Tooltippable label={record.lastAction.comment}>
-            <Badge>{t(record.lastAction.status)}</Badge>
+            <Badge color={StatusColorMap[record.lastAction.status]}>{t(record.lastAction.status)}</Badge>
           </Tooltippable>
         )
       },
@@ -64,13 +65,15 @@ export default function PurchasesTable() {
         render: (record) => (
           <Menu shadow="md" withArrow>
             <Menu.Target>
-              <ActionIcon size="sm" variant="transparent">
+              <ActionIcon size="sm" variant="transparent" color="white">
                 <IconDotsVertical size={16} />
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
               {record.lastAction.status === 'IN_PROGRESS' && (
-                <Menu.Item leftSection={<IconTruckDelivery size={16} />}>Yeni Teslimat</Menu.Item>
+                <Link style={{ textDecoration: 'none', color: 'inherit' }} to="/deliveries/new" search={{ purchaseId: record.id }}>
+                  <Menu.Item leftSection={<IconTruckDelivery size={16} />}>Yeni Teslimat</Menu.Item>
+                </Link>
               )}
             </Menu.Dropdown>
           </Menu>

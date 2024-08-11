@@ -54,32 +54,32 @@ public class PurchaseItem {
 
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "purchaseItem", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<DeliveryItem> deliveries = new HashSet<>();
+    private Set<DeliveryItem> deliveryItems = new HashSet<>();
 
     public BigDecimal getTotalItemsPrice() {
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 
     public int getDeliveredQuantity() {
-        Assert.isTrue(Hibernate.isInitialized(deliveries), "Deliveries should be initialized");
+        Assert.isTrue(Hibernate.isInitialized(deliveryItems), "Deliveries should be initialized");
 
-        return deliveries.stream()
+        return deliveryItems.stream()
                 .filter(delivery -> DeliveryItem.Status.DELIVERED.equals(delivery.getStatus()))
                 .mapToInt(DeliveryItem::getQuantity)
                 .sum();
     }
 
     public int getReturnedQuantity() {
-        Assert.isTrue(Hibernate.isInitialized(deliveries), "Deliveries should be initialized");
+        Assert.isTrue(Hibernate.isInitialized(deliveryItems), "Deliveries should be initialized");
 
-        return deliveries.stream()
+        return deliveryItems.stream()
                 .filter(delivery -> DeliveryItem.Status.RETURNED.equals(delivery.getStatus()))
                 .mapToInt(DeliveryItem::getQuantity)
                 .sum();
     }
 
     public int getDeliveredAndReturnedQuantity() {
-        return deliveries.stream()
+        return deliveryItems.stream()
                 .mapToInt(DeliveryItem::getQuantity)
                 .sum();
     }
