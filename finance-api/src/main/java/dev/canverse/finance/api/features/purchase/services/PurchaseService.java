@@ -28,7 +28,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -55,21 +54,15 @@ public class PurchaseService {
         purchase.setPurchaseDate(request.purchaseDate());
         purchase.setDescription(request.description());
         purchase.setOfficial(request.official());
-        purchase.setBaseCurrency(baseCurrency);
-        purchase.setCurrency(currency);
+        purchase.setCurrencyInfo(baseCurrency, currency);
+        purchase.getActions().add(new PurchaseAction(purchase, Purchase.Status.IN_PROGRESS));
 
-        var purchaseItems = createPurchaseItems(request, purchase);
-        purchase.setPurchaseItems(purchaseItems);
-
-        var purchaseAction = new PurchaseAction();
-        purchaseAction.setPurchase(purchase);
-        purchaseAction.setStatus(Purchase.Status.IN_PROGRESS);
-        purchase.getActions().add(purchaseAction);
+        createPurchaseItems(request, purchase);
 
         purchaseRepository.save(purchase);
     }
 
-    private Set<PurchaseItem> createPurchaseItems(CreatePurchaseRequest request, Purchase purchase) {
+    private void createPurchaseItems(CreatePurchaseRequest request, Purchase purchase) {
         var purchaseItems = new HashSet<PurchaseItem>();
 
         for (var item : request.purchaseItems()) {
@@ -85,7 +78,7 @@ public class PurchaseService {
             purchaseItems.add(purchaseItem);
         }
 
-        return purchaseItems;
+        purchase.setPurchaseItems(purchaseItems);
     }
 
     public Page<GetPurchasesResponse> getPurchases(GetPurchasesRequest req, Pageable page) {

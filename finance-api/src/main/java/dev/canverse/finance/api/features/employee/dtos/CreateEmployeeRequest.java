@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 
 public record CreateEmployeeRequest(
@@ -15,7 +16,7 @@ public record CreateEmployeeRequest(
         @Valid CreateIndividualRequest individual,
         @Size(min = 1, message = "En az bir meslek gereklidir.")
         Set<Long> professionIds,
-        Long worksiteId,
+        Optional<Long> worksiteId,
         LocalDate officialEmploymentStartDate,
         @NotNull(message = "İşe başlama tarihi gereklidir.")
         LocalDate employmentStartDate,

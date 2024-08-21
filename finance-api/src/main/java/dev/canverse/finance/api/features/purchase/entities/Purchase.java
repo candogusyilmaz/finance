@@ -39,10 +39,6 @@ public class Purchase {
 
     @Column(nullable = false)
     @Setter(AccessLevel.NONE)
-    private Double baseCurrencyRate;
-
-    @Column(nullable = false)
-    @Setter(AccessLevel.NONE)
     private String currencyCode;
 
     @Column(nullable = false)
@@ -77,16 +73,13 @@ public class Purchase {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrencyInfo(Currency baseCurrency, Currency currency) {
         Assert.isTrue(Hibernate.isInitialized(currency), "Currency must be initialized");
-        this.currencyCode = currency.getCode();
-        this.currencyRate = currency.getExchangeRate();
-    }
+        Assert.isTrue(Hibernate.isInitialized(baseCurrency), "Currency must be initialized");
 
-    public void setBaseCurrency(Currency currency) {
-        Assert.isTrue(Hibernate.isInitialized(currency), "Currency must be initialized");
-        this.baseCurrencyCode = currency.getCode();
-        this.baseCurrencyRate = currency.getExchangeRate();
+        this.baseCurrencyCode = baseCurrency.getCode();
+        this.currencyCode = currency.getCode();
+        this.currencyRate = currency.getExchangeRate() / baseCurrency.getExchangeRate();
     }
 
     public enum Status {

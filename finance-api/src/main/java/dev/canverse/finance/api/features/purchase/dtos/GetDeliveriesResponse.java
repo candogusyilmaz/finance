@@ -27,7 +27,7 @@ public record GetDeliveriesResponse(
                 new IdNameResponse(entity.getSender().getId(), entity.getSender().getName()),
                 entity.getPurchase().getId(),
                 entity.getDeliveryDate(),
-                entity.getPrice(),
+                entity.getMoney().getAmount(),
                 false,
                 entity.getTimestamp().getCreatedAt(),
                 entity.getTimestamp().getUpdatedAt(),

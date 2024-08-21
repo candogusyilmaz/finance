@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.transaction.entities;
+package dev.canverse.finance.api.features.payment.entities;
 
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
@@ -12,19 +12,19 @@ import org.springframework.data.annotation.LastModifiedBy;
 @Getter
 @Setter
 @Entity
-@Table(name = "transaction_actions")
+@Table(name = "payment_actions")
 @NoArgsConstructor
-public class TransactionAction {
+public class PaymentAction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false)
-    private Transaction transaction;
+    private Payment payment;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private TransactionStatus status;
+    private Payment.Status status;
 
     @ManyToOne(optional = false)
     @CreatedBy
@@ -37,8 +37,8 @@ public class TransactionAction {
     @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;
 
-    public TransactionAction(Transaction transaction, TransactionStatus status) {
-        this.transaction = transaction;
+    public PaymentAction(Payment payment, Payment.Status status) {
+        this.payment = payment;
         this.status = status;
     }
 }

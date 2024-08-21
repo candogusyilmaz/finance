@@ -1,18 +1,17 @@
 package dev.canverse.finance.api.features.employee.services;
 
+import dev.canverse.finance.api.exceptions.BadRequestException;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
 import dev.canverse.finance.api.features.employee.dtos.CreateEmployeeRequest;
 import dev.canverse.finance.api.features.employee.dtos.GetEmployeesResponse;
-import dev.canverse.finance.api.features.employee.entities.Employee;
-import dev.canverse.finance.api.features.employee.entities.EmployeeProfession;
-import dev.canverse.finance.api.features.employee.entities.EmployeeSalary;
+import dev.canverse.finance.api.features.employee.entities.*;
 import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.employee.repositories.ProfessionRepository;
 import dev.canverse.finance.api.features.party.repositories.OrganizationRepository;
 import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
-import dev.canverse.finance.api.features.worksite.entities.WorksiteEmployee;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,37 +28,49 @@ public class EmployeeService {
     private final WorksiteRepository worksiteRepository;
     private final OrganizationRepository organizationRepository;
 
+    @Transactional
     public void createEmployee(CreateEmployeeRequest request) {
+        if (request.officialEmploymentStartDate().isBefore(request.employmentStartDate()))
+            throw new BadRequestException("Resmi işe başlama tarihi, işe başlama tarihinden önce olamaz.");
+
         var employee = new Employee();
-        employee.setOrganization(organizationRepository.getReference(request.organizationId(), "Organizasyon bulunamadı."));
         employee.setSocialSecurityNumber(request.individual().socialSecurityNumber());
         employee.setName(request.individual().name());
         employee.setBirthDate(request.individual().birthDate());
-        employee.setEmploymentPeriod(new DatePeriod(request.employmentStartDate(), null));
-        employee.setOfficialEmploymentPeriod(new DatePeriod(request.officialEmploymentStartDate(), null));
 
-        worksiteRepository.findById(request.worksiteId())
-                .ifPresent(worksite -> employee.getWorksites().add(new WorksiteEmployee(worksite, employee, request.employmentStartDate())));
+        createEmployment(request, employee);
+        createSalary(request, employee);
 
-        // Find professions by ids and add them to the employee as EmployeeProfession
+        request.worksiteId().ifPresent(id -> {
+            var worksite = worksiteRepository.getReference(id, "Çalışma yeri bulunamadı.");
+            employee.getAssignments().add(new EmployeeAssignment(worksite, employee, request.employmentStartDate()));
+        });
+
         professionRepository.findAllById(request.professionIds()).stream()
                 .map(profession -> new EmployeeProfession(employee, profession))
                 .forEach(employee.getProfessions()::add);
 
-        employee.getSalaries().add(getEmployeeSalary(request, employee));
-
         employeeRepository.save(employee);
     }
 
-    private EmployeeSalary getEmployeeSalary(CreateEmployeeRequest request, Employee employee) {
-        var employeeSalary = new EmployeeSalary();
+    private void createEmployment(CreateEmployeeRequest request, Employee employee) {
+        var employment = new Employment();
+        employment.setEmployee(employee);
+        employment.setOrganization(organizationRepository.getReference(request.organizationId(), "Organizasyon bulunamadı."));
+        employment.setFormalEmploymentPeriod(new DatePeriod(request.employmentStartDate(), null));
+        employment.setActualEmploymentPeriod(new DatePeriod(request.officialEmploymentStartDate(), null));
 
-        employeeSalary.setSalary(request.salary().amount());
-        employeeSalary.setCurrency(currencyRepository.getReference(request.salary().currencyId(), "Para birimi bulunamadı."));
-        employeeSalary.setEmployee(employee);
-        employeeSalary.setEffectivePeriod(new DatePeriod(request.salary().startDate(), null));
+        employee.getEmployments().add(employment);
+    }
 
-        return employeeSalary;
+    private void createSalary(CreateEmployeeRequest request, Employee employee) {
+        var salary = new Salary();
+        salary.setWage(request.salary().amount());
+        salary.setCurrency(currencyRepository.getReference(request.salary().currencyId(), "Para birimi bulunamadı."));
+        salary.setEmployee(employee);
+        salary.setEffectivePeriod(new DatePeriod(request.salary().startDate(), null));
+
+        employee.getSalaries().add(salary);
     }
 
     public List<IdNameProjection> getEmployeesSimple() {
@@ -69,6 +80,6 @@ public class EmployeeService {
     public Page<GetEmployeesResponse> getEmployees(Pageable pageable) {
         return employeeRepository.findBy(
                 (root, query, cb) -> cb.conjunction(),
-                f -> f.project("currentWorksite.worksite", "organization").sortBy(pageable.getSort()).page(pageable).map(GetEmployeesResponse::from));
+                f -> f.project("currentWorksite.worksite").sortBy(pageable.getSort()).page(pageable).map(GetEmployeesResponse::from));
     }
 }

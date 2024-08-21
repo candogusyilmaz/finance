@@ -1,8 +1,8 @@
 package dev.canverse.finance.api.features.employee.dtos;
 
 import dev.canverse.finance.api.features.employee.entities.Employee;
+import dev.canverse.finance.api.features.employee.entities.EmployeeAssignment;
 import dev.canverse.finance.api.features.party.entities.Organization;
-import dev.canverse.finance.api.features.worksite.entities.WorksiteEmployee;
 
 import java.time.LocalDate;
 
@@ -18,7 +18,7 @@ public record GetEmployeesResponse(
         OrganizationResponse organization
 ) {
     record WorksiteResponse(Long id, String name) {
-        static WorksiteResponse from(WorksiteEmployee worksite) {
+        static WorksiteResponse from(EmployeeAssignment worksite) {
             if (worksite == null)
                 return null;
 
@@ -40,12 +40,12 @@ public record GetEmployeesResponse(
                 employee.getId(),
                 employee.getSocialSecurityNumber(),
                 employee.getName(),
-                employee.getOfficialEmploymentPeriod().getStartDate(),
-                employee.getOfficialEmploymentPeriod().getEndDate(),
-                employee.getEmploymentPeriod().getStartDate(),
-                employee.getEmploymentPeriod().getEndDate(),
+                null,
+                null,
+                null,
+                null,
                 WorksiteResponse.from(employee.getCurrentWorksite()),
-                OrganizationResponse.from(employee.getOrganization())
+                null
         );
     }
 }

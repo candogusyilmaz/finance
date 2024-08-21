@@ -1,5 +1,6 @@
 package dev.canverse.finance.api.features.party.entities;
 
+import dev.canverse.finance.api.features.payment.entities.Payment;
 import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
 import jakarta.persistence.*;
@@ -33,6 +34,14 @@ public abstract class Party {
     @Enumerated(EnumType.STRING)
     @Setter(AccessLevel.NONE)
     private Set<Role> roles = new HashSet<>();
+
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "fromParty", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Payment> outgoingPayments = new HashSet<>();
+
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "toParty", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Payment> incomingPayments = new HashSet<>();
 
     @Setter(lombok.AccessLevel.NONE)
     private Timestamp timestamp;

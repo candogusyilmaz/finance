@@ -13,6 +13,7 @@ import dev.canverse.finance.api.features.purchase.entities.Purchase;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseAction;
 import dev.canverse.finance.api.features.purchase.repositories.DeliveryRepository;
 import dev.canverse.finance.api.features.purchase.repositories.PurchaseRepository;
+import dev.canverse.finance.api.features.shared.embeddable.Money;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,9 +45,7 @@ public class DeliveryService {
         var delivery = new Delivery();
         delivery.setPurchase(purchase);
         delivery.setSender(partyRepository.getReference(request.senderId(), "Gönderici bulunamadı."));
-        delivery.setPrice(request.price());
-        delivery.setBaseCurrency(baseCurrency);
-        delivery.setCurrency(currency);
+        delivery.setMoney(new Money(baseCurrency, currency, request.price()));
         delivery.setDescription(request.description());
         delivery.setDeliveryDate(request.deliveryDate());
         purchase.getDeliveries().add(delivery);

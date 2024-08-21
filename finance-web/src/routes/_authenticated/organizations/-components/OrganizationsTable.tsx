@@ -27,7 +27,7 @@ export default function OrganizationsTable() {
   });
 
   const columns: DataTableColumn<GetOrganizationsResponse>[] = [
-    { accessor: 'name', title: 'Şirket', sortable: true },
+    { accessor: 'name', title: 'İsim', sortable: true },
     {
       accessor: 'phoneNumber',
       title: 'Telefon'

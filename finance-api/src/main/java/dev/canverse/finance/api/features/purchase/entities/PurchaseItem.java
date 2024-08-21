@@ -39,7 +39,7 @@ public class PurchaseItem {
     private int quantity;
 
     @PositiveOrZero
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal unitPrice;
 
     @PositiveOrZero

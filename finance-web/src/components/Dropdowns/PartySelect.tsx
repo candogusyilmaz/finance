@@ -22,6 +22,7 @@ const PartySelect = ({ partyRoles, ...props }: PartyProps) => {
 
   return (
     <Select
+      limit={20}
       comboboxProps={{ shadow: 'md' }}
       searchable
       nothingFoundMessage="Sonuç bulunamadı"

@@ -40,4 +40,9 @@ public class PurchaseAction {
     @CreationTimestamp
     @Setter(AccessLevel.NONE)
     private LocalDateTime createdAt;
+
+    public PurchaseAction(Purchase purchase, Purchase.Status status) {
+        this.purchase = purchase;
+        this.status = status;
+    }
 }

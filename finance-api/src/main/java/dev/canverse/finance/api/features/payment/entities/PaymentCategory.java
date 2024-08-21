@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.transaction.entities;
+package dev.canverse.finance.api.features.payment.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "transactions")
+@Table(name = "payment_categories")
 @NoArgsConstructor
-public class TransactionCategory {
+public class PaymentCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
