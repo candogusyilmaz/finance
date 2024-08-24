@@ -5,6 +5,7 @@ import dev.canverse.finance.api.features.currency.repositories.CurrencyRepositor
 import dev.canverse.finance.api.features.employee.dtos.CreateEmployeeRequest;
 import dev.canverse.finance.api.features.employee.dtos.GetEmployeesResponse;
 import dev.canverse.finance.api.features.employee.entities.*;
+import dev.canverse.finance.api.features.employee.mappers.EmployeeMapper;
 import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.employee.repositories.ProfessionRepository;
 import dev.canverse.finance.api.features.party.repositories.OrganizationRepository;
@@ -78,8 +79,6 @@ public class EmployeeService {
     }
 
     public Page<GetEmployeesResponse> getEmployees(Pageable pageable) {
-        return employeeRepository.findBy(
-                (root, query, cb) -> cb.conjunction(),
-                f -> f.project("currentWorksite.worksite").sortBy(pageable.getSort()).page(pageable).map(GetEmployeesResponse::from));
+        return employeeRepository.findEmployees(pageable).map(EmployeeMapper.INSTANCE::toGetEmployeesResponse);
     }
 }

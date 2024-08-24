@@ -47,7 +47,7 @@ export function Navbar() {
         search={{
           page: 1,
           size: 20,
-          sort: { id: 'currentWorksite.id', direction: 'desc' }
+          sort: { id: 'em.organization.name', direction: 'asc' }
         }}>
         <IconId size={18} />
         <Text size="sm">Personeller</Text>

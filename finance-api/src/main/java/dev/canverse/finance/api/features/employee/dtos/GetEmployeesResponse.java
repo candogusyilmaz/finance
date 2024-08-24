@@ -1,51 +1,17 @@
 package dev.canverse.finance.api.features.employee.dtos;
 
-import dev.canverse.finance.api.features.employee.entities.Employee;
-import dev.canverse.finance.api.features.employee.entities.EmployeeAssignment;
-import dev.canverse.finance.api.features.party.entities.Organization;
+import dev.canverse.finance.api.features.shared.embeddable.DatePeriod;
 
-import java.time.LocalDate;
+public record GetEmployeesResponse(Long id,
+                                   String socialSecurityNumber,
+                                   String name,
+                                   Worksite currentWorksite,
+                                   Organization currentOrganization) {
 
-public record GetEmployeesResponse(
-        Long id,
-        String socialSecurityNumber,
-        String name,
-        LocalDate officialEmploymentStartDate,
-        LocalDate officialEmploymentEndDate,
-        LocalDate employmentStartDate,
-        LocalDate employmentEndDate,
-        WorksiteResponse worksite,
-        OrganizationResponse organization
-) {
-    record WorksiteResponse(Long id, String name) {
-        static WorksiteResponse from(EmployeeAssignment worksite) {
-            if (worksite == null)
-                return null;
-
-            return new WorksiteResponse(worksite.getWorksite().getId(), worksite.getWorksite().getName());
-        }
+    public record Worksite(Long id, String name) {
     }
 
-    private record OrganizationResponse(Long id, String name) {
-        public static OrganizationResponse from(Organization org) {
-            return new OrganizationResponse(
-                    org.getId(),
-                    org.getName()
-            );
-        }
-    }
-
-    public static GetEmployeesResponse from(Employee employee) {
-        return new GetEmployeesResponse(
-                employee.getId(),
-                employee.getSocialSecurityNumber(),
-                employee.getName(),
-                null,
-                null,
-                null,
-                null,
-                WorksiteResponse.from(employee.getCurrentWorksite()),
-                null
-        );
+    public record Organization(Long id, String name, DatePeriod formalEmploymentPeriod,
+                               DatePeriod actualEmploymentPeriod) {
     }
 }

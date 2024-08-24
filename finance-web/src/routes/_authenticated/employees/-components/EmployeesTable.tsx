@@ -28,63 +28,46 @@ export default function ProductsTable() {
     key: 'employees',
     columns: [
       {
-        accessor: 'organization.name',
+        accessor: 'em.organization.name',
         title: 'Organizasyon',
         sortable: true,
-        ellipsis: true,
-        resizable: true
+        render: (record) => record.currentOrganization?.name
       },
       {
         accessor: 'socialSecurityNumber',
         title: 'Kimlik Numarası',
-        sortable: true,
-        ellipsis: true,
-        resizable: true,
         render: (record) => record.socialSecurityNumber
       },
       {
         accessor: 'name',
         title: 'Personel',
-        sortable: true,
-        render: (record) => record.name,
-        ellipsis: true,
-        resizable: true
+        render: (record) => record.name
       },
       {
-        accessor: 'currentWorksite.id',
+        accessor: 'ea.worksite.name',
         title: 'Çalışma Yeri',
         sortable: true,
-        render: (record) => record.worksite?.name,
-        ellipsis: true,
-        resizable: true
+        render: (record) => record.currentWorksite?.name
       },
       {
-        accessor: 'officialEmploymentStartDate',
+        accessor: 'currentOrganization.formalEmploymentPeriod.startDate',
         title: 'Resmi İşe Başlama Tarihi',
-        render: (record) => FormatDate(record.officialEmploymentStartDate),
-        ellipsis: true,
-        resizable: true
+        render: (record) => FormatDate(record.currentOrganization?.formalEmploymentPeriod.startDate)
       },
       {
-        accessor: 'officialEmploymentEndDate',
+        accessor: 'currentOrganization.formalEmploymentPeriod.endDate',
         title: 'Resmi İşten Ayrılma Tarihi',
-        render: (record) => FormatDate(record.officialEmploymentEndDate),
-        ellipsis: true,
-        resizable: true
+        render: (record) => FormatDate(record.currentOrganization?.formalEmploymentPeriod.endDate)
       },
       {
-        accessor: 'employmentStartDate',
+        accessor: 'currentOrganization.actualEmploymentPeriod.startDate',
         title: 'İşe Başlama Tarihi',
-        render: (record) => FormatDate(record.employmentStartDate),
-        ellipsis: true,
-        resizable: true
+        render: (record) => FormatDate(record.currentOrganization?.actualEmploymentPeriod.startDate)
       },
       {
-        accessor: 'employmentEndDate',
+        accessor: 'currentOrganization.actualformalEmploymentPeriod.endDate',
         title: 'İşten Ayrılma Tarihi',
-        render: (record) => FormatDate(record.employmentEndDate),
-        ellipsis: true,
-        resizable: true
+        render: (record) => FormatDate(record.currentOrganization?.actualEmploymentPeriod.endDate)
       }
     ]
   });

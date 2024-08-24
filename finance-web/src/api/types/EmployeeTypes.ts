@@ -2,17 +2,21 @@ type GetEmployeesResponse = {
   id: number;
   socialSecurityNumber: string;
   name: string;
-  officialEmploymentStartDate: string; // ISO 8601 date string
-  officialEmploymentEndDate: string; // ISO 8601 date string
-  employmentStartDate: string; // ISO 8601 date string
-  employmentEndDate: string; // ISO 8601 date string
-  worksite?: {
+  currentWorksite?: {
     id: number;
     name: string;
   };
-  organization: {
+  currentOrganization?: {
     id: number;
     name: string;
+    formalEmploymentPeriod: {
+      startDate: string;
+      endDate: string;
+    };
+    actualEmploymentPeriod: {
+      startDate: string;
+      endDate: string;
+    };
   };
 };
 
