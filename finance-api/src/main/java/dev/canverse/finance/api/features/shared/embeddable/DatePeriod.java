@@ -1,6 +1,7 @@
 package dev.canverse.finance.api.features.shared.embeddable;
 
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 
 @Embeddable
 @Getter
+@EqualsAndHashCode
 public class DatePeriod implements Serializable {
 
     private LocalDate startDate;

@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.product.repository;
+package dev.canverse.finance.api.features.product.repositories;
 
 import dev.canverse.finance.api.features.product.entities.ProductPrice;
 import dev.canverse.finance.api.features.shared.repositories.ExtendedJpaRepository;

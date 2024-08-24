@@ -3,7 +3,7 @@ package dev.canverse.finance.api.features.product.services;
 import dev.canverse.finance.api.features.product.dtos.CreateProductUnitRequest;
 import dev.canverse.finance.api.features.product.dtos.GetProductUnitsResponse;
 import dev.canverse.finance.api.features.product.entities.ProductUnit;
-import dev.canverse.finance.api.features.product.repository.ProductUnitRepository;
+import dev.canverse.finance.api.features.product.repositories.ProductUnitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

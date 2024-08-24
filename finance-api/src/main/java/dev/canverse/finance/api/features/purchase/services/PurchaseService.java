@@ -5,7 +5,7 @@ import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
 import dev.canverse.finance.api.features.party.entities.Party;
 import dev.canverse.finance.api.features.party.repositories.PartyRepository;
-import dev.canverse.finance.api.features.product.repository.ProductRepository;
+import dev.canverse.finance.api.features.product.repositories.ProductRepository;
 import dev.canverse.finance.api.features.purchase.dtos.CreatePurchaseRequest;
 import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesRequest;
 import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesResponse;
