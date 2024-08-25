@@ -12,31 +12,23 @@ import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesResponse;
 import dev.canverse.finance.api.features.purchase.entities.Purchase;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseAction;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseItem;
+import dev.canverse.finance.api.features.purchase.mappers.PurchaseMapper;
 import dev.canverse.finance.api.features.purchase.repositories.PurchaseRepository;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
 public class PurchaseService {
+    private final PartyRepository partyRepository;
     private final ProductRepository productRepository;
     private final CurrencyRepository currencyRepository;
-    private final EntityManager session;
-
-    private final PartyRepository partyRepository;
     private final PurchaseRepository purchaseRepository;
     private final WorksiteRepository worksiteRepository;
 
@@ -82,52 +74,7 @@ public class PurchaseService {
     }
 
     public Page<GetPurchasesResponse> getPurchases(GetPurchasesRequest req, Pageable page) {
-        final var queryBuilder = new StringBuilder("""
-                    SELECT p.id as id,  p.description, p.purchaseDate, p.official, sum(pi.quantity * pi.unitPrice),
-                           p.supplier.id, p.supplier.name,
-                           c.id, c.code, c.exchangeRate,
-                           pa.id, pa.status, pa.comment, pa.createdAt,
-                           wrk.id, wrk.name
-                    FROM Purchase p
-                    INNER JOIN PurchaseAction pa ON pa.id = (select max(pa2.id) from PurchaseAction pa2 where pa2.purchase.id = p.id)
-                    INNER JOIN Currency c ON c.code = p.currencyCode
-                    INNER JOIN p.purchaseItems pi
-                    INNER JOIN p.worksite wrk
-                    INNER JOIN p.supplier
-                    WHERE 1=1
-                """);
-
-        final var parameters = new HashMap<String, Object>();
-        req.supplierId().ifPresent(supplierId -> {
-            queryBuilder.append("AND p.supplier.id = :supplierId ");
-            parameters.put("supplierId", supplierId);
-        });
-
-        queryBuilder.append("""
-                    GROUP BY p.id, p.supplier.id, p.supplier.name, p.description, c.id, c.code, c.exchangeRate, p.purchaseDate,
-                             p.official, pa.id, pa.status, pa.comment, pa.createdAt, wrk.id, wrk.name
-                    ORDER BY :orderBy
-                """);
-        final var count = session.createQuery("select count(p.id) from Purchase p", Long.class).getSingleResult();
-        final var query = session.createQuery(queryBuilder.toString(), Object[].class)
-                .setParameter("orderBy", page.getSortOr(Sort.by(Sort.Direction.ASC, "id")));
-
-        for (var entry : parameters.entrySet())
-            query.setParameter(entry.getKey(), entry.getValue());
-
-        query.setFirstResult((int) page.getOffset())
-                .setMaxResults(page.getPageSize());
-
-        final var result = new ArrayList<GetPurchasesResponse>();
-
-        for (var row : query.getResultList()) {
-            var supplier = new GetPurchasesResponse.SupplierResponse((Long) row[5], (String) row[6]);
-            var worksite = new GetPurchasesResponse.WorksiteResponse((Long) row[14], (String) row[15]);
-            var currency = new GetPurchasesResponse.CurrencyResponse((Long) row[7], (String) row[8], (Double) row[9]);
-            var lastAction = new GetPurchasesResponse.PurchaseActionResponse((Long) row[10], (Purchase.Status) row[11], (String) row[12], (LocalDateTime) row[13]);
-            result.add(new GetPurchasesResponse((Long) row[0], (String) row[1], (LocalDateTime) row[2], (boolean) row[3], (BigDecimal) row[4], worksite, supplier, currency, lastAction));
-        }
-
-        return new PageImpl<>(result, page, count);
+        return purchaseRepository.findPurchases(req.supplierId().orElse(null), page)
+                .map(PurchaseMapper.INSTANCE::toGetPurchasesResponse);
     }
 }
