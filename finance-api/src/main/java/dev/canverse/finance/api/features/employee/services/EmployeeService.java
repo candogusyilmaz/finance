@@ -1,8 +1,13 @@
 package dev.canverse.finance.api.features.employee.services;
 
+import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import dev.canverse.finance.api.exceptions.BadRequestException;
+import dev.canverse.finance.api.exceptions.NotFoundException;
 import dev.canverse.finance.api.features.currency.repositories.CurrencyRepository;
 import dev.canverse.finance.api.features.employee.dtos.CreateEmployeeRequest;
+import dev.canverse.finance.api.features.employee.dtos.GetEmployeeResponse;
 import dev.canverse.finance.api.features.employee.dtos.GetEmployeesResponse;
 import dev.canverse.finance.api.features.employee.entities.*;
 import dev.canverse.finance.api.features.employee.mappers.EmployeeMapper;
@@ -14,15 +19,18 @@ import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
+    private final JPAQueryFactory queryFactory;
     private final EmployeeRepository employeeRepository;
     private final ProfessionRepository professionRepository;
     private final CurrencyRepository currencyRepository;
@@ -80,5 +88,57 @@ public class EmployeeService {
 
     public Page<GetEmployeesResponse> getEmployees(Pageable pageable) {
         return employeeRepository.findEmployees(pageable).map(EmployeeMapper.INSTANCE::toGetEmployeesResponse);
+    }
+
+    @Cacheable(value = "longLived")
+    public GetEmployeeResponse getEmployee(Long id) {
+        var emp = QEmployee.employee;
+        var assignment = QEmployeeAssignment.employeeAssignment;
+        var employment = QEmployment.employment;
+        var profession = QEmployeeProfession.employeeProfession;
+
+        var result = queryFactory.select(
+                        emp.id, emp.socialSecurityNumber, emp.name, emp.birthDate,
+                        assignment.worksite.id, assignment.worksite.name,
+                        employment.organization.id, employment.organization.name, employment.formalEmploymentPeriod, employment.actualEmploymentPeriod,
+                        profession.profession.id, profession.profession.name
+                ).from(emp)
+                .leftJoin(emp.assignments, assignment)
+                .on(assignment.period.startDate.loe(LocalDate.now())
+                        .and(assignment.period.endDate.goe(LocalDate.now()).or(assignment.period.endDate.isNull())))
+                .leftJoin(emp.employments, employment)
+                .on(employment.actualEmploymentPeriod.startDate.loe(LocalDate.now())
+                        .and(employment.actualEmploymentPeriod.endDate.goe(LocalDate.now()).or(employment.actualEmploymentPeriod.endDate.isNull())))
+                .leftJoin(emp.professions, profession)
+                .where(emp.id.eq(id))
+                .transform(GroupBy.groupBy(emp.id).as(
+                        Projections.constructor(GetEmployeeResponse.class,
+                                emp.id,
+                                emp.socialSecurityNumber,
+                                emp.name,
+                                emp.birthDate,
+                                Projections.constructor(GetEmployeeResponse.Worksite.class,
+                                        assignment.worksite.id,
+                                        assignment.worksite.name
+                                ),
+                                Projections.constructor(GetEmployeeResponse.Organization.class,
+                                        employment.organization.id,
+                                        employment.organization.name,
+                                        employment.formalEmploymentPeriod,
+                                        employment.actualEmploymentPeriod
+                                ),
+                                GroupBy.list(
+                                        Projections.constructor(GetEmployeeResponse.Profession.class,
+                                                profession.profession.id,
+                                                profession.profession.name
+                                        )
+                                )
+                        )
+                ));
+
+        if (result.isEmpty())
+            throw new NotFoundException("Personel bulunamadı.", id);
+
+        return result.get(id);
     }
 }

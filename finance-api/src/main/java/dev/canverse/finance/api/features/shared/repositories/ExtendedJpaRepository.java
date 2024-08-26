@@ -8,9 +8,13 @@ import org.springframework.lang.NonNull;
 
 @NoRepositoryBean
 public interface ExtendedJpaRepository<T, ID> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
+    default String getNotFoundMessage() {
+        return "Kayıt bulunamadı.";
+    }
+
     default T getReference(@NonNull ID id) {
         if (!existsById(id))
-            throw new NotFoundException("Entity not found");
+            throw new NotFoundException(getNotFoundMessage(), id);
 
         return getReferenceById(id);
     }
@@ -23,10 +27,10 @@ public interface ExtendedJpaRepository<T, ID> extends JpaRepository<T, ID>, JpaS
     }
 
     default T getById(@NonNull ID id) {
-        return findById(id).orElseThrow(() -> new NotFoundException("Entity not found"));
+        return findById(id).orElseThrow(() -> new NotFoundException(getNotFoundMessage(), id));
     }
 
     default T getById(ID id, String notFoundMessage) {
-        return findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage));
+        return findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage, id));
     }
 }
