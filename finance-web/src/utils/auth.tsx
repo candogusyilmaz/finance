@@ -1,11 +1,10 @@
 import * as React from 'react';
-import type { CreateTokenResponse } from '../api/model';
-
+import type { CreateAccessTokenResponse } from 'src/api/types/TokenTypes';
 export interface AuthContext {
   isAuthenticated: boolean;
-  login: (user: CreateTokenResponse) => Promise<void>;
+  login: (user: CreateAccessTokenResponse) => Promise<void>;
   logout: () => Promise<void>;
-  user: CreateTokenResponse | null;
+  user: CreateAccessTokenResponse | null;
 }
 
 const AuthContext = React.createContext<AuthContext | null>(null);
@@ -19,10 +18,10 @@ export function getStoredUser() {
     return null;
   }
 
-  return JSON.parse(value) as CreateTokenResponse;
+  return JSON.parse(value) as CreateAccessTokenResponse;
 }
 
-export function setStoredUser(user: CreateTokenResponse | null) {
+export function setStoredUser(user: CreateAccessTokenResponse | null) {
   if (user) {
     localStorage.setItem(key, JSON.stringify(user));
   } else {
@@ -31,7 +30,7 @@ export function setStoredUser(user: CreateTokenResponse | null) {
 }
 
 export function AuthProvider({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [user, setUser] = React.useState<CreateTokenResponse | null>(getStoredUser());
+  const [user, setUser] = React.useState<CreateAccessTokenResponse | null>(getStoredUser());
 
   const isAuthenticated = !!user;
 
@@ -40,7 +39,7 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
     setUser(null);
   }, []);
 
-  const login = React.useCallback(async (user: CreateTokenResponse) => {
+  const login = React.useCallback(async (user: CreateAccessTokenResponse) => {
     setStoredUser(user);
     setUser(user);
   }, []);
@@ -49,7 +48,9 @@ export function AuthProvider({ children }: Readonly<{ children: React.ReactNode 
     setUser(getStoredUser());
   }, []);
 
-  return <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>{children}</AuthContext.Provider>;
+  const value = React.useMemo(() => ({ isAuthenticated, user, login, logout }), [isAuthenticated, user, login, logout]);
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

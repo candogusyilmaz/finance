@@ -52,7 +52,9 @@ public class Payment {
     }
 
     public enum Status {
+        AWAITING_APPROVAL,
         PENDING,
+        PAID,
         COMPLETED,
         CANCELLED
     }

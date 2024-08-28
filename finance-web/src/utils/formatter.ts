@@ -1,8 +1,8 @@
 import { formatISO } from 'date-fns';
 
-export const FormatDate = (params?: string) => {
+export const FormatDate = (params?: string | null, options?: Intl.DateTimeFormatOptions & { fallbackValue?: string }) => {
   if (!params) {
-    return '';
+    return options?.fallbackValue ?? '';
   }
 
   const date = new Date(params);
@@ -11,15 +11,16 @@ export const FormatDate = (params?: string) => {
   })}`;
 };
 
-export const FormatDateTime = (params?: string) => {
+export const FormatDateTime = (params?: string | null, options?: Intl.DateTimeFormatOptions & { fallbackValue?: string }) => {
   if (!params) {
-    return '';
+    return options?.fallbackValue ?? '';
   }
 
   const date = new Date(params);
   return `${date.toLocaleString('tr-TR', {
     dateStyle: 'long',
-    timeStyle: 'short'
+    timeStyle: 'short',
+    ...options
   })}`;
 };
 

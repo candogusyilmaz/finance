@@ -11,9 +11,6 @@ import ProductWarehousesTable from './-components/ProductWarehousesTable';
 
 export const Route = createFileRoute('/_authenticated/products/$productId')({
   component: Product,
-  parseParams: (rawParams) => ({
-    productId: Number.parseInt(rawParams.productId)
-  }),
   validateSearch: PageSchema.extend({
     tab: z.enum(['warehouses', 'prices']).catch('warehouses')
   })

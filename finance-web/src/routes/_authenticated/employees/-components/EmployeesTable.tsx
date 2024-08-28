@@ -94,6 +94,12 @@ export default function ProductsTable() {
           search: (prev) => ({ ...prev, page: p })
         })
       }
+      onRowDoubleClick={({ record }) =>
+        navigate({
+          to: '/employees/$employeeId',
+          params: { employeeId: record.id.toString() }
+        })
+      }
     />
   );
 }

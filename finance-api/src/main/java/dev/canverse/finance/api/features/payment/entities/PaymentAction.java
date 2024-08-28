@@ -1,19 +1,22 @@
 package dev.canverse.finance.api.features.payment.entities;
 
-import dev.canverse.finance.api.features.shared.embeddable.Timestamp;
 import dev.canverse.finance.api.features.user.entities.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "payment_actions")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentAction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,12 +33,11 @@ public class PaymentAction {
     @CreatedBy
     private User createdBy;
 
-    @ManyToOne(optional = false)
-    @LastModifiedBy
-    private User updatedBy;
-
-    @Setter(lombok.AccessLevel.NONE)
-    private Timestamp timestamp;
+    @Column(nullable = false)
+    @CreationTimestamp
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Setter(AccessLevel.NONE)
+    private LocalDateTime createdAt;
 
     public PaymentAction(Payment payment, Payment.Status status) {
         this.payment = payment;

@@ -37,7 +37,7 @@ export function Navbar() {
         <IconBuildingCommunity size={18} />
         <Text size="sm">Organizasyonlar</Text>
       </Link>
-      <Link className={classes.link} to="/products" search={{ page: 1, size: 20, sort: { id: 'id', direction: 'desc' } }}>
+      <Link className={classes.link} to="/products" search={{ size: 20, sort: { id: 'id', direction: 'desc' } }}>
         <IconBuildingWarehouse size={18} />
         <Text size="sm">Ürünler</Text>
       </Link>

@@ -1,8 +1,6 @@
 package dev.canverse.finance.api.features.employee.controllers;
 
-import dev.canverse.finance.api.features.employee.dtos.CreateEmployeeRequest;
-import dev.canverse.finance.api.features.employee.dtos.GetEmployeeResponse;
-import dev.canverse.finance.api.features.employee.dtos.GetEmployeesResponse;
+import dev.canverse.finance.api.features.employee.dtos.*;
 import dev.canverse.finance.api.features.employee.services.EmployeeService;
 import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import jakarta.validation.Valid;
@@ -38,5 +36,25 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public GetEmployeeResponse getEmployee(@PathVariable Long id) {
         return employeeService.getEmployee(id);
+    }
+
+    @GetMapping("/{id}/salaries")
+    public List<GetEmployeeSalaryResponse> getEmployeeSalaries(@PathVariable Long id) {
+        return employeeService.getEmployeeSalaries(id);
+    }
+
+    @GetMapping("/{id}/payments")
+    public List<GetEmployeePaymentResponse> getEmployeePayments(@PathVariable Long id) {
+        return employeeService.getEmployeePayments(id);
+    }
+
+    @GetMapping("/{id}/employments")
+    public List<GetEmployeeEmploymentResponse> getEmployeeEmployments(@PathVariable Long id) {
+        return employeeService.getEmployeeEmployments(id);
+    }
+
+    @GetMapping("/{id}/assignments")
+    public List<GetEmployeeAssignmentResponse> getEmployeeAssignments(@PathVariable Long id) {
+        return employeeService.getEmployeeAssignments(id);
     }
 }

@@ -1,7 +1,6 @@
-import { Button, Container, Flex, Paper, PasswordInput, Text, TextInput, Title, rem } from '@mantine/core';
+import { Alert, Button, Container, Flex, Paper, PasswordInput, Text, TextInput, Title, rem } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
-import { IconLock, IconUser } from '@tabler/icons-react';
+import { IconAlertTriangle, IconLock, IconUser } from '@tabler/icons-react';
 import { createFileRoute, redirect, useRouter, useRouterState } from '@tanstack/react-router';
 import { useMutation } from 'react-query';
 import { api } from 'src/api/axios';
@@ -15,7 +14,9 @@ export const Route = createFileRoute('/login')({
   validateSearch: z.object({
     redirect: z.string().optional().catch('')
   }),
-  beforeLoad: ({ context, search }) => {
+  beforeLoad: ({ context, search, preload }) => {
+    if (preload) return;
+
     if (context.auth.user) {
       throw redirect({ to: search.redirect ?? '/dashboard' });
     }
@@ -55,15 +56,8 @@ function Login() {
       await auth.login(data);
       await router.invalidate();
       await navigate({ to: search.redirect ?? '/dashboard' });
-      await router.invalidate();
     },
-    onError(error: ApiError) {
-      if (error.response?.status === 401) {
-        notifications.show({
-          message: 'Kullanıcı adı veya şifre hatalı!',
-          color: 'red'
-        });
-      }
+    onError(_error: ApiError) {
       form.reset();
     }
   });
@@ -78,6 +72,11 @@ function Login() {
           <Text c="dimmed" size="sm" ta="center" mt={5} mb={rem(40)}>
             Uygulamayı kullanmaya başlamak için giriş yap!
           </Text>
+          {login.error?.response?.status === 401 && (
+            <Alert variant="light" color="red.7" icon={<IconAlertTriangle size={32} />} mb={rem(20)}>
+              Kullanıcı adı veya şifre hatalı!
+            </Alert>
+          )}
           <form onSubmit={form.onSubmit((data) => login.mutate(data))}>
             <TextInput
               label="Kullanıcı Adı"

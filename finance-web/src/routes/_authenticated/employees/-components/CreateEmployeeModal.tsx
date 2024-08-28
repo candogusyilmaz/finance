@@ -9,6 +9,7 @@ import { formatISO } from 'date-fns';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
+import type { CreateEmployeeRequest } from 'src/api/types/EmployeeTypes';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
 import PartySelect from 'src/components/Dropdowns/PartySelect';
 import ProfessionMultiSelect from 'src/components/Dropdowns/ProfessionMultiSelect';

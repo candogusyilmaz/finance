@@ -72,7 +72,7 @@ export default function ProductsTable() {
       onRowDoubleClick={({ record }) =>
         navigate({
           to: '/products/$productId',
-          params: { productId: record.id },
+          params: { productId: record.id.toString() },
           search: {
             page: 1,
             size: 20,
