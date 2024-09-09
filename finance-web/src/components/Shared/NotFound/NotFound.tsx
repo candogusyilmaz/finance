@@ -1,8 +1,21 @@
 import { Button, Container, Flex, Image, SimpleGrid, Text, Title } from '@mantine/core';
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
+import { useEffect } from 'react';
+import { useAuth } from 'src/utils/auth';
 import classes from './NotFound.module.css';
 
 export default function NotFound() {
+  const router = useRouter();
+  const auth = useAuth();
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      router.navigate({ to: '/dashboard', replace: true });
+    } else {
+      router.navigate({ to: '/login', replace: true });
+    }
+  }, [auth.isAuthenticated, router.navigate]);
+
   return (
     <Flex style={{ height: '100vh' }} justify="center" align="center">
       <Container>

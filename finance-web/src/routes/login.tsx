@@ -2,6 +2,7 @@ import { Alert, Button, Container, Flex, Paper, PasswordInput, Text, TextInput, 
 import { useForm, zodResolver } from '@mantine/form';
 import { IconAlertTriangle, IconLock, IconUser } from '@tabler/icons-react';
 import { createFileRoute, redirect, useRouter, useRouterState } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { api } from 'src/api/axios';
 import type { ApiError } from 'src/api/types/Defaults';
@@ -52,10 +53,10 @@ function Login() {
       return (await api.post<CreateAccessTokenResponse>('/auth/token', data)).data;
     },
     async onSuccess(data) {
-      console.log(search.redirect);
       await auth.login(data);
-      await router.invalidate();
+      await new Promise((r) => setTimeout(r, 1));
       await navigate({ to: search.redirect ?? '/dashboard' });
+      await router.invalidate();
     },
     onError(_error: ApiError) {
       form.reset();

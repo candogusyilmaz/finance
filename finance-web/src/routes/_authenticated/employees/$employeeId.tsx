@@ -7,7 +7,6 @@ import {
   Grid,
   Group,
   Loader,
-  LoadingOverlay,
   Paper,
   ScrollArea,
   Stack,
@@ -85,7 +84,17 @@ function EmployeeInfoCard({ employeeId }: Readonly<{ employeeId: string }>) {
     staleTime: 120000
   });
 
-  if (!employee || isFetching) return <>loading</>;
+  if (isFetching) {
+    return (
+      <Paper withBorder>
+        <Flex h={220} justify="center" align="center">
+          <Loader />
+        </Flex>
+      </Paper>
+    );
+  }
+
+  if (!employee) return <>Not found anything?</>;
 
   return (
     <Paper withBorder p="md">
@@ -143,7 +152,13 @@ function EmployeeSalaryHistoryTable({ employeeId }: Readonly<{ employeeId: strin
   });
 
   if (isFetching) {
-    return <LoadingOverlay h={400} />;
+    return (
+      <Paper withBorder>
+        <Flex h={400} justify="center" align="center">
+          <Loader />
+        </Flex>
+      </Paper>
+    );
   }
 
   const rows = data?.map((s) => (
@@ -186,10 +201,7 @@ function EmployeeSalaryHistoryTable({ employeeId }: Readonly<{ employeeId: strin
           }
         }}>
         <Table highlightOnHover highlightOnHoverColor="dark.6">
-          <Table.Thead
-            styles={{
-              thead: {}
-            }}>
+          <Table.Thead>
             <Table.Tr
               styles={{
                 tr: {
@@ -240,7 +252,13 @@ function EmployeeEmploymentHistoryTable({ employeeId }: Readonly<{ employeeId: s
   });
 
   if (isFetching) {
-    return <LoadingOverlay h={400} />;
+    return (
+      <Paper withBorder>
+        <Flex h={400} justify="center" align="center">
+          <Loader />
+        </Flex>
+      </Paper>
+    );
   }
 
   const rows = data?.map((s) => (
@@ -350,9 +368,11 @@ function EmployeeAssignmentHistoryTable({ employeeId }: Readonly<{ employeeId: s
 
   if (isFetching) {
     return (
-      <Flex h={200} justify="center" align="center">
-        <Loader />
-      </Flex>
+      <Paper withBorder>
+        <Flex h={400} justify="center" align="center">
+          <Loader />
+        </Flex>
+      </Paper>
     );
   }
 
@@ -451,6 +471,16 @@ function EmployeePaymentHistoryTable({ employeeId }: Readonly<{ employeeId: stri
     staleTime: 120000
   });
 
+  if (isFetching) {
+    return (
+      <Paper withBorder>
+        <Flex h={400} justify="center" align="center">
+          <Loader />
+        </Flex>
+      </Paper>
+    );
+  }
+
   const rows = data?.map((s) => (
     <Table.Tr key={s.id}>
       <Table.Td>
@@ -522,7 +552,7 @@ function EmployeePaymentHistoryTable({ employeeId }: Readonly<{ employeeId: stri
               </Table.Th>
               <Table.Th>
                 <Text size="sm" fw={600}>
-                  Son Güncelleme
+                  Son İşlem
                 </Text>
               </Table.Th>
             </Table.Tr>

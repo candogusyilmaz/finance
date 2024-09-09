@@ -204,22 +204,149 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  AuthenticatedRoute: AuthenticatedRoute.addChildren({
-    AuthenticatedDeliveriesNewRoute,
-    AuthenticatedEmployeesEmployeeIdRoute,
-    AuthenticatedProductsProductIdRoute,
-    AuthenticatedPurchasesNewRoute,
-    AuthenticatedDashboardIndexRoute,
-    AuthenticatedDeliveriesIndexRoute,
-    AuthenticatedEmployeesIndexRoute,
-    AuthenticatedOrganizationsIndexRoute,
-    AuthenticatedProductsIndexRoute,
-    AuthenticatedPurchasesIndexRoute,
-    AuthenticatedWorksitesIndexRoute,
-  }),
-  LoginRoute,
-})
+interface AuthenticatedRouteChildren {
+  AuthenticatedDeliveriesNewRoute: typeof AuthenticatedDeliveriesNewRoute
+  AuthenticatedEmployeesEmployeeIdRoute: typeof AuthenticatedEmployeesEmployeeIdRoute
+  AuthenticatedProductsProductIdRoute: typeof AuthenticatedProductsProductIdRoute
+  AuthenticatedPurchasesNewRoute: typeof AuthenticatedPurchasesNewRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDeliveriesIndexRoute: typeof AuthenticatedDeliveriesIndexRoute
+  AuthenticatedEmployeesIndexRoute: typeof AuthenticatedEmployeesIndexRoute
+  AuthenticatedOrganizationsIndexRoute: typeof AuthenticatedOrganizationsIndexRoute
+  AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
+  AuthenticatedPurchasesIndexRoute: typeof AuthenticatedPurchasesIndexRoute
+  AuthenticatedWorksitesIndexRoute: typeof AuthenticatedWorksitesIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDeliveriesNewRoute: AuthenticatedDeliveriesNewRoute,
+  AuthenticatedEmployeesEmployeeIdRoute: AuthenticatedEmployeesEmployeeIdRoute,
+  AuthenticatedProductsProductIdRoute: AuthenticatedProductsProductIdRoute,
+  AuthenticatedPurchasesNewRoute: AuthenticatedPurchasesNewRoute,
+  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedDeliveriesIndexRoute: AuthenticatedDeliveriesIndexRoute,
+  AuthenticatedEmployeesIndexRoute: AuthenticatedEmployeesIndexRoute,
+  AuthenticatedOrganizationsIndexRoute: AuthenticatedOrganizationsIndexRoute,
+  AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
+  AuthenticatedPurchasesIndexRoute: AuthenticatedPurchasesIndexRoute,
+  AuthenticatedWorksitesIndexRoute: AuthenticatedWorksitesIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
+export interface FileRoutesByFullPath {
+  '': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
+  '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
+  '/products/$productId': typeof AuthenticatedProductsProductIdRoute
+  '/purchases/new': typeof AuthenticatedPurchasesNewRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/deliveries': typeof AuthenticatedDeliveriesIndexRoute
+  '/employees': typeof AuthenticatedEmployeesIndexRoute
+  '/organizations': typeof AuthenticatedOrganizationsIndexRoute
+  '/products': typeof AuthenticatedProductsIndexRoute
+  '/purchases': typeof AuthenticatedPurchasesIndexRoute
+  '/worksites': typeof AuthenticatedWorksitesIndexRoute
+}
+
+export interface FileRoutesByTo {
+  '': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
+  '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
+  '/products/$productId': typeof AuthenticatedProductsProductIdRoute
+  '/purchases/new': typeof AuthenticatedPurchasesNewRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/deliveries': typeof AuthenticatedDeliveriesIndexRoute
+  '/employees': typeof AuthenticatedEmployeesIndexRoute
+  '/organizations': typeof AuthenticatedOrganizationsIndexRoute
+  '/products': typeof AuthenticatedProductsIndexRoute
+  '/purchases': typeof AuthenticatedPurchasesIndexRoute
+  '/worksites': typeof AuthenticatedWorksitesIndexRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_authenticated/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
+  '/_authenticated/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
+  '/_authenticated/products/$productId': typeof AuthenticatedProductsProductIdRoute
+  '/_authenticated/purchases/new': typeof AuthenticatedPurchasesNewRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/deliveries/': typeof AuthenticatedDeliveriesIndexRoute
+  '/_authenticated/employees/': typeof AuthenticatedEmployeesIndexRoute
+  '/_authenticated/organizations/': typeof AuthenticatedOrganizationsIndexRoute
+  '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
+  '/_authenticated/purchases/': typeof AuthenticatedPurchasesIndexRoute
+  '/_authenticated/worksites/': typeof AuthenticatedWorksitesIndexRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | ''
+    | '/login'
+    | '/deliveries/new'
+    | '/employees/$employeeId'
+    | '/products/$productId'
+    | '/purchases/new'
+    | '/dashboard'
+    | '/deliveries'
+    | '/employees'
+    | '/organizations'
+    | '/products'
+    | '/purchases'
+    | '/worksites'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | ''
+    | '/login'
+    | '/deliveries/new'
+    | '/employees/$employeeId'
+    | '/products/$productId'
+    | '/purchases/new'
+    | '/dashboard'
+    | '/deliveries'
+    | '/employees'
+    | '/organizations'
+    | '/products'
+    | '/purchases'
+    | '/worksites'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/login'
+    | '/_authenticated/deliveries/new'
+    | '/_authenticated/employees/$employeeId'
+    | '/_authenticated/products/$productId'
+    | '/_authenticated/purchases/new'
+    | '/_authenticated/dashboard/'
+    | '/_authenticated/deliveries/'
+    | '/_authenticated/employees/'
+    | '/_authenticated/organizations/'
+    | '/_authenticated/products/'
+    | '/_authenticated/purchases/'
+    | '/_authenticated/worksites/'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  LoginRoute: typeof LoginRoute
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  LoginRoute: LoginRoute,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
