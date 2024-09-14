@@ -8,6 +8,7 @@ import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
+import { Flex, Loader } from '@mantine/core';
 import { routeTree } from './routeTree.gen';
 
 i18n
@@ -23,7 +24,11 @@ i18n
 
 const router = createRouter({
   routeTree,
-  defaultPendingComponent: () => <div className={'p-2 text-2xl'}>loading</div>,
+  defaultPendingComponent: () => (
+    <Flex w="100dvw" h="100dvh" justify="center" align="center">
+      <Loader type="dots" />
+    </Flex>
+  ),
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   context: {
     auth: undefined!

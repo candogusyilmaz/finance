@@ -1,8 +1,9 @@
-import { AppShell, Burger, Group, Title } from '@mantine/core';
+import { ActionIcon, AppShell, Burger, Group, ScrollArea, Title, useMantineColorScheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconBuildingArch } from '@tabler/icons-react';
+import { IconMoon, IconSun } from '@tabler/icons-react';
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
 import { Navbar } from 'src/components/Shared/Nav/Navbar';
+import UserInfo from 'src/components/Shared/Nav/UserInfo';
 
 export const Route = createFileRoute('/_authenticated')({
   component: Layout,
@@ -20,32 +21,49 @@ export const Route = createFileRoute('/_authenticated')({
 
 export function Layout() {
   const [opened, { toggle }] = useDisclosure();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
     <AppShell
+      layout="alt"
       padding="xl"
-      header={{ height: 64 }}
-      navbar={{ width: 255, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+      header={{ height: 60 }}
+      navbar={{ width: 260, breakpoint: 'sm', collapsed: { mobile: !opened } }}
       styles={(theme) => ({
         header: {
-          backgroundColor: theme.colors.dark[6]
+          backgroundColor: 'light-dark(var(--mantine-color-gray-0),var(--mantine-color-dark-7))',
+          borderBottom: '1px solid light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-5))'
         },
         navbar: {
-          backgroundColor: theme.colors.dark[6]
+          backgroundColor: 'light-dark(var(--mantine-color-gray-0),var(--mantine-color-dark-7))',
+          borderRight: '1px solid light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-5))'
         },
         main: {
-          backgroundColor: theme.colors.dark[8]
+          backgroundColor: 'light-dark(var(--mantine-color-gray-1),var(--mantine-color-dark-8))'
         }
       })}>
       <AppShell.Header>
         <Group h="100%" align="center" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <IconBuildingArch size={36} />
-          <Title size="28">Finance</Title>
+          <ActionIcon ml="auto" onClick={toggleColorScheme} variant="default" aria-label="Toggle color scheme">
+            {colorScheme === 'dark' && <IconSun size={16} />}
+            {colorScheme === 'light' && <IconMoon size={16} />}
+          </ActionIcon>
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <Navbar />
+      <AppShell.Navbar>
+        <AppShell.Section h="64px">
+          <Group h="100%" align="center" pl="1.5rem">
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Title size="24">Canverse</Title>
+          </Group>
+        </AppShell.Section>
+        <AppShell.Section grow my="md" component={ScrollArea}>
+          <Navbar />
+        </AppShell.Section>
+        <AppShell.Section>
+          <UserInfo />
+        </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
         <Outlet />

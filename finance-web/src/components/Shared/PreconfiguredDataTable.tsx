@@ -4,7 +4,7 @@ import { DataTable, type DataTableProps } from 'mantine-datatable';
 export default function PreconfiguredDataTable<T>(props: DataTableProps<T>) {
   return (
     <DataTable
-      borderRadius="md"
+      borderRadius="xs"
       withTableBorder
       striped
       highlightOnHover

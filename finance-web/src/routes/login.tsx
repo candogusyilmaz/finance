@@ -1,8 +1,7 @@
-import { Alert, Button, Container, Flex, Paper, PasswordInput, Text, TextInput, Title, rem } from '@mantine/core';
+import { Alert, Box, Button, Flex, Paper, PasswordInput, TextInput, Title, rem } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { IconAlertTriangle, IconLock, IconUser } from '@tabler/icons-react';
 import { createFileRoute, redirect, useRouter, useRouterState } from '@tanstack/react-router';
-import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { api } from 'src/api/axios';
 import type { ApiError } from 'src/api/types/Defaults';
@@ -64,15 +63,21 @@ function Login() {
   });
 
   return (
-    <Flex justify="center" align="center" h="100dvh" bg="dark.8">
-      <Container w={rem(520)}>
-        <Paper withBorder shadow="md" px={40} py={60} mt={30} radius="md">
-          <Title ta="center" fw={900}>
-            Tekrar Hoşgeldin
+    <>
+      <Box
+        style={{ zIndex: -1, filter: 'blur(13px)', WebkitFilter: 'blur(13px)', msFilter: 'blur(13px)' }}
+        pos="fixed"
+        left={0}
+        right={0}
+        h="100%"
+        bgsz="cover"
+        bg="url('/assets/login-bg.jpg')"
+      />
+      <Flex justify="center" align="center" h="100dvh">
+        <Paper withBorder shadow="xl" w={425} px={40} py={40} radius="xs">
+          <Title fz={28} fw={500} mb={25}>
+            Giriş
           </Title>
-          <Text c="dimmed" size="sm" ta="center" mt={5} mb={rem(40)}>
-            Uygulamayı kullanmaya başlamak için giriş yap!
-          </Text>
           {login.error?.response?.status === 401 && (
             <Alert variant="light" color="red.7" icon={<IconAlertTriangle size={32} />} mb={rem(20)}>
               Kullanıcı adı veya şifre hatalı!
@@ -85,6 +90,7 @@ function Login() {
               leftSection={<IconUser size={16} />}
               key={form.key('username')}
               {...form.getInputProps('username')}
+              mb={20}
             />
             <PasswordInput
               label="Şifre"
@@ -93,13 +99,14 @@ function Login() {
               leftSection={<IconLock size={16} />}
               key={form.key('password')}
               {...form.getInputProps('password')}
+              mb={40}
             />
             <Button fullWidth mt="xl" loading={login.isLoading || isRouterLoading} type="submit">
               Giriş
             </Button>
           </form>
         </Paper>
-      </Container>
-    </Flex>
+      </Flex>
+    </>
   );
 }

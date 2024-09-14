@@ -1,26 +1,31 @@
 .link {
-  padding-left: var(--mantine-spacing-lg);
+  padding-left: 1.5rem;
   padding-right: var(--mantine-spacing-lg);
-  height: 2rem;
-  border-radius: var(--mantine-radius-md);
+  height: 46px;
   display: flex;
   align-items: center;
   gap: var(--mantine-spacing-sm);
   justify-content: flex-start;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-gray-5));
+  color: light-dark(var(--mantine-color-gray-9), var(--mantine-color-gray-5));
   text-decoration: none;
   transition: 0.15s;
+  
   &:hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-3),
-      var(--mantine-color-dark-5)
-    );
+    color: light-dark(var(--mantine-primary-color-6), var(--mantine-color-gray-2));
+    background-color: light-dark(var(--mantine-primary-color-0), var(--mantine-color-dark-6));
   }
 
   &[data-status] {
-    &,
-    &:hover {
-      color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-gray-0));
-    }
+      color: light-dark(var(--mantine-primary-color-6), var(--mantine-color-gray-2));
+      background-color: light-dark(var(--mantine-primary-color-0), var(--mantine-color-dark-6));
+      border-right: 2px solid light-dark(var(--mantine-primary-color-3), var(--mantine-primary-color-4));
+
+      p {
+        font-weight: 500;
+      }
+  }
+
+  &[data-status] svg, &:hover svg {
+    color: light-dark(var(--mantine-primary-color-6), var(--mantine-primary-color-4));
   }
 }

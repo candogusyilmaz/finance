@@ -5,7 +5,6 @@ import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 
 import { DatesProvider } from '@mantine/dates';
 import dayjs from 'dayjs';
@@ -39,7 +38,6 @@ function Root() {
           </ModalsProvider>
         </DatesProvider>
       </MantineProvider>
-      <TanStackRouterDevtools />
     </QueryClientProvider>
   );
 }

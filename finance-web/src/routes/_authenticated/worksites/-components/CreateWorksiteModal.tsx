@@ -7,8 +7,9 @@ import type { AxiosError } from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
+import { PartyRoles } from 'src/api/types/PartyTypes';
 import EmployeeSelect from 'src/components/Dropdowns/EmployeeSelect';
-import OrganizationSelect from 'src/components/Dropdowns/OrganizationSelect';
+import PartySelect from 'src/components/Dropdowns/PartySelect';
 import { FieldErrorMessage } from 'src/utils/zod-messages';
 import { z } from 'zod';
 
@@ -73,10 +74,11 @@ export default function CreateWorksiteModal() {
         centered>
         <form onSubmit={form.onSubmit((data) => create.mutate(data))}>
           <Stack gap="md">
-            <OrganizationSelect
+            <PartySelect
               label="Organizasyon"
               placeholder="Organizasyon seçiniz"
               withAsterisk
+              partyRoles={[PartyRoles.AFFILIATE]}
               {...form.getInputProps('organizationId')}
             />
             <TextInput
