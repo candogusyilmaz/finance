@@ -48,7 +48,7 @@ public class PermissionInitializer implements ApplicationListener<ApplicationRea
         if (newPermissions.isEmpty())
             return;
 
-        permissionRepository.saveAll(newPermissions);
+        permissionRepository.saveAllAndFlush(newPermissions);
         log.info("{} new permissions persisted.", newPermissions.size());
     }
 

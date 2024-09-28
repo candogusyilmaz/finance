@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -27,7 +28,7 @@ public class Role implements Serializable {
     private int level;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RolePermission> rolePermissions;
+    private Set<RolePermission> rolePermissions = new HashSet<>();
 
     public Role(String name, int level) {
         this.name = name;

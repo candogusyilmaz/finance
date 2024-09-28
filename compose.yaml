@@ -1,0 +1,39 @@
+services:
+  server:
+    build:
+      context: ./finance-api
+      dockerfile: Dockerfile
+    container_name: finance-be
+    secrets:
+      - db-password
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/finance
+      - SPRING_DATASOURCE_PASSWORD=123123123
+      - SPRING_DATASOURCE_USERNAME=postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    secrets:
+      - db-password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=finance
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    expose:
+      - 5432
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
+secrets:
+  db-password:
+    file: db/password.txt
