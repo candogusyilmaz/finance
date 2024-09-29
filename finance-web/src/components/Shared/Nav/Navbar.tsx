@@ -1,21 +1,10 @@
 import { Stack, Text } from '@mantine/core';
 import { IconBasket, IconBuildingCommunity, IconBuildingFactory2, IconBuildingWarehouse, IconHome, IconId } from '@tabler/icons-react';
-import { Link, useNavigate, useRouter } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import { PartyRoles } from 'src/api/types/PartyTypes';
-import { useAuth } from '../../../utils/auth';
 import classes from './Navbar.module.css';
 
 export function Navbar() {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    await logout();
-    await router.invalidate();
-    await navigate({ to: '/login' });
-  };
-
   return (
     <Stack h="100%" gap={0}>
       <Link className={classes.link} to="/dashboard">

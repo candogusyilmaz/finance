@@ -4,14 +4,13 @@ import { type ReactNode, useEffect } from 'react';
 import { getStoredUser, useAuth } from '../utils/auth';
 
 export const api = axios.create({
-  baseURL: import.meta.env.API_BASE_URL,
+  baseURL: import.meta.env.API_BASE_URL ?? 'http://localhost:8080/api/',
   withCredentials: true,
   xsrfHeaderName: 'X-XSRF-TOKEN',
   xsrfCookieName: 'XSRF-TOKEN'
 });
 
-// biome-ignore lint/suspicious/noExplicitAny:
-function responseInterceptorSuccess(response: AxiosResponse<any, any>) {
+function responseInterceptorSuccess(response: AxiosResponse) {
   return response;
 }
 
@@ -35,8 +34,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-function isUnauthorizedResponse(error: AxiosError<unknown, any>) {
+function isUnauthorizedResponse(error: AxiosError<unknown>) {
   return error.response?.status === 401 && error.response?.headers['www-authenticate']?.startsWith('Bearer error="invalid_token"');
 }
 
@@ -46,33 +44,31 @@ export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) 
   const router = useRouter();
 
   useEffect(() => {
-    const respInterceptor = axios.interceptors.response.use(
-      responseInterceptorSuccess,
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      async (error: AxiosError<unknown, any>) => {
-        /* if (error instanceof Error && error.message === 'TOKEN_NOT_FOUND') {
-          await logout();
+    const respInterceptor = axios.interceptors.response.use(responseInterceptorSuccess, async (error: AxiosError<unknown>) => {
+      if (error instanceof Error && error.message === 'TOKEN_NOT_FOUND') {
+        await logout();
+        await new Promise((r) => setTimeout(r, 1));
+        await router.invalidate();
+        await navigate({ to: '/login' });
+        return;
+      }
+
+      if (isUnauthorizedResponse(error)) {
+        const result = await axios.post('/auth/refresh-token');
+
+        if (result.status !== 200) {
+          await login(result.data);
+          await new Promise((r) => setTimeout(r, 1));
           await router.invalidate();
           await navigate({ to: '/login' });
           return;
         }
 
-        if (isUnauthorizedResponse(error)) {
-          const result = await axios.post('/auth/refresh-token');
-
-          if (result.status !== 200) {
-            await login(result.data);
-            await router.invalidate();
-            await navigate({ to: '/login' });
-            return;
-          }
-
-          return axios(error.config ?? {});
-        } */
-
-        return Promise.reject(error);
+        return axios(error.config ?? {});
       }
-    );
+
+      return Promise.reject(error);
+    });
 
     return () => {
       axios.interceptors.response.eject(respInterceptor);

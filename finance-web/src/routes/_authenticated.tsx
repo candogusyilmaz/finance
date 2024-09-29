@@ -2,6 +2,7 @@ import { ActionIcon, AppShell, Burger, Group, ScrollArea, Title, useMantineColor
 import { useDisclosure } from '@mantine/hooks';
 import { IconMoon, IconSun } from '@tabler/icons-react';
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
+import Brand from 'src/components/CanverseLogo';
 import { Navbar } from 'src/components/Shared/Nav/Navbar';
 import UserInfo from 'src/components/Shared/Nav/UserInfo';
 
@@ -29,7 +30,7 @@ export function Layout() {
       padding="xl"
       header={{ height: 60 }}
       navbar={{ width: 260, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-      styles={(theme) => ({
+      styles={{
         header: {
           backgroundColor: 'light-dark(var(--mantine-color-gray-0),var(--mantine-color-dark-7))',
           borderBottom: '1px solid light-dark(var(--mantine-color-gray-2),var(--mantine-color-dark-5))'
@@ -41,11 +42,11 @@ export function Layout() {
         main: {
           backgroundColor: 'light-dark(var(--mantine-color-gray-1),var(--mantine-color-dark-8))'
         }
-      })}>
+      }}>
       <AppShell.Header>
         <Group h="100%" align="center" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <ActionIcon ml="auto" onClick={toggleColorScheme} variant="default" aria-label="Toggle color scheme">
+          <ActionIcon ml="auto" onClick={toggleColorScheme} variant="subtle" aria-label="Toggle color scheme">
             {colorScheme === 'dark' && <IconSun size={16} />}
             {colorScheme === 'light' && <IconMoon size={16} />}
           </ActionIcon>
@@ -53,9 +54,10 @@ export function Layout() {
       </AppShell.Header>
       <AppShell.Navbar>
         <AppShell.Section h="64px">
-          <Group h="100%" align="center" pl="1.5rem">
+          <Group h="100%" align="center" pl="1.5rem" gap="xs">
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-            <Title size="24">Canverse</Title>
+            <Brand />
+            <Title size="20">Canverse</Title>
           </Group>
         </AppShell.Section>
         <AppShell.Section grow my="md" component={ScrollArea}>

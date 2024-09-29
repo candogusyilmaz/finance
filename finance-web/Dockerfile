@@ -1,11 +1,14 @@
 # Stage 1: Build the React app
-FROM node:18-alpine AS builder
+FROM node:22-alpine3.19 AS builder
+
+ARG API_BASE_URL
+ENV API_BASE_URL=$API_BASE_URL
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 

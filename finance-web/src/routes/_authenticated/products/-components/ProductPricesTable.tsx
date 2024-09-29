@@ -155,7 +155,7 @@ export default function ProductPricesTable() {
             </Stack>
           </Popover.Dropdown>
         </Popover>
-        <CreateProductPriceModal productId={productId} />
+        <CreateProductPriceModal productId={Number.parseInt(productId)} />
       </Group>
       <PreconfiguredDataTable
         minHeight={rem(300)}

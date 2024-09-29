@@ -3,6 +3,7 @@ import { useDataTableColumns } from 'mantine-datatable';
 import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
+import type { GetEmployeesResponse } from 'src/api/types/EmployeeTypes';
 import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
 import { FormatDate } from 'src/utils/formatter';
 
