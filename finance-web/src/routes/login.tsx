@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Flex, Paper, PasswordInput, TextInput, Title, rem } from '@mantine/core';
+import { Alert, Box, Button, Flex, Paper, PasswordInput, TextInput, Title, rem, useMantineColorScheme } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { IconAlertTriangle, IconLock, IconUser } from '@tabler/icons-react';
 import { createFileRoute, redirect, useRouter, useRouterState } from '@tanstack/react-router';
@@ -30,6 +30,7 @@ const loginSchema = z.object({
 });
 
 function Login() {
+  const { colorScheme } = useMantineColorScheme();
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -61,20 +62,22 @@ function Login() {
       form.reset();
     }
   });
-
   return (
     <>
       <Box
-        style={{ zIndex: -1, filter: 'blur(13px)', WebkitFilter: 'blur(13px)', msFilter: 'blur(13px)' }}
         pos="fixed"
         left={0}
         right={0}
         h="100%"
-        bgsz="cover"
-        bg="url('/assets/login-bg.jpg')"
+        style={{
+          backgroundImage:
+            colorScheme === 'light'
+              ? 'linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%)'
+              : 'radial-gradient(circle, #0c1114, #0a0f11, #080c0e, #06090b, #040607)'
+        }}
       />
       <Flex justify="center" align="center" h="100dvh">
-        <Paper withBorder shadow="xl" w={425} px={40} py={40} radius="xs">
+        <Paper withBorder shadow="xl" w={450} px={40} py={40} radius="sm" style={{ zIndex: 1000 }}>
           <Title fz={28} fw={500} mb={25}>
             Giriş
           </Title>
@@ -86,7 +89,7 @@ function Login() {
           <form onSubmit={form.onSubmit((data) => login.mutate(data))}>
             <TextInput
               label="Kullanıcı Adı"
-              placeholder="tire_ins"
+              placeholder="canverse"
               leftSection={<IconUser size={16} />}
               key={form.key('username')}
               {...form.getInputProps('username')}
