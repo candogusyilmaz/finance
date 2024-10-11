@@ -96,7 +96,7 @@ export default function PurchasesTable() {
           })
         })
       }
-      totalRecords={query.data?.totalElements}
+      totalRecords={query.data?.page.totalElements}
       recordsPerPage={size}
       page={page}
       onPageChange={(p) =>

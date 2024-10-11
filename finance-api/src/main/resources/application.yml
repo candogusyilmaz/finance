@@ -12,7 +12,7 @@ spring:
   application:
     name: Finance
   datasource:
-    url: jdbc:postgresql://localhost:5432/test
+    url: jdbc:postgresql://localhost:5432/finance_db
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver

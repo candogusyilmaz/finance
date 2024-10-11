@@ -17,7 +17,11 @@ public record CreateProductPriceRequest(
         Optional<Long> priceConfirmedById,
         @NotNull(message = "Para birimi boş olamaz!")
         Long currencyId,
+        @NotNull(message = "KDV oranı boş olamaz!")
+        @PositiveOrZero(message = "KDV oranı pozitif olmalıdır!")
         Double vatRate,
+        @NotNull(message = "Stopaj oranı boş olamaz!")
+        @PositiveOrZero(message = "Stopaj oranı pozitif olmalıdır!")
         Double withholdingTaxRate,
         @NotNull(message = "Başlangıç tarihi boş olamaz!")
         LocalDate startDate,

@@ -29,7 +29,7 @@ export default function WorksitesTable() {
       { accessor: 'organization.name', title: 'Organizasyon', sortable: true },
       { accessor: 'name', title: 'Çalışma Yeri', sortable: true },
       {
-        accessor: 'currentSupervisor.supervisor.firstName',
+        accessor: 'currentSupervisor.supervisor.name',
         title: 'Denetleyici',
         sortable: true,
         render: (record) => record.supervisor?.name
@@ -51,7 +51,7 @@ export default function WorksitesTable() {
           })
         })
       }
-      totalRecords={query.data?.totalElements}
+      totalRecords={query.data?.page.totalElements}
       recordsPerPage={size}
       page={page}
       onPageChange={(p) =>

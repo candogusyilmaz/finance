@@ -1,10 +1,10 @@
-import { ActionIcon, AppShell, Burger, Group, ScrollArea, Title, useMantineColorScheme } from '@mantine/core';
+import { AppShell, Burger, Group, ScrollArea, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconMoon, IconSun } from '@tabler/icons-react';
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
 import Brand from 'src/components/CanverseLogo';
 import { Navbar } from 'src/components/Shared/Nav/Navbar';
 import UserInfo from 'src/components/Shared/Nav/UserInfo';
+import ToggleColorSchemeButton from 'src/components/ToggleColorSchemeButton';
 
 export const Route = createFileRoute('/_authenticated')({
   component: Layout,
@@ -22,7 +22,6 @@ export const Route = createFileRoute('/_authenticated')({
 
 export function Layout() {
   const [opened, { toggle }] = useDisclosure();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
     <AppShell
@@ -46,10 +45,7 @@ export function Layout() {
       <AppShell.Header>
         <Group h="100%" align="center" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <ActionIcon ml="auto" onClick={toggleColorScheme} variant="subtle" aria-label="Toggle color scheme">
-            {colorScheme === 'dark' && <IconSun size={16} />}
-            {colorScheme === 'light' && <IconMoon size={16} />}
-          </ActionIcon>
+          <ToggleColorSchemeButton ml="auto" />
         </Group>
       </AppShell.Header>
       <AppShell.Navbar>

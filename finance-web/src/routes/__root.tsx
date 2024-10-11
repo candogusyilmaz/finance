@@ -12,9 +12,9 @@ import 'dayjs/locale/tr';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import 'mantine-datatable/styles.layer.css';
 import { QueryClientProvider } from 'react-query';
+import NotFound from 'src/components/Shared/NotFound/NotFound';
 import { DefaultQueryClient } from 'src/react-query';
 import { MantineTheme } from 'src/theme';
-import NotFound from '../components/Shared/NotFound/NotFound';
 import '../styles.css';
 import type { AuthContext } from '../utils/auth';
 
@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<{
 function Root() {
   return (
     <QueryClientProvider client={DefaultQueryClient}>
-      <MantineProvider theme={MantineTheme} defaultColorScheme="dark">
+      <MantineProvider theme={MantineTheme} defaultColorScheme="light">
         <Notifications />
         <DatesProvider settings={{ locale: 'tr' }}>
           <ModalsProvider>

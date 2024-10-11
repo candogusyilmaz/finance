@@ -200,12 +200,12 @@ function EmployeeSalaryHistoryTable({ employeeId }: Readonly<{ employeeId: strin
             background: 'transparent'
           }
         }}>
-        <Table highlightOnHover highlightOnHoverColor="dark.6">
+        <Table highlightOnHover>
           <Table.Thead>
             <Table.Tr
               styles={{
                 tr: {
-                  backgroundColor: 'var(--mantine-color-dark-5)'
+                  backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5))'
                 }
               }}>
               <Table.Th>
@@ -307,7 +307,7 @@ function EmployeeEmploymentHistoryTable({ employeeId }: Readonly<{ employeeId: s
             background: 'transparent'
           }
         }}>
-        <Table highlightOnHover highlightOnHoverColor="dark.6">
+        <Table highlightOnHover>
           <Table.Thead
             styles={{
               thead: {}
@@ -315,7 +315,7 @@ function EmployeeEmploymentHistoryTable({ employeeId }: Readonly<{ employeeId: s
             <Table.Tr
               styles={{
                 tr: {
-                  backgroundColor: 'var(--mantine-color-dark-5)'
+                  backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5))'
                 }
               }}>
               <Table.Th>
@@ -416,15 +416,12 @@ function EmployeeAssignmentHistoryTable({ employeeId }: Readonly<{ employeeId: s
             background: 'transparent'
           }
         }}>
-        <Table highlightOnHover highlightOnHoverColor="dark.6">
-          <Table.Thead
-            styles={{
-              thead: {}
-            }}>
+        <Table highlightOnHover>
+          <Table.Thead>
             <Table.Tr
               styles={{
                 tr: {
-                  backgroundColor: 'var(--mantine-color-dark-5)'
+                  backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5))'
                 }
               }}>
               <Table.Th>
@@ -522,12 +519,12 @@ function EmployeePaymentHistoryTable({ employeeId }: Readonly<{ employeeId: stri
             background: 'transparent'
           }
         }}>
-        <Table highlightOnHover highlightOnHoverColor="dark.6">
-          <Table.Thead styles={{ thead: { position: 'sticky' } }}>
+        <Table highlightOnHover>
+          <Table.Thead>
             <Table.Tr
               styles={{
                 tr: {
-                  backgroundColor: 'var(--mantine-color-dark-5)'
+                  backgroundColor: 'light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5))'
                 }
               }}>
               <Table.Th>

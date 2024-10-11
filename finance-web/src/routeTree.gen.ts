@@ -13,13 +13,13 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedWorksitesIndexImport } from './routes/_authenticated/worksites/index'
 import { Route as AuthenticatedPurchasesIndexImport } from './routes/_authenticated/purchases/index'
 import { Route as AuthenticatedProductsIndexImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedOrganizationsIndexImport } from './routes/_authenticated/organizations/index'
 import { Route as AuthenticatedEmployeesIndexImport } from './routes/_authenticated/employees/index'
 import { Route as AuthenticatedDeliveriesIndexImport } from './routes/_authenticated/deliveries/index'
-import { Route as AuthenticatedDashboardIndexImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedPurchasesNewImport } from './routes/_authenticated/purchases/new'
 import { Route as AuthenticatedProductsProductIdImport } from './routes/_authenticated/products/$productId'
 import { Route as AuthenticatedEmployeesEmployeeIdImport } from './routes/_authenticated/employees/$employeeId'
@@ -35,6 +35,11 @@ const LoginRoute = LoginImport.update({
 const AuthenticatedRoute = AuthenticatedImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 const AuthenticatedWorksitesIndexRoute =
@@ -71,12 +76,6 @@ const AuthenticatedEmployeesIndexRoute =
 const AuthenticatedDeliveriesIndexRoute =
   AuthenticatedDeliveriesIndexImport.update({
     path: '/deliveries/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-
-const AuthenticatedDashboardIndexRoute =
-  AuthenticatedDashboardIndexImport.update({
-    path: '/dashboard/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -122,6 +121,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/deliveries/new': {
       id: '/_authenticated/deliveries/new'
       path: '/deliveries/new'
@@ -148,13 +154,6 @@ declare module '@tanstack/react-router' {
       path: '/purchases/new'
       fullPath: '/purchases/new'
       preLoaderRoute: typeof AuthenticatedPurchasesNewImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/dashboard/': {
-      id: '/_authenticated/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardIndexImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/deliveries/': {
@@ -205,11 +204,11 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedDeliveriesNewRoute: typeof AuthenticatedDeliveriesNewRoute
   AuthenticatedEmployeesEmployeeIdRoute: typeof AuthenticatedEmployeesEmployeeIdRoute
   AuthenticatedProductsProductIdRoute: typeof AuthenticatedProductsProductIdRoute
   AuthenticatedPurchasesNewRoute: typeof AuthenticatedPurchasesNewRoute
-  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
   AuthenticatedDeliveriesIndexRoute: typeof AuthenticatedDeliveriesIndexRoute
   AuthenticatedEmployeesIndexRoute: typeof AuthenticatedEmployeesIndexRoute
   AuthenticatedOrganizationsIndexRoute: typeof AuthenticatedOrganizationsIndexRoute
@@ -219,11 +218,11 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedDeliveriesNewRoute: AuthenticatedDeliveriesNewRoute,
   AuthenticatedEmployeesEmployeeIdRoute: AuthenticatedEmployeesEmployeeIdRoute,
   AuthenticatedProductsProductIdRoute: AuthenticatedProductsProductIdRoute,
   AuthenticatedPurchasesNewRoute: AuthenticatedPurchasesNewRoute,
-  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   AuthenticatedDeliveriesIndexRoute: AuthenticatedDeliveriesIndexRoute,
   AuthenticatedEmployeesIndexRoute: AuthenticatedEmployeesIndexRoute,
   AuthenticatedOrganizationsIndexRoute: AuthenticatedOrganizationsIndexRoute,
@@ -239,11 +238,11 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/': typeof AuthenticatedIndexRoute
   '/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
   '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
   '/products/$productId': typeof AuthenticatedProductsProductIdRoute
   '/purchases/new': typeof AuthenticatedPurchasesNewRoute
-  '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/deliveries': typeof AuthenticatedDeliveriesIndexRoute
   '/employees': typeof AuthenticatedEmployeesIndexRoute
   '/organizations': typeof AuthenticatedOrganizationsIndexRoute
@@ -253,13 +252,12 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/': typeof AuthenticatedIndexRoute
   '/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
   '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
   '/products/$productId': typeof AuthenticatedProductsProductIdRoute
   '/purchases/new': typeof AuthenticatedPurchasesNewRoute
-  '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/deliveries': typeof AuthenticatedDeliveriesIndexRoute
   '/employees': typeof AuthenticatedEmployeesIndexRoute
   '/organizations': typeof AuthenticatedOrganizationsIndexRoute
@@ -272,11 +270,11 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
   '/_authenticated/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
   '/_authenticated/products/$productId': typeof AuthenticatedProductsProductIdRoute
   '/_authenticated/purchases/new': typeof AuthenticatedPurchasesNewRoute
-  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/deliveries/': typeof AuthenticatedDeliveriesIndexRoute
   '/_authenticated/employees/': typeof AuthenticatedEmployeesIndexRoute
   '/_authenticated/organizations/': typeof AuthenticatedOrganizationsIndexRoute
@@ -290,11 +288,11 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/login'
+    | '/'
     | '/deliveries/new'
     | '/employees/$employeeId'
     | '/products/$productId'
     | '/purchases/new'
-    | '/dashboard'
     | '/deliveries'
     | '/employees'
     | '/organizations'
@@ -303,13 +301,12 @@ export interface FileRouteTypes {
     | '/worksites'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | ''
     | '/login'
+    | '/'
     | '/deliveries/new'
     | '/employees/$employeeId'
     | '/products/$productId'
     | '/purchases/new'
-    | '/dashboard'
     | '/deliveries'
     | '/employees'
     | '/organizations'
@@ -320,11 +317,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/login'
+    | '/_authenticated/'
     | '/_authenticated/deliveries/new'
     | '/_authenticated/employees/$employeeId'
     | '/_authenticated/products/$productId'
     | '/_authenticated/purchases/new'
-    | '/_authenticated/dashboard/'
     | '/_authenticated/deliveries/'
     | '/_authenticated/employees/'
     | '/_authenticated/organizations/'
@@ -363,11 +360,11 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/",
         "/_authenticated/deliveries/new",
         "/_authenticated/employees/$employeeId",
         "/_authenticated/products/$productId",
         "/_authenticated/purchases/new",
-        "/_authenticated/dashboard/",
         "/_authenticated/deliveries/",
         "/_authenticated/employees/",
         "/_authenticated/organizations/",
@@ -378,6 +375,10 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/_authenticated/": {
+      "filePath": "_authenticated/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/deliveries/new": {
       "filePath": "_authenticated/deliveries/new.tsx",
@@ -393,10 +394,6 @@ export const routeTree = rootRoute
     },
     "/_authenticated/purchases/new": {
       "filePath": "_authenticated/purchases/new.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/dashboard/": {
-      "filePath": "_authenticated/dashboard/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/deliveries/": {

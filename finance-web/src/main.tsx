@@ -8,7 +8,7 @@ import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
-import { Flex, Loader } from '@mantine/core';
+import FullscreenLoader from './components/FullscreenLoader';
 import { routeTree } from './routeTree.gen';
 
 i18n
@@ -24,11 +24,7 @@ i18n
 
 const router = createRouter({
   routeTree,
-  defaultPendingComponent: () => (
-    <Flex w="100dvw" h="100dvh" justify="center" align="center">
-      <Loader type="dots" />
-    </Flex>
-  ),
+  defaultPendingComponent: FullscreenLoader,
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   context: {
     auth: undefined!
@@ -55,12 +51,10 @@ function App() {
   );
 }
 
-// biome-ignore lint/style/noNonNullAssertion:
 const rootElement = document.getElementById('root')!;
 
 if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
+  ReactDOM.createRoot(rootElement).render(
     <StrictMode>
       <App />
     </StrictMode>

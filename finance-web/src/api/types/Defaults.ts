@@ -25,12 +25,14 @@ export type Sort = {
 
 export type Page<T> = {
   content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-  numberOfElements: number;
-  empty: boolean;
+  page: {
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+    numberOfElements: number;
+    empty: boolean;
+  };
 };
 
 // biome-ignore lint/complexity/noBannedTypes:

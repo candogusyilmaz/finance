@@ -59,7 +59,7 @@ export default function OrganizationsTable() {
           })
         })
       }
-      totalRecords={query.data?.totalElements}
+      totalRecords={query.data?.page.totalElements}
       recordsPerPage={20}
       page={page}
       onPageChange={(p) =>

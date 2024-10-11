@@ -28,8 +28,8 @@ const productPriceSchema = z
     endDate: z.date({ required_error: 'Bitiş tarihi gereklidir.' }),
     supplierId: z.string().optional(),
     priceConfirmedById: z.string().optional(),
-    vatRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.').optional(),
-    withholdingTaxRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.').optional(),
+    vatRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.'),
+    withholdingTaxRate: z.number().min(0, 'En az 0 olabilir.').max(100, 'En fazla 100 olabilir.'),
     description: z.string().optional()
   })
   .refine(
@@ -184,6 +184,7 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
             />
             <Group grow align="flex-start">
               <NumberInput
+                withAsterisk
                 label="KDV Oranı"
                 placeholder="%20"
                 min={0}
@@ -195,6 +196,7 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
                 {...form.getInputProps('vatRate')}
               />
               <NumberInput
+                withAsterisk
                 label="Stopaj Oranı"
                 placeholder="%8"
                 min={0}
