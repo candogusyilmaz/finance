@@ -22,8 +22,6 @@ export default function PreconfiguredDataTable<T>(props: DataTableProps<T>) {
       }}
       height={rem(600)}
       noRecordsText="Listenelecek kayıt bulunmuyor"
-      loadingText="Yükleniyor..."
-      paginationText={({ from, to, totalRecords }) => `${from} - ${to} / ${totalRecords}`}
       {...props}
     />
   );
