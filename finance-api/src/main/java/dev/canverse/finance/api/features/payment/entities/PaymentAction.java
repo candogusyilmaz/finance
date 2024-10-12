@@ -22,14 +22,14 @@ public class PaymentAction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Payment payment;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Payment.Status status;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @CreatedBy
     private User createdBy;
 

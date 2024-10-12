@@ -33,18 +33,18 @@ public class Product {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProductUnit unit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ProductCategory category;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @CreatedBy
     @Setter(AccessLevel.NONE)
     private User createdBy;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @LastModifiedBy
     @Setter(AccessLevel.NONE)
     private User updatedBy;

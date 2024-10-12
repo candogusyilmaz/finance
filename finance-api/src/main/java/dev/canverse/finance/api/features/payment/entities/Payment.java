@@ -31,7 +31,7 @@ public class Payment {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Party toParty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private PaymentCategory category;
 
     private String description;

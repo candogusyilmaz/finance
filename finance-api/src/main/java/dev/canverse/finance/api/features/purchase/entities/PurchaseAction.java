@@ -23,7 +23,7 @@ public class PurchaseAction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Purchase purchase;
 
     @Column(nullable = false)
@@ -32,7 +32,7 @@ public class PurchaseAction {
 
     private String comment;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @CreatedBy
     @Setter(AccessLevel.NONE)
     private User createdBy;

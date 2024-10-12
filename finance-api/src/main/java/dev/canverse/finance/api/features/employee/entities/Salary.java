@@ -26,13 +26,13 @@ public class Salary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal wage;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Currency currency;
 
     @AttributeOverrides({
