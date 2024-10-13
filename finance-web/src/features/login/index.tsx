@@ -1,8 +1,8 @@
 import { Button, Center, Divider, Paper, type PaperProps, PasswordInput, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconLock, IconUser } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
 import { getRouteApi, useRouter } from '@tanstack/react-router';
-import { useMutation } from 'react-query';
 import { api } from 'src/api/axios';
 import type { CreateAccessTokenRequest, CreateAccessTokenResponse } from 'src/api/types/TokenTypes';
 import ToggleColorSchemeButton from 'src/components/ToggleColorSchemeButton';
@@ -78,7 +78,7 @@ function Login(props: PaperProps) {
           {...form.getInputProps('password')}
           mb={40}
         />
-        <Button fullWidth mt="xl" loading={login.isLoading} disabled={login.isSuccess} type="submit">
+        <Button fullWidth mt="xl" loading={login.isPending} disabled={login.isSuccess} type="submit">
           Giriş
         </Button>
       </form>

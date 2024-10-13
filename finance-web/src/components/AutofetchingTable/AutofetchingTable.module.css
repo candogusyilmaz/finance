@@ -1,0 +1,20 @@
+.no-records {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.table {
+  thead {
+    tr {
+      font-weight: bold;
+      background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+    }
+  }
+}
+
+.error {
+  border: 1px solid red;
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
+}

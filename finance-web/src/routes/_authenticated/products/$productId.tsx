@@ -1,8 +1,8 @@
 import { Card, Grid, LoadingOverlay, Stack, Tabs, Text, Title } from '@mantine/core';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
-import { type ApiError, PageSchema } from 'src/api/types/Defaults';
+import { PageSchema } from 'src/api/types/Defaults';
 import type { GetProductByIdResponse } from 'src/api/types/ProductTypes';
 import { FormatDateTime } from 'src/utils/formatter';
 import { z } from 'zod';
@@ -23,18 +23,9 @@ function Product() {
   const navigate = Route.useNavigate();
   const query = useQuery({
     queryKey: ['products', productId],
-    cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     queryFn: async () => {
       return (await api.get<GetProductByIdResponse>(`/products/${productId}`)).data;
-    },
-    onError(err: ApiError) {
-      if (err.response?.status === 404) {
-        navigate({
-          to: '/products',
-          search: { page: 0, size: 20, sort: { id: 'id', direction: 'desc' } }
-        });
-      }
     }
   });
 

@@ -3,8 +3,8 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconPlus } from '@tabler/icons-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
@@ -47,7 +47,7 @@ export default function CreateWorksiteModal() {
       });
       close();
       client.invalidateQueries({
-        queryKey: 'worksites'
+        queryKey: ['worksites']
       });
     },
     onError(error: AxiosError<ProblemDetail>, _variables, _context) {
@@ -96,7 +96,7 @@ export default function CreateWorksiteModal() {
             />
 
             <Group justify="flex-end" mt="md">
-              <Button type="submit" loading={create.isLoading}>
+              <Button type="submit" loading={create.isPending}>
                 Kaydet
               </Button>
             </Group>

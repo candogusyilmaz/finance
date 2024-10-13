@@ -23,11 +23,11 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconBasket, IconBasketPlus, IconCalendar, IconPackage, IconPlus, IconReceiptTax, IconTrash } from '@tabler/icons-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
-import { type ApiError, createURL, setInvalidParams } from 'src/api/types/Defaults';
+import { type ApiError, type ID, createURL, setInvalidParams } from 'src/api/types/Defaults';
 import type { GetProductPricesForPurchaseResponse } from 'src/api/types/ProductPriceTypes';
 import type { CreatePurchaseItemRequest, CreatePurchaseRequest } from 'src/api/types/PurchaseTypes';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
@@ -83,7 +83,7 @@ function New() {
         color: 'green'
       });
       client.invalidateQueries({
-        queryKey: 'purchases'
+        queryKey: ['purchases']
       });
       navigate({
         to: '/purchases',
@@ -407,7 +407,7 @@ function PurchaseProductDisplayTable({
   );
 }
 
-function PurchaseProductPricesDisplayTable({ supplierId, date }: Readonly<{ supplierId: string | number; date: Date }>) {
+function PurchaseProductPricesDisplayTable({ supplierId, date }: Readonly<{ supplierId: ID; date: Date }>) {
   const query = useQuery({
     queryKey: ['product-prices', supplierId, date],
     queryFn: async () =>
@@ -416,7 +416,6 @@ function PurchaseProductPricesDisplayTable({ supplierId, date }: Readonly<{ supp
           createURL('/product-prices/purchase', undefined, { supplierId, date: FormatISODate(date) })
         )
       ).data,
-    cacheTime: 120000,
     staleTime: 120000,
     enabled: !!supplierId && !!date
   });

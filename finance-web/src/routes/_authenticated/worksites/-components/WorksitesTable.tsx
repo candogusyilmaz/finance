@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useDataTableColumns } from 'mantine-datatable';
-import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
@@ -19,7 +19,6 @@ export default function WorksitesTable() {
   const query = useQuery({
     queryKey: ['worksites', pageable],
     queryFn: async () => (await api.get<Page<GetWorksitesResponse>>(createURL('/worksites', pageable))).data,
-    cacheTime: 120000,
     staleTime: 120000
   });
 

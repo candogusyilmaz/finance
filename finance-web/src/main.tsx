@@ -8,6 +8,7 @@ import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import FullscreenLoader from './components/FullscreenLoader';
 import { routeTree } from './routeTree.gen';
 
@@ -56,7 +57,13 @@ const rootElement = document.getElementById('root')!;
 if (!rootElement.innerHTML) {
   ReactDOM.createRoot(rootElement).render(
     <StrictMode>
-      <App />
+      <HelmetProvider>
+        <Helmet>
+          <title>Finance | Canverse</title>
+          <link rel="canonical" href="https://fin.canverse.dev/" />
+        </Helmet>
+        <App />
+      </HelmetProvider>
     </StrictMode>
   );
 }

@@ -1,6 +1,6 @@
 import { Select, type SelectProps } from '@mantine/core';
 import { IconAsset } from '@tabler/icons-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
 const ProductSelect = (props: SelectProps) => {
@@ -9,7 +9,6 @@ const ProductSelect = (props: SelectProps) => {
     queryFn: async () => {
       return (await api.get<{ id: number; name: string }[]>('/products/simple')).data;
     },
-    cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() }))
   });

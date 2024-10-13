@@ -4,10 +4,10 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconCalendar, IconCash, IconPlus, IconReceiptTax } from '@tabler/icons-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { formatISO } from 'date-fns';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
@@ -90,7 +90,7 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
       form.reset();
       close();
       client.invalidateQueries({
-        queryKey: `product-${variables.productId}-prices`
+        queryKey: [`product-${variables.productId}-prices`]
       });
     },
     onError(error: AxiosError<ProblemDetail>, _variables, _context) {
@@ -217,7 +217,7 @@ export default function CreateProductPriceModal({ productId }: Readonly<{ produc
             />
 
             <Group justify="flex-end" mt="md">
-              <Button type="submit" loading={create.isLoading}>
+              <Button type="submit" loading={create.isPending}>
                 Kaydet
               </Button>
             </Group>

@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import type { DataTableColumn } from 'mantine-datatable';
-import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetProductsResponse } from 'src/api/types/ProductTypes';
@@ -20,8 +20,7 @@ export default function ProductsTable() {
 
   const query = useQuery({
     queryKey: ['products', pageable],
-    queryFn: async () => (await api.get<Page<GetProductsResponse>>(createURL('/products', pageable))).data,
-    cacheTime: 120000
+    queryFn: async () => (await api.get<Page<GetProductsResponse>>(createURL('/products', pageable))).data
   });
 
   const columns: DataTableColumn<GetProductsResponse>[] = [

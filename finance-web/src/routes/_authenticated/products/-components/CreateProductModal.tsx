@@ -3,8 +3,8 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconPlus } from '@tabler/icons-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import type { CreateProductRequest, ProductType } from 'src/api/types/ProductTypes';
@@ -60,7 +60,7 @@ export default function CreateProductModal() {
       });
       close();
       client.invalidateQueries({
-        queryKey: 'products'
+        queryKey: ['products']
       });
     },
     onError(error: AxiosError<ProblemDetail>, _variables, _context) {
@@ -112,7 +112,7 @@ export default function CreateProductModal() {
             />
 
             <Group justify="flex-end" mt="md">
-              <Button type="submit" loading={create.isLoading}>
+              <Button type="submit" loading={create.isPending}>
                 Kaydet
               </Button>
             </Group>

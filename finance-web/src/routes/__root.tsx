@@ -7,13 +7,13 @@ import '@mantine/notifications/styles.css';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 
 import { DatesProvider } from '@mantine/dates';
+import { QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/tr';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import 'mantine-datatable/styles.layer.css';
-import { QueryClientProvider } from 'react-query';
+import { DefaultQueryClient } from 'src/api/react-query';
 import NotFound from 'src/components/Shared/NotFound/NotFound';
-import { DefaultQueryClient } from 'src/react-query';
 import { MantineTheme } from 'src/theme';
 import '../styles.css';
 import type { AuthContext } from '../utils/auth';

@@ -1,20 +1,16 @@
 import { Select, type SelectProps } from '@mantine/core';
 import { IconBuildingFactory2 } from '@tabler/icons-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
 const WorksiteSelect = (props: SelectProps) => {
   const query = useQuery({
     queryKey: ['worksites', 'simple'],
     queryFn: async () => {
-      return (
-        await api.get<{ id: number; name: string }[]>('/worksites/simple')
-      ).data;
+      return (await api.get<{ id: number; name: string }[]>('/worksites/simple')).data;
     },
-    cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
-    select: (data) =>
-      data.map((s) => ({ label: s.name, value: s.id.toString() }))
+    select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() }))
   });
 
   return (

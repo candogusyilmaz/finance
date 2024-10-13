@@ -1,6 +1,6 @@
 import { type ComboboxItem, Select, type SelectProps } from '@mantine/core';
 import { IconCurrency } from '@tabler/icons-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
 export interface Currency {
@@ -27,7 +27,6 @@ const CurrencySelect = ({ onCurrencyChange, ...props }: CustomSelectProps) => {
     queryFn: async () => {
       return (await api.get<Currency[]>('/currencies')).data;
     },
-    cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     select: (data) => data.map((s) => ({ ...s, label: s.code, value: s.id.toString() }))
   });

@@ -1,6 +1,6 @@
 import { Select, type SelectProps, rem } from '@mantine/core';
 import { IconCategory } from '@tabler/icons-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 import type { GetProductCategoriesResponse } from 'src/api/types/ProductTypes';
 
@@ -11,8 +11,7 @@ const ProductCategorySelect = (props: SelectProps) => {
       return (await api.get<GetProductCategoriesResponse[]>('/product-categories')).data;
     },
     select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() })),
-    staleTime: Number.POSITIVE_INFINITY,
-    cacheTime: Number.POSITIVE_INFINITY
+    staleTime: Number.POSITIVE_INFINITY
   });
 
   return (

@@ -1,6 +1,8 @@
 import type { AxiosError } from 'axios';
 import { z } from 'zod';
 
+export type ID = string | number;
+
 export type ProblemDetail = {
   type: string;
   title: string;

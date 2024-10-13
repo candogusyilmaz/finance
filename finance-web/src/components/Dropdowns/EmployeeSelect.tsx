@@ -1,6 +1,6 @@
 import { Select, type SelectProps } from '@mantine/core';
 import { IconUser } from '@tabler/icons-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
 const EmployeeSelect = (props: SelectProps) => {
@@ -9,7 +9,6 @@ const EmployeeSelect = (props: SelectProps) => {
     queryFn: async () => {
       return (await api.get<{ id: number; name: string }[]>('/employees/simple')).data;
     },
-    cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() }))
   });

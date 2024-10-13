@@ -1,9 +1,9 @@
 import { ActionIcon, Badge, Menu, Text } from '@mantine/core';
 import { IconDotsVertical, IconTruckDelivery } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
 import { Link, getRouteApi } from '@tanstack/react-router';
 import { useDataTableColumns } from 'mantine-datatable';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetPurchasesResponse } from 'src/api/types/PurchaseTypes';
@@ -27,7 +27,6 @@ export default function PurchasesTable() {
   const query = useQuery({
     queryKey: ['purchases', pageable, supplierId],
     queryFn: async () => (await api.get<Page<GetPurchasesResponse>>(createURL('/purchases', pageable, { supplierId }))).data,
-    cacheTime: 120000,
     staleTime: 120000
   });
 

@@ -1,6 +1,6 @@
 import { Select, type SelectProps, rem } from '@mantine/core';
 import { IconBox } from '@tabler/icons-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 import type { GetProductUnitsResponse } from 'src/api/types/ProductTypes';
 
@@ -11,8 +11,7 @@ const ProductUnitSelect = (props: SelectProps) => {
       return (await api.get<GetProductUnitsResponse[]>('/product-units')).data;
     },
     select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() })),
-    staleTime: Number.POSITIVE_INFINITY,
-    cacheTime: Number.POSITIVE_INFINITY
+    staleTime: Number.POSITIVE_INFINITY
   });
 
   return (

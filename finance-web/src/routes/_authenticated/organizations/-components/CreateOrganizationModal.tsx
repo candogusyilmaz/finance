@@ -3,9 +3,9 @@ import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconPlus } from '@tabler/icons-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { IMaskInput } from 'react-imask';
-import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ApiError, setInvalidParams } from 'src/api/types/Defaults';
 import type { CreateOrganizationRequest } from 'src/api/types/OrganizationTypes';
@@ -53,7 +53,7 @@ export default function CreateOrganizationModal() {
       form.reset();
       close();
       client.invalidateQueries({
-        queryKey: 'organizations'
+        queryKey: ['organizations']
       });
     },
     onError(error: ApiError, _variables, _context) {
@@ -135,7 +135,7 @@ export default function CreateOrganizationModal() {
               <TextInput label="Email" placeholder="abc@google.com" key={form.key('email')} {...form.getInputProps('email')} />
             </Group>
             <Group justify="flex-end" mt="md">
-              <Button type="submit" loading={create.isLoading}>
+              <Button type="submit" loading={create.isPending}>
                 Kaydet
               </Button>
             </Group>

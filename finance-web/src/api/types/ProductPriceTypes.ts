@@ -1,3 +1,5 @@
+import type { ID } from './Defaults';
+
 export type GetProductPricesResponse = {
   id: number;
   supplier?: {
@@ -48,7 +50,7 @@ export type CreateProductPriceRequest = {
 };
 
 export type GetProductPricesForPurchaseRequest = {
-  supplierId: string | number;
+  supplierId: ID;
   date: string;
 };
 

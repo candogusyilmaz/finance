@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useDataTableColumns } from 'mantine-datatable';
-import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetEmployeesResponse } from 'src/api/types/EmployeeTypes';
@@ -21,7 +21,6 @@ export default function ProductsTable() {
   const query = useQuery({
     queryKey: ['employees', pageable],
     queryFn: async () => (await api.get<Page<GetEmployeesResponse>>(createURL('/employees', pageable))).data,
-    cacheTime: 120000,
     staleTime: 120000
   });
 

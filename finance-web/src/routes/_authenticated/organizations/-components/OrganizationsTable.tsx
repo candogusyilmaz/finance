@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import type { DataTableColumn } from 'mantine-datatable';
-import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetOrganizationsResponse } from 'src/api/types/OrganizationTypes';
@@ -22,8 +22,7 @@ export default function OrganizationsTable() {
     queryKey: ['organizations', pageable, role],
     queryFn: async () => {
       return (await api.get<Page<GetOrganizationsResponse>>(createURL('/organizations', pageable, { role }))).data;
-    },
-    cacheTime: 6000
+    }
   });
 
   const columns: DataTableColumn<GetOrganizationsResponse>[] = [

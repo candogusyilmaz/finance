@@ -1,10 +1,10 @@
 import { Button, Group, Popover, Stack, rem } from '@mantine/core';
 import { DatePickerInput, type DateValue } from '@mantine/dates';
 import { IconCalendarDown, IconCalendarUp, IconSearch } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import type { DataTableColumn } from 'mantine-datatable';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
@@ -38,7 +38,6 @@ export default function ProductPricesTable() {
     queryFn: async () => {
       return (await api.get<Page<GetProductPricesResponse>>(createURL(`/products/${productId}/prices`, pageable, querySearchParams))).data;
     },
-    cacheTime: 1200000,
     staleTime: 1200000
   });
 

@@ -22,10 +22,10 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconAlertCircle, IconCalendar, IconCirclePlus, IconCircleX, IconTruckDelivery } from '@tabler/icons-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import type { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, createURL, setInvalidParams } from 'src/api/types/Defaults';
 import {
@@ -99,7 +99,7 @@ function New() {
         color: 'green'
       });
       client.invalidateQueries({
-        queryKey: 'purchases'
+        queryKey: ['purchases']
       });
       navigate({
         to: '/purchases',
@@ -235,22 +235,11 @@ function RemainingItemsTable({
   purchaseId,
   addDeliveryItem
 }: Readonly<{ purchaseId: number | null; addDeliveryItem: (item: CreateDeliveryItemRequest) => void }>) {
-  const navigate = Route.useNavigate();
-
   const query = useQuery({
     queryKey: ['purchases-undelivered-items', purchaseId],
     queryFn: async () => (await api.get<GetUndeliveredItemsReponse[]>(createURL(`purchases/${purchaseId}/undelivered-items`))).data,
-    cacheTime: 120000,
     staleTime: 120000,
-    enabled: !!purchaseId,
-    onSettled: (data) => {
-      if (!data || data.length === 0) {
-        navigate({
-          to: '/deliveries',
-          replace: true
-        });
-      }
-    }
+    enabled: !!purchaseId
   });
 
   if (!query.data || query.data.length === 0) {

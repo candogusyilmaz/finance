@@ -4,9 +4,9 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconCalendar, IconCash, IconPlus } from '@tabler/icons-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { formatISO } from 'date-fns';
-import { useMutation, useQueryClient } from 'react-query';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import type { CreateEmployeeRequest } from 'src/api/types/EmployeeTypes';
@@ -87,7 +87,7 @@ export default function CreateEmployeeModal() {
       });
       close();
       client.invalidateQueries({
-        queryKey: 'employees'
+        queryKey: ['employees']
       });
     },
     onError(error: AxiosError<ProblemDetail>, _variables, _context) {

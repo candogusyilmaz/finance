@@ -1,6 +1,6 @@
 import { MultiSelect, type MultiSelectProps } from '@mantine/core';
 import { IconComponents } from '@tabler/icons-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
 const ProfessionMultiSelect = (props: MultiSelectProps) => {
@@ -9,7 +9,6 @@ const ProfessionMultiSelect = (props: MultiSelectProps) => {
     queryFn: async () => {
       return (await api.get<{ id: number; name: string }[]>('/professions/simple')).data;
     },
-    cacheTime: Number.POSITIVE_INFINITY,
     staleTime: Number.POSITIVE_INFINITY,
     select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() }))
   });
