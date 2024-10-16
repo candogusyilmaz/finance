@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
 public record CreateProductRequest(
         Long productCategoryId,
         @NotBlank(message = "Ürün ismi alanı gereklidir.")
-        @Length(min = 3, max = 255, message = "Ürün ismi alanı en az 1 en fazla 255 karakter olabilir.")
+        @Length(min = 3, max = 255, message = "Ürün ismi alanı en az 3 en fazla 255 karakter olabilir.")
         String name,
         String description,
         Long productUnitId,

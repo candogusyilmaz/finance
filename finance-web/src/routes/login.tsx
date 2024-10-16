@@ -1,6 +1,6 @@
 import { Flex } from '@mantine/core';
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import Login from 'src/features/login';
+import { Login } from 'src/features/login';
 import { z } from 'zod';
 
 export const Route = createFileRoute('/login')({

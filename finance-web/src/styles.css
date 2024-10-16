@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 @layer mantine, mantine-datatable;
+
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root[data-mantine-color-scheme="dark"] {
   --mantine-color-text: #ededed;

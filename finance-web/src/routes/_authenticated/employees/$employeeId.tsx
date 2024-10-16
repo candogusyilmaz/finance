@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Helmet } from 'react-helmet-async';
-import EmployeeDetails from 'src/features/employees/details';
+import { EmployeeDetails } from 'src/features/employees/details/employee-details';
 
 export const Route = createFileRoute('/_authenticated/employees/$employeeId')({
   component: Employee

@@ -1,13 +1,14 @@
 import { ActionIcon, Avatar, Divider, Group, LoadingOverlay, Paper, Stack, Text, Title } from '@mantine/core';
 import { IconDotsVertical, IconIdBadge } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
-import type { ID } from 'src/api/types/Defaults';
-import { getEmployeeQueryOptions } from '../queries';
+import { Navigate } from '@tanstack/react-router';
+import { type ID, PageSchema } from 'src/api/types/Defaults';
+import { getEmployeeQueryOptions } from '../queries/employee-queries';
 
-function EmployeeInfoCard({ employeeId }: Readonly<{ employeeId: ID }>) {
+export function EmployeeInfoCard({ employeeId }: Readonly<{ employeeId: ID }>) {
   const { data, isError, isFetching } = useQuery(getEmployeeQueryOptions(employeeId));
 
-  if (isError || !data) return <>Not found anything?</>;
+  if (isError) return <Navigate to="/employees" replace search={PageSchema.parse} />;
 
   return (
     <Paper withBorder p="md" pos="relative">
@@ -21,13 +22,13 @@ function EmployeeInfoCard({ employeeId }: Readonly<{ employeeId: ID }>) {
           </ActionIcon>
         </Group>
         <Group align="center">
-          <Avatar size="lg" radius="md" color="initials" name={data.name} />
+          <Avatar size="lg" radius="md" color="initials" name={data?.name} />
           <Stack gap={0}>
             <Text size="xl" fw={700} tt="capitalize">
-              {data.name}
+              {data?.name}
             </Text>
             <Text size="xs" c="dimmed">
-              {data.socialSecurityNumber}
+              {data?.socialSecurityNumber}
             </Text>
           </Stack>
         </Group>
@@ -36,19 +37,17 @@ function EmployeeInfoCard({ employeeId }: Readonly<{ employeeId: ID }>) {
             <Text size="md" c="dimmed" fw={500}>
               Organizasyon
             </Text>
-            <Text fw={600}>{data.currentOrganization?.name ?? '-'}</Text>
+            <Text fw={600}>{data?.currentOrganization?.name ?? '-'}</Text>
           </Stack>
           <Divider orientation="vertical" />
           <Stack gap={5}>
             <Text size="md" c="dimmed" fw={500}>
               Çalışma Yeri
             </Text>
-            <Text fw={600}>{data.currentWorksite?.name ?? '-'}</Text>
+            <Text fw={600}>{data?.currentWorksite?.name ?? '-'}</Text>
           </Stack>
         </Group>
       </Stack>
     </Paper>
   );
 }
-
-export default EmployeeInfoCard;

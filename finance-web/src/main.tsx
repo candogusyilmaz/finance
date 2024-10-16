@@ -8,9 +8,22 @@ import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
+import { MantineProvider } from '@mantine/core';
+import { DatesProvider } from '@mantine/dates';
+import { ModalsProvider } from '@mantine/modals';
+import { Notifications } from '@mantine/notifications';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import FullscreenLoader from './components/FullscreenLoader';
+import { queryClient } from './api/react-query';
+import FullscreenLoader from './components/fullscreen-loader';
 import { routeTree } from './routeTree.gen';
+import { MantineTheme } from './theme';
+
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import '@mantine/notifications/styles.css';
+import 'mantine-datatable/styles.css';
+import './styles.css';
 
 i18n
   .use(Backend)
@@ -62,7 +75,16 @@ if (!rootElement.innerHTML) {
           <title>Finance | Canverse</title>
           <link rel="canonical" href="https://fin.canverse.dev/" />
         </Helmet>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider theme={MantineTheme} defaultColorScheme="light">
+            <Notifications />
+            <DatesProvider settings={{ locale: 'tr' }}>
+              <ModalsProvider>
+                <App />
+              </ModalsProvider>
+            </DatesProvider>
+          </MantineProvider>
+        </QueryClientProvider>
       </HelmetProvider>
     </StrictMode>
   );

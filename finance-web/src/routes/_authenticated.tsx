@@ -1,10 +1,10 @@
 import { AppShell, Burger, Group, ScrollArea, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
-import Brand from 'src/components/CanverseLogo';
 import { Navbar } from 'src/components/Shared/Nav/Navbar';
 import UserInfo from 'src/components/Shared/Nav/UserInfo';
-import ToggleColorSchemeButton from 'src/components/ToggleColorSchemeButton';
+import Brand from 'src/components/canverse-logo';
+import ToggleColorSchemeButton from 'src/components/toggle-color-scheme-button';
 
 export const Route = createFileRoute('/_authenticated')({
   component: Layout,
@@ -57,7 +57,7 @@ export function Layout() {
           </Group>
         </AppShell.Section>
         <AppShell.Section grow my="md" component={ScrollArea}>
-          <Navbar />
+          <Navbar onLinkClick={toggle} />
         </AppShell.Section>
         <AppShell.Section>
           <UserInfo />

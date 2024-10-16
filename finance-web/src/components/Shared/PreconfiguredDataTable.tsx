@@ -6,15 +6,6 @@ export default function PreconfiguredDataTable<T>(props: DataTableProps<T>) {
     <DataTable
       borderRadius="xs"
       withTableBorder
-      striped
-      highlightOnHover
-      defaultColumnProps={{
-        cellsStyle: () => ({
-          paddingTop: rem(12),
-          paddingBottom: rem(12),
-          fontSize: rem(14)
-        })
-      }}
       styles={{
         header: {
           height: rem(48)
@@ -22,6 +13,9 @@ export default function PreconfiguredDataTable<T>(props: DataTableProps<T>) {
       }}
       height={rem(600)}
       noRecordsText="Listenelecek kayıt bulunmuyor"
+      striped
+      highlightOnHover
+      verticalSpacing="sm"
       {...props}
     />
   );

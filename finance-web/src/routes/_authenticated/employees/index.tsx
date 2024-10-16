@@ -3,8 +3,8 @@ import { IconId } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
 import { RouteTitle } from 'src/components/Shared/RouteTitle';
-import CreateEmployeeModal from './-components/CreateEmployeeModal';
-import EmployeesTable from './-components/EmployeesTable';
+import { EmployeesTable } from 'src/features/employees/list/components/employees-table';
+import { CreateEmployeeModalButton } from 'src/features/employees/list/modals/create-employee-modal';
 
 export const Route = createFileRoute('/_authenticated/employees/')({
   component: Employees,
@@ -20,7 +20,7 @@ function Employees() {
       </Group>
       <Stack>
         <Group justify="flex-end">
-          <CreateEmployeeModal />
+          <CreateEmployeeModalButton />
         </Group>
         <EmployeesTable />
       </Stack>

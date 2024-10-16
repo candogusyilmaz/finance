@@ -42,11 +42,11 @@ const links = [
   })
 ];
 
-export function Navbar() {
+export function Navbar({ onLinkClick }: { onLinkClick: () => void }) {
   return (
     <Stack h="100%" gap={0}>
       {links.map(({ label, icon: Icon, ...rest }) => (
-        <Link {...rest} key={rest.to} className={classes.link}>
+        <Link {...rest} key={rest.to} className={classes.link} onClick={onLinkClick}>
           <Icon />
           <Text size="sm">{label}</Text>
         </Link>

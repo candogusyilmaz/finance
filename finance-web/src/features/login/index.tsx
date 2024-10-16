@@ -5,15 +5,15 @@ import { useMutation } from '@tanstack/react-query';
 import { getRouteApi, useRouter } from '@tanstack/react-router';
 import { api } from 'src/api/axios';
 import type { CreateAccessTokenRequest, CreateAccessTokenResponse } from 'src/api/types/TokenTypes';
-import ToggleColorSchemeButton from 'src/components/ToggleColorSchemeButton';
+import ToggleColorSchemeButton from 'src/components/toggle-color-scheme-button';
 import { useAuth } from 'src/utils/auth';
 
 const Route = getRouteApi('/login');
 
-function Login(props: PaperProps) {
+export function Login(props: PaperProps) {
   const auth = useAuth();
-  const router = useRouter();
-  const search = Route.useSearch();
+  const { invalidate } = useRouter();
+  const { redirect } = Route.useSearch();
   const navigate = Route.useNavigate();
 
   const form = useForm({
@@ -32,8 +32,8 @@ function Login(props: PaperProps) {
     onSuccess: async (data) => {
       await auth.login(data);
       await new Promise((r) => setTimeout(r, 1));
-      await navigate({ to: search.redirect ?? '/' });
-      await router.invalidate();
+      await navigate({ to: redirect ?? '/' });
+      await invalidate();
     },
     onError: () => {
       form.reset();
@@ -85,5 +85,3 @@ function Login(props: PaperProps) {
     </Paper>
   );
 }
-
-export default Login;
