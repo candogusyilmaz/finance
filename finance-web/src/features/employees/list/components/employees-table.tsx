@@ -3,12 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { type DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
 import { useCallback } from 'react';
-import { api } from 'src/api/axios';
-import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetEmployeesResponse } from 'src/api/types/EmployeeTypes';
 import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
 import { ActionIconLink } from 'src/components/action-icon-link';
 import { FormatDate } from 'src/utils/formatter';
+import { getEmployeesQueryOptions } from '../queries/employee-list-queries';
 
 const route = getRouteApi('/_authenticated/employees/');
 
@@ -21,11 +20,7 @@ export function EmployeesTable() {
     sort: sort
   };
 
-  const query = useQuery({
-    queryKey: ['employees', pageable],
-    queryFn: async () => (await api.get<Page<GetEmployeesResponse>>(createURL('/employees', pageable))).data,
-    staleTime: 120000
-  });
+  const query = useQuery(getEmployeesQueryOptions(pageable));
 
   const { effectiveColumns } = useDataTableColumns<GetEmployeesResponse>({
     key: 'employees',

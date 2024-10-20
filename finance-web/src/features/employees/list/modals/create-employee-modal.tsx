@@ -1,7 +1,7 @@
-import { Button, Drawer, type DrawerProps, Group, NumberInput, ScrollArea, Stack, TextInput, rem } from '@mantine/core';
+import { Button, Drawer, type DrawerProps, Group, NumberInput, ScrollArea, Stack, TextInput, rem, useMantineTheme } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm, zodResolver } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconCalendar, IconCash } from '@tabler/icons-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -40,11 +40,15 @@ const employeeSchema = z.object({
 
 export function CreateEmployeeModalButton() {
   const [opened, { open, close }] = useDisclosure(false);
+  const theme = useMantineTheme();
+  const matches = useMediaQuery(`(max-width: ${theme.breakpoints.xs})`);
 
   return (
     <>
       <CreateEmployeeModal opened={opened} onClose={close} />
-      <CreateButton onClick={open}>Yeni personel oluştur</CreateButton>
+      <CreateButton w={matches ? '100%' : 'initial'} onClick={open}>
+        Yeni personel oluştur
+      </CreateButton>
     </>
   );
 }

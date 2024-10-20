@@ -28,6 +28,7 @@ import { Route as AuthenticatedDeliveriesNewImport } from './routes/_authenticat
 // Create/Update Routes
 
 const LoginRoute = LoginImport.update({
+  id: '/login',
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
@@ -38,24 +39,28 @@ const AuthenticatedRoute = AuthenticatedImport.update({
 } as any)
 
 const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 const AuthenticatedWorksitesIndexRoute =
   AuthenticatedWorksitesIndexImport.update({
+    id: '/worksites/',
     path: '/worksites/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedPurchasesIndexRoute =
   AuthenticatedPurchasesIndexImport.update({
+    id: '/purchases/',
     path: '/purchases/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedProductsIndexRoute = AuthenticatedProductsIndexImport.update(
   {
+    id: '/products/',
     path: '/products/',
     getParentRoute: () => AuthenticatedRoute,
   } as any,
@@ -63,41 +68,48 @@ const AuthenticatedProductsIndexRoute = AuthenticatedProductsIndexImport.update(
 
 const AuthenticatedOrganizationsIndexRoute =
   AuthenticatedOrganizationsIndexImport.update({
+    id: '/organizations/',
     path: '/organizations/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedEmployeesIndexRoute =
   AuthenticatedEmployeesIndexImport.update({
+    id: '/employees/',
     path: '/employees/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedDeliveriesIndexRoute =
   AuthenticatedDeliveriesIndexImport.update({
+    id: '/deliveries/',
     path: '/deliveries/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedPurchasesNewRoute = AuthenticatedPurchasesNewImport.update({
+  id: '/purchases/new',
   path: '/purchases/new',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 const AuthenticatedProductsProductIdRoute =
   AuthenticatedProductsProductIdImport.update({
+    id: '/products/$productId',
     path: '/products/$productId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedEmployeesEmployeeIdRoute =
   AuthenticatedEmployeesEmployeeIdImport.update({
+    id: '/employees/$employeeId',
     path: '/employees/$employeeId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedDeliveriesNewRoute = AuthenticatedDeliveriesNewImport.update(
   {
+    id: '/deliveries/new',
     path: '/deliveries/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any,

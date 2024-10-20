@@ -1,7 +1,7 @@
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import axios, { type AxiosError, type AxiosResponse } from 'axios';
 import { type ReactNode, useEffect } from 'react';
-import { getStoredUser, useAuth } from '../utils/auth';
+import { getStoredUser, useAuth } from 'src/utils/auth';
 
 export const api = axios.create({
   baseURL: import.meta.env.API_BASE_URL ?? 'http://localhost:8080/api/',
