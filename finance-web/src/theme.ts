@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, ModalContent, Notification, createTheme } from '@mantine/core';
+import { DEFAULT_THEME, Drawer, ModalContent, Notification, createTheme } from '@mantine/core';
 export const MantineTheme = createTheme({
   autoContrast: true,
   defaultRadius: 'xs',
@@ -48,6 +48,19 @@ export const MantineTheme = createTheme({
     Notification: Notification.extend({
       defaultProps: {
         withBorder: true
+      }
+    }),
+    Drawer: Drawer.extend({
+      styles: {
+        header: {
+          borderBottom: '1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4))'
+        },
+        body: {
+          marginTop: 'var(--mantine-spacing-sm)'
+        },
+        title: {
+          fontWeight: 500
+        }
       }
     })
   }

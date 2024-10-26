@@ -9,7 +9,7 @@ export function getEmployees(pageable: Pageable) {
 
 export function getEmployeesQueryOptions(pageable: Pageable) {
   return queryOptions({
-    queryKey: ['employee', pageable],
+    queryKey: ['employees', pageable],
     queryFn: async () => (await getEmployees(pageable)).data,
     staleTime: 120000
   });
