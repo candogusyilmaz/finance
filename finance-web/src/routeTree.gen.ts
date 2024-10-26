@@ -15,6 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedWorksitesIndexImport } from './routes/_authenticated/worksites/index'
+import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedPurchasesIndexImport } from './routes/_authenticated/purchases/index'
 import { Route as AuthenticatedProductsIndexImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedOrganizationsIndexImport } from './routes/_authenticated/organizations/index'
@@ -50,6 +51,14 @@ const AuthenticatedWorksitesIndexRoute =
     path: '/worksites/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+
+const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
+  {
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+)
 
 const AuthenticatedPurchasesIndexRoute =
   AuthenticatedPurchasesIndexImport.update({
@@ -203,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPurchasesIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/settings/': {
+      id: '/_authenticated/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/worksites/': {
       id: '/_authenticated/worksites/'
       path: '/worksites'
@@ -226,6 +242,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedOrganizationsIndexRoute: typeof AuthenticatedOrganizationsIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedPurchasesIndexRoute: typeof AuthenticatedPurchasesIndexRoute
+  AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedWorksitesIndexRoute: typeof AuthenticatedWorksitesIndexRoute
 }
 
@@ -240,6 +257,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedOrganizationsIndexRoute: AuthenticatedOrganizationsIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedPurchasesIndexRoute: AuthenticatedPurchasesIndexRoute,
+  AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedWorksitesIndexRoute: AuthenticatedWorksitesIndexRoute,
 }
 
@@ -260,6 +278,7 @@ export interface FileRoutesByFullPath {
   '/organizations': typeof AuthenticatedOrganizationsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/purchases': typeof AuthenticatedPurchasesIndexRoute
+  '/settings': typeof AuthenticatedSettingsIndexRoute
   '/worksites': typeof AuthenticatedWorksitesIndexRoute
 }
 
@@ -275,6 +294,7 @@ export interface FileRoutesByTo {
   '/organizations': typeof AuthenticatedOrganizationsIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/purchases': typeof AuthenticatedPurchasesIndexRoute
+  '/settings': typeof AuthenticatedSettingsIndexRoute
   '/worksites': typeof AuthenticatedWorksitesIndexRoute
 }
 
@@ -292,6 +312,7 @@ export interface FileRoutesById {
   '/_authenticated/organizations/': typeof AuthenticatedOrganizationsIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/purchases/': typeof AuthenticatedPurchasesIndexRoute
+  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/worksites/': typeof AuthenticatedWorksitesIndexRoute
 }
 
@@ -310,6 +331,7 @@ export interface FileRouteTypes {
     | '/organizations'
     | '/products'
     | '/purchases'
+    | '/settings'
     | '/worksites'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -324,6 +346,7 @@ export interface FileRouteTypes {
     | '/organizations'
     | '/products'
     | '/purchases'
+    | '/settings'
     | '/worksites'
   id:
     | '__root__'
@@ -339,6 +362,7 @@ export interface FileRouteTypes {
     | '/_authenticated/organizations/'
     | '/_authenticated/products/'
     | '/_authenticated/purchases/'
+    | '/_authenticated/settings/'
     | '/_authenticated/worksites/'
   fileRoutesById: FileRoutesById
 }
@@ -382,6 +406,7 @@ export const routeTree = rootRoute
         "/_authenticated/organizations/",
         "/_authenticated/products/",
         "/_authenticated/purchases/",
+        "/_authenticated/settings/",
         "/_authenticated/worksites/"
       ]
     },
@@ -426,6 +451,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/purchases/": {
       "filePath": "_authenticated/purchases/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/settings/": {
+      "filePath": "_authenticated/settings/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/worksites/": {

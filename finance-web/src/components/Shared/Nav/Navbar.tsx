@@ -1,5 +1,13 @@
 import { Stack, Text } from '@mantine/core';
-import { IconBasket, IconBuildingCommunity, IconBuildingFactory2, IconBuildingWarehouse, IconHome, IconId } from '@tabler/icons-react';
+import {
+  IconBasket,
+  IconBuildingCommunity,
+  IconBuildingFactory2,
+  IconBuildingWarehouse,
+  IconHome,
+  IconId,
+  IconSettings
+} from '@tabler/icons-react';
 import { Link, linkOptions } from '@tanstack/react-router';
 import { PartyRoles } from 'src/api/types/PartyTypes';
 import classes from './Navbar.module.css';
@@ -39,6 +47,11 @@ const links = [
     label: 'Satın Alımlar',
     icon: IconBasket,
     search: { page: 1, size: 20, sort: { id: 'id', direction: 'desc' } }
+  }),
+  linkOptions({
+    to: '/settings',
+    label: 'Ayarlar',
+    icon: IconSettings
   })
 ];
 

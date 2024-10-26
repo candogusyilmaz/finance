@@ -44,7 +44,7 @@ export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) 
   const router = useRouter();
 
   useEffect(() => {
-    const respInterceptor = axios.interceptors.response.use(responseInterceptorSuccess, async (error: AxiosError<unknown>) => {
+    const respInterceptor = api.interceptors.response.use(responseInterceptorSuccess, async (error: AxiosError<unknown>) => {
       if (error instanceof Error && error.message === 'TOKEN_NOT_FOUND') {
         await logout();
         await new Promise((r) => setTimeout(r, 1));
@@ -54,7 +54,7 @@ export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) 
       }
 
       if (isUnauthorizedResponse(error)) {
-        const result = await axios.post('/auth/refresh-token');
+        const result = await api.post('/auth/refresh-token');
 
         if (result.status !== 200) {
           await login(result.data);
@@ -64,14 +64,14 @@ export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) 
           return;
         }
 
-        return axios(error.config ?? {});
+        return api(error.config ?? {});
       }
 
       return Promise.reject(error);
     });
 
     return () => {
-      axios.interceptors.response.eject(respInterceptor);
+      api.interceptors.response.eject(respInterceptor);
     };
   }, [login, logout, navigate, router.invalidate]);
 

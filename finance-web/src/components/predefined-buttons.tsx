@@ -3,7 +3,7 @@ import { IconPlus } from '@tabler/icons-react';
 
 export const CreateButton = Button.withProps({
   size: 'sm',
-  px: 'lg',
+  px: 'md',
   fz: 'sm',
-  leftSection: <IconPlus size={18} color="white" />
+  leftSection: <IconPlus size={18} />
 });

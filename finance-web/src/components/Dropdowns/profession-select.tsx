@@ -1,20 +1,20 @@
-import { MultiSelect, type MultiSelectProps } from '@mantine/core';
+import { Select, type SelectProps } from '@mantine/core';
 import { IconComponents } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
-const ProfessionMultiSelect = (props: MultiSelectProps) => {
+const ProfessionSelect = (props: SelectProps) => {
   const query = useQuery({
-    queryKey: ['professions', 'simple'],
+    queryKey: ['professions'],
     queryFn: async () => {
-      return (await api.get<{ id: number; name: string }[]>('/professions/simple')).data;
+      return (await api.get<{ id: number; name: string }[]>('/professions')).data;
     },
     staleTime: Number.POSITIVE_INFINITY,
     select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() }))
   });
 
   return (
-    <MultiSelect
+    <Select
       comboboxProps={{ shadow: 'md' }}
       searchable
       nothingFoundMessage="Sonuç bulunamadı"
@@ -26,4 +26,4 @@ const ProfessionMultiSelect = (props: MultiSelectProps) => {
   );
 };
 
-export default ProfessionMultiSelect;
+export default ProfessionSelect;

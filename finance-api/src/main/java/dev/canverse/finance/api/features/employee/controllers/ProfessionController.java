@@ -1,11 +1,12 @@
 package dev.canverse.finance.api.features.employee.controllers;
 
+import dev.canverse.finance.api.features.employee.dtos.CreateProfessionRequest;
+import dev.canverse.finance.api.features.employee.dtos.UpdateProfessionNameRequest;
 import dev.canverse.finance.api.features.employee.services.ProfessionService;
 import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,8 +16,23 @@ import java.util.List;
 public class ProfessionController {
     private final ProfessionService professionService;
 
-    @GetMapping("/simple")
-    public List<IdNameProjection> getProfessionsSimple() {
-        return professionService.getProfessionsSimple();
+    @GetMapping
+    public List<IdNameProjection> getProfessions() {
+        return professionService.getProfessions();
+    }
+
+    @GetMapping("/{id}")
+    public IdNameProjection getProfessionById(@PathVariable Long id) {
+        return professionService.getProfessionById(id);
+    }
+
+    @PostMapping
+    public void createProfession(@Valid @RequestBody CreateProfessionRequest request) {
+        professionService.createProfession(request);
+    }
+
+    @PatchMapping("/{id}")
+    public void updateProfessionName(@Valid @RequestBody UpdateProfessionNameRequest request, @PathVariable Long id) {
+        professionService.updateProfessionName(id, request);
     }
 }

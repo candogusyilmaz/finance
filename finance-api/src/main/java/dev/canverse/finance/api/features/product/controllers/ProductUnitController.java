@@ -1,11 +1,11 @@
 package dev.canverse.finance.api.features.product.controllers;
 
+import dev.canverse.finance.api.features.product.dtos.CreateProductUnitRequest;
 import dev.canverse.finance.api.features.product.dtos.GetProductUnitsResponse;
 import dev.canverse.finance.api.features.product.services.ProductUnitService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,5 +18,10 @@ public class ProductUnitController {
     @GetMapping
     public List<GetProductUnitsResponse> getProductCategories() {
         return productUnitService.getProductUnits();
+    }
+
+    @PostMapping
+    public void createProductUnit(@Valid @RequestBody CreateProductUnitRequest request) {
+        productUnitService.createProductUnit(request);
     }
 }

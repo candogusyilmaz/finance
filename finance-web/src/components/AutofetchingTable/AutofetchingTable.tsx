@@ -1,4 +1,4 @@
-import { ActionIcon, Alert, Flex, Group, Loader, Paper, ScrollArea, Table, type TableProps, Text } from '@mantine/core';
+import { ActionIcon, Alert, Flex, Group, Loader, Paper, type PaperProps, ScrollArea, Table, type TableProps, Text } from '@mantine/core';
 import { IconArrowDown, IconArrowUp, IconArrowsSort, IconExclamationCircle } from '@tabler/icons-react';
 import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { type ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
@@ -14,9 +14,17 @@ type ReusableTableProps<T extends DataType> = {
   fetchUrl: string;
   queryOptions?: Omit<UseQueryOptions<T[], Error>, 'queryKey' | 'queryFn'>;
   tableProps?: TableProps;
+  paperProps?: PaperProps;
 };
 
-function AutofetchingTable<T extends DataType>({ height = 400, columns, fetchUrl, queryOptions, tableProps }: ReusableTableProps<T>) {
+function AutofetchingTable<T extends DataType>({
+  height = 400,
+  columns,
+  fetchUrl,
+  queryOptions,
+  tableProps,
+  paperProps
+}: ReusableTableProps<T>) {
   const query = useQuery<T[], Error>({
     queryKey: [fetchUrl],
     queryFn: async () => (await api.get<T[]>(fetchUrl)).data,
@@ -52,7 +60,7 @@ function AutofetchingTable<T extends DataType>({ height = 400, columns, fetchUrl
     );
 
   return (
-    <Paper withBorder radius="xs">
+    <Paper withBorder radius="xs" {...paperProps}>
       <ScrollArea
         h={height}
         styles={{

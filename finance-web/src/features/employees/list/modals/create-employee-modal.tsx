@@ -10,8 +10,8 @@ import { api } from 'src/api/axios';
 import type { CreateEmployeeRequest } from 'src/api/types/EmployeeTypes';
 import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
 import PartySelect from 'src/components/Dropdowns/PartySelect';
-import ProfessionMultiSelect from 'src/components/Dropdowns/ProfessionMultiSelect';
 import WorksiteSelect from 'src/components/Dropdowns/WorksiteSelect';
+import ProfessionSelect from 'src/components/Dropdowns/profession-select';
 import { CreateButton } from 'src/components/predefined-buttons';
 import { useFormMutation } from 'src/hooks/use-form-mutation';
 import { FormatISODate } from 'src/utils/formatter';
@@ -20,14 +20,12 @@ import { z } from 'zod';
 
 const employeeSchema = z.object({
   individual: z.object({
-    socialSecurityNumber: z
-      .string(FieldErrorMessage('Kimlik numarası'))
-      .min(1, { message: FieldErrorMessage('Kimlik numarası').required_error }),
+    socialSecurityNumber: z.string(FieldErrorMessage('Kimlik numarası')).min(1, { message: '' }),
     name: z.string(FieldErrorMessage('Ad soyad')).min(1, { message: FieldErrorMessage('Ad soyad').required_error }),
     birthDate: z.date(FieldErrorMessage('Doğum tarihi'))
   }),
   worksiteId: z.string().optional(),
-  professionIds: z.array(z.string()).min(1, 'En az bir meslek gereklidir.'),
+  professionId: z.string(FieldErrorMessage('Meslek')),
   organizationId: z.string(FieldErrorMessage('Organizasyon')),
   employmentStartDate: z.date(FieldErrorMessage('İşe başlama tarihi')),
   officialEmploymentStartDate: z.date(FieldErrorMessage('Resmi işe başlama tarihi')),
@@ -69,7 +67,7 @@ export function CreateEmployeeModal(props: DrawerProps) {
       employmentStartDate: undefined!,
       officialEmploymentStartDate: undefined!,
       worksiteId: undefined,
-      professionIds: [],
+      professionId: undefined,
       salary: {
         amount: undefined!,
         currencyId: undefined!,
@@ -150,7 +148,7 @@ export function CreateEmployeeModal(props: DrawerProps) {
             leftSection={<IconCalendar size={18} />}
             {...form.getInputProps('individual.birthDate')}
           />
-          <ProfessionMultiSelect label="Meslekler" placeholder="Meslek seçiniz" withAsterisk {...form.getInputProps('professionIds')} />
+          <ProfessionSelect label="Meslekler" placeholder="Meslek seçiniz" withAsterisk {...form.getInputProps('professionId')} />
           <WorksiteSelect label="Çalışma Yeri" placeholder="Urla" {...form.getInputProps('worksiteId')} />
           <DateInput
             label="İşe Başlama Tarihi"

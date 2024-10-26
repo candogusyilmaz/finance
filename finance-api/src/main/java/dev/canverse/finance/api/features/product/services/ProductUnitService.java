@@ -17,6 +17,7 @@ public class ProductUnitService {
     public void createProductUnit(CreateProductUnitRequest request) {
         var unit = new ProductUnit();
         unit.setName(request.name());
+        unit.setSymbol(request.symbol());
 
         productUnitRepository.save(unit);
     }

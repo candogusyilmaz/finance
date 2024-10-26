@@ -12,6 +12,7 @@ import dev.canverse.finance.api.features.employee.entities.*;
 import dev.canverse.finance.api.features.employee.mappers.EmployeeMapper;
 import dev.canverse.finance.api.features.employee.repositories.EmployeeRepository;
 import dev.canverse.finance.api.features.employee.repositories.ProfessionRepository;
+import dev.canverse.finance.api.features.party.repositories.IndividualRepository;
 import dev.canverse.finance.api.features.party.repositories.OrganizationRepository;
 import dev.canverse.finance.api.features.payment.entities.QPayment;
 import dev.canverse.finance.api.features.payment.entities.QPaymentAction;
@@ -32,6 +33,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeService {
     private final JPAQueryFactory queryFactory;
+    private final IndividualRepository individualRepository;
     private final EmployeeRepository employeeRepository;
     private final ProfessionRepository professionRepository;
     private final CurrencyRepository currencyRepository;
@@ -40,8 +42,8 @@ public class EmployeeService {
 
     @Transactional
     public void createEmployee(CreateEmployeeRequest request) {
-        if (request.officialEmploymentStartDate().isBefore(request.employmentStartDate()))
-            throw new BadRequestException("Resmi işe başlama tarihi, işe başlama tarihinden önce olamaz.");
+        if (individualRepository.existsBySocialSecurityNumber(request.individual().socialSecurityNumber()))
+            throw new BadRequestException("Bu kimlik numarası ile kayıtlı bir personel zaten mevcut.");
 
         var employee = new Employee();
         employee.setSocialSecurityNumber(request.individual().socialSecurityNumber());
@@ -56,9 +58,7 @@ public class EmployeeService {
             employee.getAssignments().add(new EmployeeAssignment(worksite, employee, request.employmentStartDate()));
         });
 
-        professionRepository.findAllById(request.professionIds()).stream()
-                .map(profession -> new EmployeeProfession(employee, profession))
-                .forEach(employee.getProfessions()::add);
+        employee.getProfessions().add(new EmployeeProfession(employee, professionRepository.getReference(request.professionId(), "Meslek bulunamadı.")));
 
         employeeRepository.save(employee);
     }

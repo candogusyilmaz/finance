@@ -1,3 +1,5 @@
+import type { ID } from './Defaults';
+
 export type GetEmployeesResponse = {
   id: number;
   socialSecurityNumber: string;
@@ -21,10 +23,10 @@ export type GetEmployeesResponse = {
 };
 
 export type CreateEmployeeRequest = {
-  organizationId: number | string;
+  organizationId: ID;
   individual: CreateIndividualRequest;
-  worksiteId?: number;
-  professionIds: number[];
+  worksiteId?: ID;
+  professionId: ID;
   officialEmploymentStartDate: string;
   employmentStartDate: string;
   salary: Salary;

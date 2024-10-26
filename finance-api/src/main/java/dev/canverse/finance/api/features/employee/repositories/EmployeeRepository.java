@@ -29,4 +29,5 @@ public interface EmployeeRepository extends ExtendedJpaRepository<Employee, Long
             "left join EmployeeAssignment ea on ea.id = (select ea.id from EmployeeAssignment ea where ea.employee.id = e.id and ea.period.startDate <= current_date and (current_date <= ea.period.endDate or ea.period.endDate is null)) " +
             "left join Employment em on em.id = (select em.id from Employment em where em.employee.id = e.id and em.actualEmploymentPeriod.startDate <= current_date and (current_date <= em.actualEmploymentPeriod.endDate or em.actualEmploymentPeriod.endDate is null))")
     Page<Map<String, Object>> findEmployees(Pageable page);
+
 }
