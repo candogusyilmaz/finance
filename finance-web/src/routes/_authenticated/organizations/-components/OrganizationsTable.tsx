@@ -4,12 +4,12 @@ import type { DataTableColumn } from 'mantine-datatable';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetOrganizationsResponse } from 'src/api/types/OrganizationTypes';
-import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
+import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
 import { FormatDateTime } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/organizations/');
 
-export default function OrganizationsTable() {
+export function OrganizationsTable() {
   const { page, sort, size, role } = route.useSearch();
   const navigate = route.useNavigate();
   const pageable = {

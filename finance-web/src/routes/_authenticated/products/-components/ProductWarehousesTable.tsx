@@ -1,3 +1,3 @@
-export default function ProductWarehousesTable() {
+export function ProductWarehousesTable() {
   return <div>eklenecek</div>;
 }

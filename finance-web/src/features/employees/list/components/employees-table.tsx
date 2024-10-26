@@ -4,8 +4,8 @@ import { getRouteApi } from '@tanstack/react-router';
 import { type DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
 import { useCallback } from 'react';
 import type { GetEmployeesResponse } from 'src/api/types/EmployeeTypes';
-import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
-import { ActionIconLink } from 'src/components/action-icon-link';
+import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
+import { ActionIconLink } from 'src/components/ui/action-icon-link';
 import { FormatDate } from 'src/utils/formatter';
 import { getEmployeesQueryOptions } from '../queries/employee-list-queries';
 

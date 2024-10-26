@@ -9,14 +9,14 @@ import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
 import type { GetProductPricesResponse } from 'src/api/types/ProductPriceTypes';
-import PartySelect from 'src/components/Dropdowns/PartySelect';
-import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
+import { PartySelect } from 'src/components/dropdowns/party-select';
+import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
 import { FormatDate, FormatDateTime, FormatISODate, FormatPercentage, FormatPrice } from 'src/utils/formatter';
-import CreateProductPriceModal from './CreateProductPriceModal';
+import { CreateProductPriceModal } from './CreateProductPriceModal';
 
 const route = getRouteApi('/_authenticated/products/$productId');
 
-export default function ProductPricesTable() {
+export function ProductPricesTable() {
   const [opened, setOpened] = useState(false);
   const [subcontractorId, setSubcontractorId] = useState<string | undefined>();
   const [startDate, setStartDate] = useState<DateValue | undefined>();

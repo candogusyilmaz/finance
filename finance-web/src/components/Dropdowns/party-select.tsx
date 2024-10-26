@@ -9,7 +9,7 @@ interface PartyProps extends SelectProps {
   partyRoles: PartyRole[];
 }
 
-const PartySelect = ({ partyRoles, ...props }: PartyProps) => {
+export function PartySelect({ partyRoles, ...props }: PartyProps) {
   const query = useQuery({
     queryKey: ['parties', 'simple', partyRoles],
     queryFn: async () => {
@@ -31,6 +31,4 @@ const PartySelect = ({ partyRoles, ...props }: PartyProps) => {
       {...props}
     />
   );
-};
-
-export default PartySelect;
+}

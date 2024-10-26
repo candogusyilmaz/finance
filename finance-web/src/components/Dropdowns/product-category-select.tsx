@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 import type { GetProductCategoriesResponse } from 'src/api/types/ProductTypes';
 
-const ProductCategorySelect = (props: SelectProps) => {
+export function ProductCategorySelect(props: SelectProps) {
   const categoriesQuery = useQuery({
     queryKey: ['product-categories'],
     queryFn: async () => {
@@ -27,6 +27,4 @@ const ProductCategorySelect = (props: SelectProps) => {
       {...props}
     />
   );
-};
-
-export default ProductCategorySelect;
+}

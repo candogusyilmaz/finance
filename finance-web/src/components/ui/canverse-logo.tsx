@@ -1,6 +1,6 @@
 import { useMantineColorScheme } from '@mantine/core';
 
-const Brand = () => {
+export function Brand() {
   const { colorScheme } = useMantineColorScheme();
 
   return (
@@ -24,6 +24,4 @@ const Brand = () => {
       </g>
     </svg>
   );
-};
-
-export default Brand;
+}

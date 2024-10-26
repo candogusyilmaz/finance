@@ -6,8 +6,8 @@ import { PageSchema } from 'src/api/types/Defaults';
 import type { GetProductByIdResponse } from 'src/api/types/ProductTypes';
 import { FormatDateTime } from 'src/utils/formatter';
 import { z } from 'zod';
-import ProductPricesTable from './-components/ProductPricesTable';
-import ProductWarehousesTable from './-components/ProductWarehousesTable';
+import { ProductPricesTable } from './-components/ProductPricesTable';
+import { ProductWarehousesTable } from './-components/ProductWarehousesTable';
 
 export const Route = createFileRoute('/_authenticated/products/$productId')({
   component: Product,

@@ -12,10 +12,10 @@ import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
 import type { CreateProductPriceRequest } from 'src/api/types/ProductPriceTypes';
-import CurrencySelect from 'src/components/Dropdowns/CurrencySelect';
-import EmployeeSelect from 'src/components/Dropdowns/EmployeeSelect';
-import PartySelect from 'src/components/Dropdowns/PartySelect';
-import ProductSelect from 'src/components/Dropdowns/ProductSelect';
+import { CurrencySelect } from 'src/components/dropdowns/currency-select';
+import { EmployeeSelect } from 'src/components/dropdowns/employee-select';
+import { PartySelect } from 'src/components/dropdowns/party-select';
+import { ProductSelect } from 'src/components/dropdowns/product-select';
 import { ConvertToNumber } from 'src/utils/utils';
 import { z } from 'zod';
 
@@ -45,7 +45,7 @@ const productPriceSchema = z
     }
   );
 
-export default function CreateProductPriceModal({ productId }: Readonly<{ productId: number }>) {
+export function CreateProductPriceModal({ productId }: Readonly<{ productId: number }>) {
   const [opened, { open, close }] = useDisclosure(false);
   const client = useQueryClient();
   const [selectedCurrencySymbol, setSelectedCurrencySymbol] = useState<string | undefined>();

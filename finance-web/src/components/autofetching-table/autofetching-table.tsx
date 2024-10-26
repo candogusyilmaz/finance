@@ -3,7 +3,7 @@ import { IconArrowDown, IconArrowUp, IconArrowsSort, IconExclamationCircle } fro
 import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { type ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { api } from 'src/api/axios';
-import classes from './AutofetchingTable.module.css';
+import classes from './autofetching-table.module.css';
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type DataType = Record<string, any>;
@@ -17,7 +17,7 @@ type ReusableTableProps<T extends DataType> = {
   paperProps?: PaperProps;
 };
 
-function AutofetchingTable<T extends DataType>({
+export function AutofetchingTable<T extends DataType>({
   height = 400,
   columns,
   fetchUrl,
@@ -112,5 +112,3 @@ function AutofetchingTable<T extends DataType>({
     </Paper>
   );
 }
-
-export default AutofetchingTable;

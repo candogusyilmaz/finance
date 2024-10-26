@@ -1,13 +1,13 @@
 import { Select, type SelectProps } from '@mantine/core';
-import { IconUser } from '@tabler/icons-react';
+import { IconBuildingFactory2 } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
-const EmployeeSelect = (props: SelectProps) => {
+export function WorksiteSelect(props: SelectProps) {
   const query = useQuery({
-    queryKey: ['employees', 'simple'],
+    queryKey: ['worksites', 'simple'],
     queryFn: async () => {
-      return (await api.get<{ id: number; name: string }[]>('/employees/simple')).data;
+      return (await api.get<{ id: number; name: string }[]>('/worksites/simple')).data;
     },
     staleTime: Number.POSITIVE_INFINITY,
     select: (data) => data.map((s) => ({ label: s.name, value: s.id.toString() }))
@@ -19,11 +19,9 @@ const EmployeeSelect = (props: SelectProps) => {
       searchable
       nothingFoundMessage="Sonuç bulunamadı"
       maxDropdownHeight={200}
-      leftSection={<IconUser size={18} />}
+      leftSection={<IconBuildingFactory2 size={18} />}
       data={query.data}
       {...props}
     />
   );
-};
-
-export default EmployeeSelect;
+}

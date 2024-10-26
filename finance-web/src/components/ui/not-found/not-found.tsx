@@ -1,8 +1,8 @@
 import { Button, Container, Flex, Image, SimpleGrid, Text, Title } from '@mantine/core';
 import { Link } from '@tanstack/react-router';
-import classes from './NotFound.module.css';
+import classes from './not-found.module.css';
 
-export default function NotFound() {
+export function NotFound() {
   return (
     <Flex style={{ height: '100dvh' }} justify="center" align="center">
       <Container>

@@ -3,11 +3,11 @@ import { getRouteApi } from '@tanstack/react-router';
 import { useDataTableColumns } from 'mantine-datatable';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
-import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
+import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
 
 const route = getRouteApi('/_authenticated/worksites/');
 
-export default function WorksitesTable() {
+export function WorksitesTable() {
   const { page, sort, size } = route.useSearch();
   const navigate = route.useNavigate();
   const pageable = {

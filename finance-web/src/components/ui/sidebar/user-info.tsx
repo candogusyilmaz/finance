@@ -2,9 +2,9 @@ import { ActionIcon, Avatar, Group, Stack, Text } from '@mantine/core';
 import { IconLogout } from '@tabler/icons-react';
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import { useAuth } from 'src/utils/auth';
-import classes from './UserInfo.module.css';
+import classes from './user-info.module.css';
 
-export default function UserInfo() {
+export function UserInfo() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const router = useRouter();

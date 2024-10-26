@@ -3,7 +3,7 @@ import { IconComponents } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
-const ProfessionSelect = (props: SelectProps) => {
+export function ProfessionSelect(props: SelectProps) {
   const query = useQuery({
     queryKey: ['professions'],
     queryFn: async () => {
@@ -24,6 +24,4 @@ const ProfessionSelect = (props: SelectProps) => {
       {...props}
     />
   );
-};
-
-export default ProfessionSelect;
+}

@@ -8,8 +8,8 @@ import type { AxiosError } from 'axios';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import type { CreateProductRequest, ProductType } from 'src/api/types/ProductTypes';
-import ProductCategorySelect from 'src/components/Dropdowns/ProductCategorySelect';
-import ProductUnitSelect from 'src/components/Dropdowns/ProductUnitSelect';
+import { ProductCategorySelect } from 'src/components/dropdowns/product-category-select';
+import { ProductUnitSelect } from 'src/components/dropdowns/product-unit-select';
 import { z } from 'zod';
 
 const productSchema = z.object({
@@ -26,7 +26,7 @@ const productSchema = z.object({
   productCategoryId: z.string().optional()
 });
 
-export default function CreateProductModal() {
+export function CreateProductModal() {
   const [opened, { open, close }] = useDisclosure(false);
   const client = useQueryClient();
 

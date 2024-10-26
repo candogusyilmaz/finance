@@ -3,10 +3,10 @@ import { IconBasket, IconPlus } from '@tabler/icons-react';
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
-import PartySelect from 'src/components/Dropdowns/PartySelect';
-import { RouteTitle } from 'src/components/Shared/RouteTitle';
+import { PartySelect } from 'src/components/dropdowns/party-select';
+import { RouteTitle } from 'src/components/ui/route-title';
 import { z } from 'zod';
-import PurchasesTable from './-components/PurchasesTable';
+import { PurchasesTable } from './-components/PurchasesTable';
 
 export const Route = createFileRoute('/_authenticated/purchases/')({
   component: Purchases,

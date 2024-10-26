@@ -1,7 +1,7 @@
 import { ActionIcon, type ActionIconProps, useMantineColorScheme } from '@mantine/core';
 import { IconMoon, IconSun } from '@tabler/icons-react';
 
-function ToggleColorSchemeButton(props: ActionIconProps) {
+export function ToggleColorSchemeButton(props: ActionIconProps) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
     <>
@@ -12,5 +12,3 @@ function ToggleColorSchemeButton(props: ActionIconProps) {
     </>
   );
 }
-
-export default ToggleColorSchemeButton;

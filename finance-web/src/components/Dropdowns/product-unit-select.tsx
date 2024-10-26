@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 import type { GetProductUnitsResponse } from 'src/api/types/ProductTypes';
 
-const ProductUnitSelect = (props: SelectProps) => {
+export function ProductUnitSelect(props: SelectProps) {
   const unitsQuery = useQuery({
     queryKey: ['product-units'],
     queryFn: async () => {
@@ -27,6 +27,4 @@ const ProductUnitSelect = (props: SelectProps) => {
       {...props}
     />
   );
-};
-
-export default ProductUnitSelect;
+}

@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetPurchasesResponse } from 'src/api/types/PurchaseTypes';
-import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
-import { Tooltippable } from 'src/components/Shared/Tooptippable';
+import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
+import { Tooltippable } from 'src/components/ui/tooltippable';
 import { StatusColorMap } from 'src/utils/color-helper';
 import { FormatDateTime, FormatPrice } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/purchases/');
 
-export default function PurchasesTable() {
+export function PurchasesTable() {
   const { t } = useTranslation();
   const { page, sort, size, supplierId } = route.useSearch();
   const navigate = route.useNavigate();

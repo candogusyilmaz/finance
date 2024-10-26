@@ -15,7 +15,7 @@ export const MantineTheme = createTheme({
       DEFAULT_THEME.colors.dark[1],
       DEFAULT_THEME.colors.dark[2],
       DEFAULT_THEME.colors.dark[3],
-      'rgba(255, 255, 255, 0.04)', // mainly used for border colors
+      'rgba(255, 255, 255, 0.07)', // mainly used for border colors
       'rgb(42, 42, 42)',
       'rgb(35, 35, 35)',
       'rgb(30, 30, 30)',

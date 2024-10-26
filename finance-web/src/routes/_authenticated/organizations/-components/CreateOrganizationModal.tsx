@@ -23,7 +23,7 @@ const schema = z.object({
   roles: z.array(z.enum([PartyRoles.AFFILIATE, PartyRoles.SUPPLIER]), FieldErrorMessage('Tür'))
 });
 
-export default function CreateOrganizationModal() {
+export function CreateOrganizationModal() {
   const [opened, { open, close }] = useDisclosure(false);
   const client = useQueryClient();
 

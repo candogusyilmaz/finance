@@ -3,10 +3,10 @@ import { IconBuilding, IconBuildingCommunity } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
 import { type PartyRole, PartyRoles } from 'src/api/types/PartyTypes';
-import { RouteTitle } from 'src/components/Shared/RouteTitle';
+import { RouteTitle } from 'src/components/ui/route-title';
 import { z } from 'zod';
-import CreateOrganizationModal from './-components/CreateOrganizationModal';
-import OrganizationsTable from './-components/OrganizationsTable';
+import { CreateOrganizationModal } from './-components/CreateOrganizationModal';
+import { OrganizationsTable } from './-components/OrganizationsTable';
 
 export const Route = createFileRoute('/_authenticated/organizations/')({
   component: Organizations,

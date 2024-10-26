@@ -2,9 +2,9 @@ import { Group, Stack } from '@mantine/core';
 import { IconBuildingFactory2 } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
-import { RouteTitle } from 'src/components/Shared/RouteTitle';
-import CreateWorksiteModal from './-components/CreateWorksiteModal';
-import WorksitesTable from './-components/WorksitesTable';
+import { RouteTitle } from 'src/components/ui/route-title';
+import { CreateWorksiteModal } from './-components/CreateWorksiteModal';
+import { WorksitesTable } from './-components/WorksitesTable';
 
 export const Route = createFileRoute('/_authenticated/worksites/')({
   component: Worksites,

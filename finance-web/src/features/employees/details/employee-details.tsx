@@ -1,7 +1,7 @@
 import { Grid, Tabs } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import type { ID } from 'src/api/types/Defaults';
-import AutofetchingTable from 'src/components/AutofetchingTable/AutofetchingTable';
+import { AutofetchingTable } from 'src/components/autofetching-table/autofetching-table';
 import { EmployeeInfoCard } from './components/employee-info-card';
 import {
   EMPLOYEE_ASSIGNMENT_COLUMNS,

@@ -15,7 +15,7 @@ import { Notifications } from '@mantine/notifications';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { queryClient } from './api/react-query';
-import FullscreenLoader from './components/fullscreen-loader';
+import { FullscreenLoader } from './components/ui/fullscreen-loader';
 import { routeTree } from './routeTree.gen';
 import { MantineTheme } from './theme';
 

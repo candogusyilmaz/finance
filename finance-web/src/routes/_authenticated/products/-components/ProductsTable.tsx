@@ -7,13 +7,13 @@ import { useCallback } from 'react';
 import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import type { GetProductsResponse } from 'src/api/types/ProductTypes';
-import PreconfiguredDataTable from 'src/components/Shared/PreconfiguredDataTable';
-import { ActionIconLink } from 'src/components/action-icon-link';
+import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
+import { ActionIconLink } from 'src/components/ui/action-icon-link';
 import { FormatDateTime } from 'src/utils/formatter';
 
 const route = getRouteApi('/_authenticated/products/');
 
-export default function ProductsTable() {
+export function ProductsTable() {
   const { page, sort, size } = route.useSearch();
   const navigate = route.useNavigate();
   const pageable = {

@@ -2,7 +2,7 @@ import { ActionIcon, Text } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Fodal } from 'src/components/fodal';
-import { UpdateProfessionForm } from '../modals/update-profession-modal';
+import { UpdateProfessionForm } from '../forms/update-profession-form';
 import type { PaymentCategoryResponse, ProductCategoryResponse, ProductUnitResponse, ProfessionResponse } from '../types';
 
 export const PROFESSION_COLUMNS: ColumnDef<ProfessionResponse>[] = [

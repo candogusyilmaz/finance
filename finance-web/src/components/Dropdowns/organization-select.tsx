@@ -3,7 +3,7 @@ import { IconBuildingSkyscraper } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from 'src/api/axios';
 
-const OrganizationSelect = (props: SelectProps) => {
+export function OrganizationSelect(props: SelectProps) {
   const query = useQuery({
     queryKey: ['organizations', 'simple'],
     queryFn: async () => {
@@ -24,6 +24,4 @@ const OrganizationSelect = (props: SelectProps) => {
       {...props}
     />
   );
-};
-
-export default OrganizationSelect;
+}

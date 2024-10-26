@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getRouteApi, useRouter } from '@tanstack/react-router';
 import { api } from 'src/api/axios';
 import type { CreateAccessTokenRequest, CreateAccessTokenResponse } from 'src/api/types/TokenTypes';
-import ToggleColorSchemeButton from 'src/components/toggle-color-scheme-button';
+import { ToggleColorSchemeButton } from 'src/components/ui/toggle-color-scheme-button';
 import { useAuth } from 'src/utils/auth';
 
 const Route = getRouteApi('/login');

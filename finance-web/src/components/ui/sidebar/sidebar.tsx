@@ -10,7 +10,7 @@ import {
 } from '@tabler/icons-react';
 import { Link, linkOptions } from '@tanstack/react-router';
 import { PartyRoles } from 'src/api/types/PartyTypes';
-import classes from './Navbar.module.css';
+import classes from './sidebar.module.css';
 
 const links = [
   linkOptions({
@@ -55,7 +55,7 @@ const links = [
   })
 ];
 
-export function Navbar({ onLinkClick }: { onLinkClick: () => void }) {
+export function Sidebar({ onLinkClick }: { onLinkClick: () => void }) {
   return (
     <Stack h="100%" gap={0}>
       {links.map(({ label, icon: Icon, ...rest }) => (

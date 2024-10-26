@@ -21,7 +21,7 @@ interface CustomSelectProps extends Omit<SelectProps, 'data'> {
   onCurrencyChange?: (item: CurrencyOption | null) => void;
 }
 
-const CurrencySelect = ({ onCurrencyChange, ...props }: CustomSelectProps) => {
+export function CurrencySelect({ onCurrencyChange, ...props }: CustomSelectProps) {
   const query = useQuery({
     queryKey: ['currencies'],
     queryFn: async () => {
@@ -53,6 +53,4 @@ const CurrencySelect = ({ onCurrencyChange, ...props }: CustomSelectProps) => {
       onChange={handleChange}
     />
   );
-};
-
-export default CurrencySelect;
+}

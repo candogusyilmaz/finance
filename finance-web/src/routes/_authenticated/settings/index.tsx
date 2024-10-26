@@ -2,7 +2,7 @@ import { Group } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
 import { Helmet } from 'react-helmet-async';
-import { RouteTitle } from 'src/components/Shared/RouteTitle';
+import { RouteTitle } from 'src/components/ui/route-title';
 import { Settings } from 'src/features/settings/settings';
 
 export const Route = createFileRoute('/_authenticated/settings/')({
