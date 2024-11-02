@@ -12,10 +12,10 @@ import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
 import type { CreateProductPriceRequest } from 'src/api/types/ProductPriceTypes';
-import { CurrencySelect } from 'src/components/dropdowns/currency-select';
-import { EmployeeSelect } from 'src/components/dropdowns/employee-select';
-import { PartySelect } from 'src/components/dropdowns/party-select';
-import { ProductSelect } from 'src/components/dropdowns/product-select';
+import { CurrencySelect } from 'src/components/selects/currency-select';
+import { EmployeeSelect } from 'src/components/selects/employee-select';
+import { PartySelect } from 'src/components/selects/party-select';
+import { ProductSelect } from 'src/components/selects/product-select';
 import { ConvertToNumber } from 'src/utils/utils';
 import { z } from 'zod';
 

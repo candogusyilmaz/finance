@@ -8,8 +8,8 @@ import type { AxiosError } from 'axios';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
-import { EmployeeSelect } from 'src/components/dropdowns/employee-select';
-import { PartySelect } from 'src/components/dropdowns/party-select';
+import { EmployeeSelect } from 'src/components/selects/employee-select';
+import { PartySelect } from 'src/components/selects/party-select';
 import { FieldErrorMessage } from 'src/utils/zod-messages';
 import { z } from 'zod';
 

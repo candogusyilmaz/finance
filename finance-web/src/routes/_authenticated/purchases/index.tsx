@@ -3,7 +3,7 @@ import { IconBasket, IconPlus } from '@tabler/icons-react';
 import { Link, createFileRoute } from '@tanstack/react-router';
 import { PageSchema } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
-import { PartySelect } from 'src/components/dropdowns/party-select';
+import { PartySelect } from 'src/components/selects/party-select';
 import { RouteTitle } from 'src/components/ui/route-title';
 import { z } from 'zod';
 import { PurchasesTable } from './-components/PurchasesTable';

@@ -35,8 +35,8 @@ import {
   DeliveryItemStatusValues,
   type GetUndeliveredItemsReponse
 } from 'src/api/types/DeliveryTypes';
-import { CurrencySelect } from 'src/components/dropdowns/currency-select';
-import { PartySelect } from 'src/components/dropdowns/party-select';
+import { CurrencySelect } from 'src/components/selects/currency-select';
+import { PartySelect } from 'src/components/selects/party-select';
 import { RouteTitle } from 'src/components/ui/route-title';
 import { StatusColorMap } from 'src/utils/color-helper';
 import { FormatISODateTime } from 'src/utils/formatter';

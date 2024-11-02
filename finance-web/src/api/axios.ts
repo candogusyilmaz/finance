@@ -4,7 +4,7 @@ import { type ReactNode, useEffect } from 'react';
 import { getStoredUser, useAuth } from 'src/utils/auth';
 
 export const api = axios.create({
-  baseURL: import.meta.env.API_BASE_URL ?? 'http://localhost:8080/api/',
+  baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api/',
   withCredentials: true,
   xsrfHeaderName: 'X-XSRF-TOKEN',
   xsrfCookieName: 'XSRF-TOKEN'

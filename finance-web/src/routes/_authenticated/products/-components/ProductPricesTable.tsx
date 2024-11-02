@@ -9,8 +9,8 @@ import { api } from 'src/api/axios';
 import { type Page, createURL } from 'src/api/types/Defaults';
 import { PartyRoles } from 'src/api/types/PartyTypes';
 import type { GetProductPricesResponse } from 'src/api/types/ProductPriceTypes';
-import { PartySelect } from 'src/components/dropdowns/party-select';
 import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
+import { PartySelect } from 'src/components/selects/party-select';
 import { FormatDate, FormatDateTime, FormatISODate, FormatPercentage, FormatPrice } from 'src/utils/formatter';
 import { CreateProductPriceModal } from './CreateProductPriceModal';
 

@@ -19,6 +19,7 @@ function Layout() {
   return (
     <Flex justify="center" align="center" h="100dvh">
       <Login w={465} />
+      <div>{import.meta.env.VITE_API_BASE_URL}</div>
     </Flex>
   );
 }

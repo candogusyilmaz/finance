@@ -8,8 +8,8 @@ import type { AxiosError } from 'axios';
 import { api } from 'src/api/axios';
 import { type ProblemDetail, setInvalidParams } from 'src/api/types/Defaults';
 import type { CreateProductRequest, ProductType } from 'src/api/types/ProductTypes';
-import { ProductCategorySelect } from 'src/components/dropdowns/product-category-select';
-import { ProductUnitSelect } from 'src/components/dropdowns/product-unit-select';
+import { ProductCategorySelect } from 'src/components/selects/product-category-select';
+import { ProductUnitSelect } from 'src/components/selects/product-unit-select';
 import { z } from 'zod';
 
 const productSchema = z.object({
