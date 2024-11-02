@@ -46,7 +46,7 @@ export function Login(props: PaperProps) {
   });
 
   return (
-    <Paper radius="md" p="xl" {...props}>
+    <Paper p="md" {...props}>
       <ToggleColorSchemeButton pos="absolute" top={0} right={0} m={20} />
       <Center>
         <Title>Canverse</Title>
