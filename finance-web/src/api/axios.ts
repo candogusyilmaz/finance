@@ -1,3 +1,4 @@
+import { notifications } from '@mantine/notifications';
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import axios, { type AxiosError, type AxiosResponse } from 'axios';
 import { type ReactNode, useEffect } from 'react';
@@ -38,7 +39,14 @@ function isUnauthorizedResponse(error: AxiosError<unknown>) {
   return error.response?.status === 401 && error.response?.headers['www-authenticate']?.startsWith('Bearer error="invalid_token"');
 }
 
-export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) => {
+function sessionExpiredNotification() {
+  notifications.show({
+    title: 'Oturum Süreniz Doldu',
+    message: 'İşlem yapmaya devam etmek için giriş yapın.'
+  });
+}
+
+export const AxiosResponseInterceptor = ({ children }: { children?: ReactNode }) => {
   const { logout, login } = useAuth();
   const navigate = useNavigate();
   const router = useRouter();
@@ -50,6 +58,7 @@ export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) 
         await new Promise((r) => setTimeout(r, 1));
         await router.invalidate();
         await navigate({ to: '/login' });
+        sessionExpiredNotification();
         return;
       }
 
@@ -57,12 +66,15 @@ export const AxiosResponseInterceptor = ({ children }: { children: ReactNode }) 
         const result = await api.post('/auth/refresh-token');
 
         if (result.status !== 200) {
-          await login(result.data);
+          await logout();
           await new Promise((r) => setTimeout(r, 1));
           await router.invalidate();
           await navigate({ to: '/login' });
+          sessionExpiredNotification();
           return;
         }
+
+        await login(result.data);
 
         return api(error.config ?? {});
       }

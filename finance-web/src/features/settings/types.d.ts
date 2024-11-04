@@ -1,5 +1,3 @@
-import type { ID } from 'src/api/types/Defaults';
-
 export type ProfessionResponse = {
   id: string;
   name: string;
@@ -22,4 +20,21 @@ export type ProductUnitResponse = {
   symbol: string;
 };
 
-export type UpsertProfessionRequest = { name: string } | { id: ID; name: string };
+export type CurrencyResponse = {
+  id: number;
+  name: string;
+  code: string;
+  symbol: string;
+  exchangeRate: number;
+  baseCurrency: boolean;
+  invoiceCurrency: boolean;
+};
+
+export type CreateCurrencyRequest = {
+  name: string;
+  code: string;
+  symbol: string;
+  exchangeRate: number;
+  baseCurrency: boolean;
+  invoiceCurrency: boolean;
+};

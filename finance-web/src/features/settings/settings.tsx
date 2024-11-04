@@ -3,11 +3,13 @@ import { AutofetchingTable } from 'src/components/autofetching-table/autofetchin
 import { Fodal } from 'src/components/fodal';
 import { CreateButton } from 'src/components/ui/predefined-buttons';
 import {
+  CURRENCY_COLUMNS,
   PAYMENT_CATEGORY_COLUMNS,
   PRODUCT_CATEGORY_COLUMNS,
   PRODUCT_UNIT_COLUMNS,
   PROFESSION_COLUMNS
 } from './components/settings-table-columns';
+import { CreateCurrencyForm } from './forms/create-currency-form';
 import { CreatePaymentCategoryForm } from './forms/create-payment-category-form';
 import { CreateProductCategoryForm } from './forms/create-product-category-form';
 import { CreateProductUnitForm } from './forms/create-product-unit-form';
@@ -82,6 +84,23 @@ export function Settings() {
             />
           </Group>
           <AutofetchingTable paperProps={{ withBorder: false }} columns={PRODUCT_UNIT_COLUMNS} fetchUrl="/product-units" />
+        </Paper>
+      </Grid.Col>
+      <Grid.Col span={{ sm: 12 }}>
+        <Paper withBorder>
+          <Group p="md" justify="space-between" align="center">
+            <Title order={5}>Para Birimleri</Title>
+            <Fodal
+              title="Yeni Para Birimi Oluştur"
+              content={({ close }) => <CreateCurrencyForm onSuccess={close} />}
+              trigger={({ open }) => (
+                <CreateButton variant="light" onClick={open}>
+                  Yeni
+                </CreateButton>
+              )}
+            />
+          </Group>
+          <AutofetchingTable paperProps={{ withBorder: false }} columns={CURRENCY_COLUMNS} fetchUrl="/currencies" />
         </Paper>
       </Grid.Col>
     </Grid>

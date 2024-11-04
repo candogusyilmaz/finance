@@ -23,6 +23,7 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 import 'mantine-datatable/styles.css';
+import { AxiosResponseInterceptor } from './api/axios';
 import './styles.css';
 
 i18n
@@ -54,7 +55,13 @@ declare module '@tanstack/react-router' {
 
 function InnerApp() {
   const auth = useAuth();
-  return <RouterProvider router={router} context={{ auth }} />;
+  return (
+    <RouterProvider
+      router={router}
+      context={{ auth }}
+      InnerWrap={(props) => <AxiosResponseInterceptor>{props.children}</AxiosResponseInterceptor>}
+    />
+  );
 }
 
 function App() {

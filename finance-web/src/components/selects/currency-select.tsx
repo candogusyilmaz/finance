@@ -23,7 +23,7 @@ interface CustomSelectProps extends Omit<SelectProps, 'data'> {
 
 export function CurrencySelect({ onCurrencyChange, ...props }: CustomSelectProps) {
   const query = useQuery({
-    queryKey: ['currencies'],
+    queryKey: ['/currencies'],
     queryFn: async () => {
       return (await api.get<Currency[]>('/currencies')).data;
     },

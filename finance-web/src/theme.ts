@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, Drawer, ModalContent, Notification, createTheme } from '@mantine/core';
+import { DEFAULT_THEME, Drawer, Modal, Notification, createTheme } from '@mantine/core';
 export const MantineTheme = createTheme({
   autoContrast: true,
   defaultRadius: 'xs',
@@ -36,8 +36,10 @@ export const MantineTheme = createTheme({
     ]
   },
   components: {
-    ModalContent: ModalContent.extend({
+    Modal: Modal.extend({
       defaultProps: {
+        radius: 'sm',
+        shadow: '0',
         styles: {
           content: {
             border: '1px solid light-dark(var(--mantine-color-dark-2), var(--mantine-color-dark-6))'

@@ -3,7 +3,7 @@ import { IconEdit } from '@tabler/icons-react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Fodal } from 'src/components/fodal';
 import { UpdateProfessionForm } from '../forms/update-profession-form';
-import type { PaymentCategoryResponse, ProductCategoryResponse, ProductUnitResponse, ProfessionResponse } from '../types';
+import type { CurrencyResponse, PaymentCategoryResponse, ProductCategoryResponse, ProductUnitResponse, ProfessionResponse } from '../types';
 
 export const PROFESSION_COLUMNS: ColumnDef<ProfessionResponse>[] = [
   {
@@ -51,5 +51,24 @@ export const PRODUCT_UNIT_COLUMNS: ColumnDef<ProductUnitResponse>[] = [
   {
     header: 'Sembol',
     cell: ({ row }) => <Text size="sm">{row.original.symbol}</Text>
+  }
+];
+
+export const CURRENCY_COLUMNS: ColumnDef<CurrencyResponse>[] = [
+  {
+    header: 'Para Birimi',
+    cell: ({ row }) => `${row.original.code} - ${row.original.name} - ${row.original.symbol}`
+  },
+  {
+    header: 'Kur',
+    cell: ({ row }) => row.original.exchangeRate
+  },
+  {
+    header: 'Baz Para Birimi',
+    cell: ({ row }) => (row.original.baseCurrency ? 'Evet' : 'Hayır')
+  },
+  {
+    header: 'Fatura Para Birimi',
+    cell: ({ row }) => (row.original.invoiceCurrency ? 'Evet' : 'Hayır')
   }
 ];

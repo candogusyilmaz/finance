@@ -9,7 +9,7 @@ export const Route = createFileRoute('/login')({
   }),
   beforeLoad: ({ context, search }) => {
     if (context.auth.user) {
-      throw redirect({ to: search.redirect ?? '/dashboard' });
+      throw redirect({ to: search.redirect ?? '/' });
     }
   },
   component: Layout
