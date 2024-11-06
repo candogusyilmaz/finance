@@ -19,8 +19,8 @@ function Organizations() {
   const navigate = Route.useNavigate();
 
   return (
-    <Stack h="100%" w="100%" gap="lg">
-      <Group align="center" mb="lg">
+    <>
+      <Group align="center" mb="xl">
         <IconBuildingCommunity size={36} />
         <RouteTitle title="Organizasyonlar" />
       </Group>
@@ -51,6 +51,6 @@ function Organizations() {
         </Group>
         <OrganizationsTable />
       </Stack>
-    </Stack>
+    </>
   );
 }

@@ -13,7 +13,7 @@ export function EmployeeList() {
 
   return (
     <>
-      <Group align="center" mb="lg">
+      <Group align="center" mb="xl">
         <IconId size={36} />
         <RouteTitle title="Personeller" />
       </Group>

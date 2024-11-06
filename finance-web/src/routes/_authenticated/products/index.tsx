@@ -14,8 +14,8 @@ export const Route = createFileRoute('/_authenticated/products/')({
 
 function Products() {
   return (
-    <Stack h="100%" w="100%" gap="lg">
-      <Group align="center" mb="lg">
+    <>
+      <Group align="center" mb="xl">
         <IconBuildingWarehouse size={36} />
         <RouteTitle title="Ürünler" />
       </Group>
@@ -25,6 +25,6 @@ function Products() {
         </Group>
         <ProductsTable />
       </Stack>
-    </Stack>
+    </>
   );
 }

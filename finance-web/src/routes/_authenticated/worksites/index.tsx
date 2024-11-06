@@ -13,8 +13,8 @@ export const Route = createFileRoute('/_authenticated/worksites/')({
 
 function Worksites() {
   return (
-    <Stack h="100%" w="100%" gap="lg">
-      <Group align="center" mb="lg">
+    <>
+      <Group align="center" mb="xl">
         <IconBuildingFactory2 size={36} />
         <RouteTitle title="Çalışma Yerleri" />
       </Group>
@@ -24,6 +24,6 @@ function Worksites() {
         </Group>
         <WorksitesTable />
       </Stack>
-    </Stack>
+    </>
   );
 }

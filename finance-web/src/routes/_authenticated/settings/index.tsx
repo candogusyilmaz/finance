@@ -15,7 +15,7 @@ function Layout() {
       <Helmet>
         <title>Ayarlar | Canverse</title>
       </Helmet>
-      <Group align="center" mb="lg" gap="xs">
+      <Group align="center" mb="xl" gap="xs">
         <IconSettings size={36} />
         <RouteTitle title="Ayarlar" />
       </Group>

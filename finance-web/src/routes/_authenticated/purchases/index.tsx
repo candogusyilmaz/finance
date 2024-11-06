@@ -19,8 +19,8 @@ function Purchases() {
   const navigate = Route.useNavigate();
 
   return (
-    <Stack mih="100%" miw="100%" gap="lg">
-      <Group align="center" mb="lg">
+    <>
+      <Group align="center" mb="xl">
         <IconBasket size={36} />
         <RouteTitle title="Satın Alımlar" />
       </Group>
@@ -42,6 +42,6 @@ function Purchases() {
         </Group>
         <PurchasesTable />
       </Stack>
-    </Stack>
+    </>
   );
 }

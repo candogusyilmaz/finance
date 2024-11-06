@@ -3,8 +3,8 @@ import { useDisclosure } from '@mantine/hooks';
 import type React from 'react';
 import { Brand } from 'src/components/ui/canverse-logo';
 import { Sidebar } from 'src/components/ui/sidebar/sidebar';
-import { UserInfo } from 'src/components/ui/sidebar/user-info';
 import { ToggleColorSchemeButton } from 'src/components/ui/toggle-color-scheme-button';
+import { UserInfo } from 'src/components/ui/user-info/user-info';
 
 import classes from './authenticated-layout.module.css';
 
