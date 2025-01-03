@@ -2,8 +2,14 @@ import { ActionIcon, Text } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Fodal } from 'src/components/fodal';
-import { UpdateProfessionForm } from '../forms/update-profession-form';
-import type { CurrencyResponse, PaymentCategoryResponse, ProductCategoryResponse, ProductUnitResponse, ProfessionResponse } from '../types';
+import type {
+  CurrencyResponse,
+  PaymentCategoryResponse,
+  ProductCategoryResponse,
+  ProductUnitResponse,
+  ProfessionResponse
+} from '../-api/types';
+import { UpdateProfessionForm } from '../-forms/update-profession-form';
 
 export const PROFESSION_COLUMNS: ColumnDef<ProfessionResponse>[] = [
   {

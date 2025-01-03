@@ -9,7 +9,7 @@ import type {
   GetEmployeeEmploymentResponse,
   GetEmployeePaymentResponse,
   GetEmployeeSalaryResponse
-} from '../types';
+} from '../-api/types';
 
 export const EMPLOYEE_ASSIGNMENT_COLUMNS: ColumnDef<GetEmployeeAssignmentResponse>[] = [
   {

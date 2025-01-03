@@ -7,7 +7,7 @@ import type { GetEmployeesResponse } from 'src/api/types/EmployeeTypes';
 import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
 import { ActionIconLink } from 'src/components/ui/action-icon-link';
 import { FormatDate } from 'src/utils/formatter';
-import { getEmployeesQueryOptions } from '../queries/employee-list-queries';
+import { getEmployeesQueryOptions } from '../-api/employee-list-queries';
 
 const route = getRouteApi('/_authenticated/employees/');
 

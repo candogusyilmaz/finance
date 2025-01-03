@@ -3,7 +3,7 @@ import { IconDotsVertical, IconIdBadge } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { Navigate } from '@tanstack/react-router';
 import { type ID, PageSchema } from 'src/api/types/Defaults';
-import { getEmployeeQueryOptions } from '../queries/employee-details-queries';
+import { getEmployeeQueryOptions } from '../-api/employee-details-queries';
 
 export function EmployeeInfoCard({ employeeId }: Readonly<{ employeeId: ID }>) {
   const { data, isError, isFetching } = useQuery(getEmployeeQueryOptions(employeeId));

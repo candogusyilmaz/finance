@@ -23,8 +23,8 @@ import { Route as AuthenticatedEmployeesIndexImport } from './routes/_authentica
 import { Route as AuthenticatedDeliveriesIndexImport } from './routes/_authenticated/deliveries/index'
 import { Route as AuthenticatedPurchasesNewImport } from './routes/_authenticated/purchases/new'
 import { Route as AuthenticatedProductsProductIdImport } from './routes/_authenticated/products/$productId'
-import { Route as AuthenticatedEmployeesEmployeeIdImport } from './routes/_authenticated/employees/$employeeId'
 import { Route as AuthenticatedDeliveriesNewImport } from './routes/_authenticated/deliveries/new'
+import { Route as AuthenticatedEmployeesEmployeeIdIndexImport } from './routes/_authenticated/employees/$employeeId/index'
 
 // Create/Update Routes
 
@@ -109,13 +109,6 @@ const AuthenticatedProductsProductIdRoute =
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
-const AuthenticatedEmployeesEmployeeIdRoute =
-  AuthenticatedEmployeesEmployeeIdImport.update({
-    id: '/employees/$employeeId',
-    path: '/employees/$employeeId',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-
 const AuthenticatedDeliveriesNewRoute = AuthenticatedDeliveriesNewImport.update(
   {
     id: '/deliveries/new',
@@ -123,6 +116,13 @@ const AuthenticatedDeliveriesNewRoute = AuthenticatedDeliveriesNewImport.update(
     getParentRoute: () => AuthenticatedRoute,
   } as any,
 )
+
+const AuthenticatedEmployeesEmployeeIdIndexRoute =
+  AuthenticatedEmployeesEmployeeIdIndexImport.update({
+    id: '/employees/$employeeId/',
+    path: '/employees/$employeeId/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -154,13 +154,6 @@ declare module '@tanstack/react-router' {
       path: '/deliveries/new'
       fullPath: '/deliveries/new'
       preLoaderRoute: typeof AuthenticatedDeliveriesNewImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/employees/$employeeId': {
-      id: '/_authenticated/employees/$employeeId'
-      path: '/employees/$employeeId'
-      fullPath: '/employees/$employeeId'
-      preLoaderRoute: typeof AuthenticatedEmployeesEmployeeIdImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/products/$productId': {
@@ -226,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorksitesIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/employees/$employeeId/': {
+      id: '/_authenticated/employees/$employeeId/'
+      path: '/employees/$employeeId'
+      fullPath: '/employees/$employeeId'
+      preLoaderRoute: typeof AuthenticatedEmployeesEmployeeIdIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
   }
 }
 
@@ -234,7 +234,6 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedDeliveriesNewRoute: typeof AuthenticatedDeliveriesNewRoute
-  AuthenticatedEmployeesEmployeeIdRoute: typeof AuthenticatedEmployeesEmployeeIdRoute
   AuthenticatedProductsProductIdRoute: typeof AuthenticatedProductsProductIdRoute
   AuthenticatedPurchasesNewRoute: typeof AuthenticatedPurchasesNewRoute
   AuthenticatedDeliveriesIndexRoute: typeof AuthenticatedDeliveriesIndexRoute
@@ -244,12 +243,12 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPurchasesIndexRoute: typeof AuthenticatedPurchasesIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedWorksitesIndexRoute: typeof AuthenticatedWorksitesIndexRoute
+  AuthenticatedEmployeesEmployeeIdIndexRoute: typeof AuthenticatedEmployeesEmployeeIdIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedDeliveriesNewRoute: AuthenticatedDeliveriesNewRoute,
-  AuthenticatedEmployeesEmployeeIdRoute: AuthenticatedEmployeesEmployeeIdRoute,
   AuthenticatedProductsProductIdRoute: AuthenticatedProductsProductIdRoute,
   AuthenticatedPurchasesNewRoute: AuthenticatedPurchasesNewRoute,
   AuthenticatedDeliveriesIndexRoute: AuthenticatedDeliveriesIndexRoute,
@@ -259,6 +258,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPurchasesIndexRoute: AuthenticatedPurchasesIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedWorksitesIndexRoute: AuthenticatedWorksitesIndexRoute,
+  AuthenticatedEmployeesEmployeeIdIndexRoute:
+    AuthenticatedEmployeesEmployeeIdIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -270,7 +271,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexRoute
   '/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
-  '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
   '/products/$productId': typeof AuthenticatedProductsProductIdRoute
   '/purchases/new': typeof AuthenticatedPurchasesNewRoute
   '/deliveries': typeof AuthenticatedDeliveriesIndexRoute
@@ -280,13 +280,13 @@ export interface FileRoutesByFullPath {
   '/purchases': typeof AuthenticatedPurchasesIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/worksites': typeof AuthenticatedWorksitesIndexRoute
+  '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexRoute
   '/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
-  '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
   '/products/$productId': typeof AuthenticatedProductsProductIdRoute
   '/purchases/new': typeof AuthenticatedPurchasesNewRoute
   '/deliveries': typeof AuthenticatedDeliveriesIndexRoute
@@ -296,6 +296,7 @@ export interface FileRoutesByTo {
   '/purchases': typeof AuthenticatedPurchasesIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/worksites': typeof AuthenticatedWorksitesIndexRoute
+  '/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -304,7 +305,6 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/deliveries/new': typeof AuthenticatedDeliveriesNewRoute
-  '/_authenticated/employees/$employeeId': typeof AuthenticatedEmployeesEmployeeIdRoute
   '/_authenticated/products/$productId': typeof AuthenticatedProductsProductIdRoute
   '/_authenticated/purchases/new': typeof AuthenticatedPurchasesNewRoute
   '/_authenticated/deliveries/': typeof AuthenticatedDeliveriesIndexRoute
@@ -314,6 +314,7 @@ export interface FileRoutesById {
   '/_authenticated/purchases/': typeof AuthenticatedPurchasesIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/worksites/': typeof AuthenticatedWorksitesIndexRoute
+  '/_authenticated/employees/$employeeId/': typeof AuthenticatedEmployeesEmployeeIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -323,7 +324,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/'
     | '/deliveries/new'
-    | '/employees/$employeeId'
     | '/products/$productId'
     | '/purchases/new'
     | '/deliveries'
@@ -333,12 +333,12 @@ export interface FileRouteTypes {
     | '/purchases'
     | '/settings'
     | '/worksites'
+    | '/employees/$employeeId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
     | '/'
     | '/deliveries/new'
-    | '/employees/$employeeId'
     | '/products/$productId'
     | '/purchases/new'
     | '/deliveries'
@@ -348,13 +348,13 @@ export interface FileRouteTypes {
     | '/purchases'
     | '/settings'
     | '/worksites'
+    | '/employees/$employeeId'
   id:
     | '__root__'
     | '/_authenticated'
     | '/login'
     | '/_authenticated/'
     | '/_authenticated/deliveries/new'
-    | '/_authenticated/employees/$employeeId'
     | '/_authenticated/products/$productId'
     | '/_authenticated/purchases/new'
     | '/_authenticated/deliveries/'
@@ -364,6 +364,7 @@ export interface FileRouteTypes {
     | '/_authenticated/purchases/'
     | '/_authenticated/settings/'
     | '/_authenticated/worksites/'
+    | '/_authenticated/employees/$employeeId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -396,7 +397,6 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated/",
         "/_authenticated/deliveries/new",
-        "/_authenticated/employees/$employeeId",
         "/_authenticated/products/$productId",
         "/_authenticated/purchases/new",
         "/_authenticated/deliveries/",
@@ -405,7 +405,8 @@ export const routeTree = rootRoute
         "/_authenticated/products/",
         "/_authenticated/purchases/",
         "/_authenticated/settings/",
-        "/_authenticated/worksites/"
+        "/_authenticated/worksites/",
+        "/_authenticated/employees/$employeeId/"
       ]
     },
     "/login": {
@@ -417,10 +418,6 @@ export const routeTree = rootRoute
     },
     "/_authenticated/deliveries/new": {
       "filePath": "_authenticated/deliveries/new.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/employees/$employeeId": {
-      "filePath": "_authenticated/employees/$employeeId.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/products/$productId": {
@@ -457,6 +454,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/worksites/": {
       "filePath": "_authenticated/worksites/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/employees/$employeeId/": {
+      "filePath": "_authenticated/employees/$employeeId/index.tsx",
       "parent": "/_authenticated"
     }
   }
