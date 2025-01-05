@@ -13,10 +13,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.0/mapstruct-processor-1.6.0.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.6.0/mapstruct-1.6.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
           <entry name="$MAVEN_REPOSITORY$/com/querydsl/querydsl-apt/5.1.0/querydsl-apt-5.1.0-jakarta.jar" />
           <entry name="$MAVEN_REPOSITORY$/com/querydsl/querydsl-codegen/5.1.0/querydsl-codegen-5.1.0.jar" />
           <entry name="$MAVEN_REPOSITORY$/com/querydsl/querydsl-core/5.1.0/querydsl-core-5.1.0.jar" />
@@ -63,6 +60,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/easymock/easymock/4.3/easymock-4.3.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/objenesis/objenesis/3.2/objenesis-3.2.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/javassist/javassist/3.28.0-GA/javassist-3.28.0-GA.jar" />
+          <entry name="$MAVEN_REPOSITORY$/io/github/openfeign/querydsl/querydsl-apt/5.1.0/querydsl-apt-5.1.0-jakarta.jar" />
         </processorPath>
         <module name="finance-api" />
       </profile>

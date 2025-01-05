@@ -25,10 +25,15 @@ public abstract class Party {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     private String name;
 
-    @ElementCollection(targetClass = Role.class)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @ElementCollection
     @CollectionTable(name = "party_roles", joinColumns = @JoinColumn(name = "party_id"))
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -57,7 +62,7 @@ public abstract class Party {
     private User updatedBy;
 
     public void addRole(Role role) {
-        roles.add(role);
+        this.roles.add(role);
     }
 
     public void addRoles(Set<Role> roles) {
@@ -66,10 +71,13 @@ public abstract class Party {
 
     public enum Role {
         AFFILIATE,
-        INDIVIDUAL,
-        ORGANIZATION,
-        SUPPLIER,
+        CUSTOMER,
         EMPLOYEE,
-        CUSTOMER
+        SUPPLIER
+    }
+
+    public enum Type {
+        INDIVIDUAL,
+        ORGANIZATION
     }
 }

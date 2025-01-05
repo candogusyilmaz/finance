@@ -103,7 +103,6 @@ public class DeliveryService {
     }
 
     public List<GetUndeliveredItemsReponse> getUndeliveredItems(Long purchaseId) {
-
         return purchaseRepository.findRemainingPurchaseItems(purchaseId)
                 .stream().map(s -> new GetUndeliveredItemsReponse((Long) s[0], (String) s[1], (Long) s[2])).toList();
     }

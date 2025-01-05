@@ -11,8 +11,6 @@ import dev.canverse.finance.api.features.worksite.entities.WorksiteSupervisor;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,9 +31,7 @@ public class WorksiteService {
         worksite.setName(StringUtils.normalizeSpace(request.name()));
         worksite.setOrganization(organizationRepository.getReference(request.organizationId(), "Organizasyon bulunamadı."));
 
-        request.supervisorId().ifPresent(id -> {
-            worksite.getWorksiteSupervisors().add(new WorksiteSupervisor(worksite, employeeRepository.getReferenceById(id), LocalDate.now()));
-        });
+        request.supervisorId().ifPresent(id -> worksite.getWorksiteSupervisors().add(new WorksiteSupervisor(worksite, employeeRepository.getReferenceById(id), LocalDate.now())));
 
         worksiteRepository.save(worksite);
     }
@@ -44,9 +40,8 @@ public class WorksiteService {
         return worksiteRepository.findAllSimple();
     }
 
-    public Page<GetWorksitesResponse> getWorksites(Pageable page) {
+    public List<GetWorksitesResponse> getWorksites() {
         return worksiteRepository.findBy((root, query, criteriaBuilder) -> null,
-                r -> r.project("currentSupervisor.supervisor", "organization")
-                        .sortBy(page.getSort()).page(page).map(GetWorksitesResponse::from));
+                r -> r.project("currentSupervisor.supervisor", "organization").stream().map(GetWorksitesResponse::from).toList());
     }
 }

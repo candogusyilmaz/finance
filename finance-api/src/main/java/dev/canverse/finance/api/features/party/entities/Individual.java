@@ -1,6 +1,5 @@
 package dev.canverse.finance.api.features.party.entities;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -13,12 +12,24 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "individuals")
 public class Individual extends Party {
-    @Column(unique = true)
+
+    private String firstName;
+
+    private String lastName;
+
     private String socialSecurityNumber;
 
     private LocalDate birthDate;
 
-    public Individual() {
-        this.addRole(Role.INDIVIDUAL);
+    protected Individual() {
+    }
+
+    public Individual(String firstname, String lastname, String socialSecurityNumber, LocalDate birthDate) {
+        super.setName(firstname + " " + lastname);
+        super.setType(Type.INDIVIDUAL);
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.socialSecurityNumber = socialSecurityNumber;
+        this.birthDate = birthDate;
     }
 }

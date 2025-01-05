@@ -12,7 +12,6 @@ import dev.canverse.finance.api.features.purchase.dtos.GetPurchasesResponse;
 import dev.canverse.finance.api.features.purchase.entities.Purchase;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseAction;
 import dev.canverse.finance.api.features.purchase.entities.PurchaseItem;
-import dev.canverse.finance.api.features.purchase.mappers.PurchaseMapper;
 import dev.canverse.finance.api.features.purchase.repositories.PurchaseRepository;
 import dev.canverse.finance.api.features.worksite.repositories.WorksiteRepository;
 import jakarta.transaction.Transactional;
@@ -73,8 +72,7 @@ public class PurchaseService {
         purchase.setPurchaseItems(purchaseItems);
     }
 
-    public Page<GetPurchasesResponse> getPurchases(GetPurchasesRequest req, Pageable page) {
-        return purchaseRepository.findPurchases(req.supplierId().orElse(null), page)
-                .map(PurchaseMapper.INSTANCE::toGetPurchasesResponse);
+    public Page<GetPurchasesResponse> getPurchases(GetPurchasesRequest req, Pageable pageable) {
+        return purchaseRepository.getPurchases(req, pageable);
     }
 }

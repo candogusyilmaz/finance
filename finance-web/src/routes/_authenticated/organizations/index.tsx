@@ -1,7 +1,6 @@
 import { Group, Select, Stack } from '@mantine/core';
 import { IconBuilding, IconBuildingCommunity } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { PageSchema } from 'src/api/types/Defaults';
 import { type PartyRole, PartyRoles } from 'src/api/types/PartyTypes';
 import { RouteTitle } from 'src/components/ui/route-title';
 import { z } from 'zod';
@@ -10,7 +9,7 @@ import { OrganizationsTable } from './-components/OrganizationsTable';
 
 export const Route = createFileRoute('/_authenticated/organizations/')({
   component: Organizations,
-  validateSearch: PageSchema.extend({
+  validateSearch: z.object({
     role: z.enum([PartyRoles.AFFILIATE, PartyRoles.SUPPLIER]).catch(PartyRoles.ORGANIZATION)
   })
 });

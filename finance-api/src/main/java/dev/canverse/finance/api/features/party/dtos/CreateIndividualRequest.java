@@ -7,7 +7,9 @@ import java.time.LocalDate;
 public record CreateIndividualRequest(
         String socialSecurityNumber,
         @NotNull(message = "İsim alanı gereklidir.")
-        String name,
+        String firstName,
+        @NotNull(message = "Soyisim alanı gereklidir.")
+        String lastName,
         LocalDate birthDate
 ) {
 }

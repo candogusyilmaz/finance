@@ -2,6 +2,7 @@ import { notifications } from '@mantine/notifications';
 import { useNavigate, useRouter } from '@tanstack/react-router';
 import axios, { type AxiosError, type AxiosResponse } from 'axios';
 import { type ReactNode, useEffect } from 'react';
+import { sleep } from 'src/lib/sleep';
 import { getStoredUser, useAuth } from 'src/utils/auth';
 
 export const api = axios.create({
@@ -55,7 +56,7 @@ export const AxiosResponseInterceptor = ({ children }: { children?: ReactNode })
     const respInterceptor = api.interceptors.response.use(responseInterceptorSuccess, async (error: AxiosError<unknown>) => {
       if (error instanceof Error && error.message === 'TOKEN_NOT_FOUND') {
         await logout();
-        await new Promise((r) => setTimeout(r, 1));
+        await sleep();
         await router.invalidate();
         await navigate({ to: '/login' });
         sessionExpiredNotification();
@@ -63,18 +64,18 @@ export const AxiosResponseInterceptor = ({ children }: { children?: ReactNode })
       }
 
       if (isUnauthorizedResponse(error)) {
-        const result = await api.post('/auth/refresh-token');
-
-        if (result.status !== 200) {
-          await logout();
-          await new Promise((r) => setTimeout(r, 1));
-          await router.invalidate();
-          await navigate({ to: '/login' });
-          sessionExpiredNotification();
-          return;
-        }
-
-        await login(result.data);
+        await api
+          .post('/auth/refresh-token')
+          .then(async (result) => {
+            await login(result.data);
+          })
+          .catch(async () => {
+            await logout();
+            await sleep();
+            await router.invalidate();
+            await navigate({ to: '/login' });
+            sessionExpiredNotification();
+          });
 
         return api(error.config ?? {});
       }

@@ -21,7 +21,16 @@ public class Organization extends Party {
 
     private String email;
 
-    public Organization() {
-        this.addRole(Role.ORGANIZATION);
+    protected Organization() {
+    }
+
+    public Organization(String name, String address, String taxOffice, String taxRegistrationNumber, String phoneNumber, String email) {
+        super.setName(name);
+        super.setType(Type.ORGANIZATION);
+        this.address = address;
+        this.taxOffice = taxOffice;
+        this.taxRegistrationNumber = taxRegistrationNumber;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 }

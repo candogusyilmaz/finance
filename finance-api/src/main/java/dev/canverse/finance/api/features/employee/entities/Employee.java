@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,11 @@ public class Employee extends Individual {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<EmployeeAssignment> assignments = new HashSet<>();
 
-    public Employee() {
-        this.addRole(Role.EMPLOYEE);
+    protected Employee() {
+    }
+
+    public Employee(String firstname, String lastname, String socialSecurityNumber, LocalDate birthDate) {
+        super(firstname, lastname, socialSecurityNumber, birthDate);
+        super.addRole(Role.EMPLOYEE);
     }
 }

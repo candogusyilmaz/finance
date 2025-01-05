@@ -11,20 +11,25 @@ export type GetEmployeesResponse = {
   currentOrganization?: {
     id: number;
     name: string;
-    formalEmploymentPeriod: {
+    formalEmploymentPeriod?: {
       startDate: string;
-      endDate: string;
+      endDate?: string;
     };
     actualEmploymentPeriod: {
       startDate: string;
-      endDate: string;
+      endDate?: string;
     };
   };
 };
 
 export type CreateEmployeeRequest = {
   organizationId: ID;
-  individual: CreateIndividualRequest;
+  individual: {
+    socialSecurityNumber: string;
+    firstName: string;
+    lastName: string;
+    birthDate: string;
+  };
   worksiteId?: ID;
   professionId: ID;
   officialEmploymentStartDate: string;
