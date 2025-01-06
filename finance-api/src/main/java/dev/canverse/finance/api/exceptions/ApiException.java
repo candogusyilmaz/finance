@@ -14,5 +14,5 @@ public abstract class ApiException extends RuntimeException implements Serializa
         this.body = ProblemDetail.forStatusAndDetail(this.getHttpStatusCode(), message);
     }
 
-    protected abstract HttpStatusCode getHttpStatusCode();
+    public abstract HttpStatusCode getHttpStatusCode();
 }

@@ -10,7 +10,7 @@ public class BadRequestException extends ApiException {
     }
 
     @Override
-    protected HttpStatusCode getHttpStatusCode() {
+    public HttpStatusCode getHttpStatusCode() {
         return HttpStatus.BAD_REQUEST;
     }
 }

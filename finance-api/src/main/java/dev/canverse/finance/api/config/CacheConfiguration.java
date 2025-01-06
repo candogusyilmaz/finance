@@ -15,8 +15,8 @@ public class CacheConfiguration {
     @Bean
     public CaffeineCacheManager cacheManager() {
         var cacheManager = new CaffeineCacheManager();
-        cacheManager.registerCustomCache("shortLived", Caffeine.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).maximumSize(500).build());
-        cacheManager.registerCustomCache("longLived", Caffeine.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).maximumSize(500).build());
+        cacheManager.registerCustomCache("shortLived", Caffeine.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).maximumSize(500).recordStats().build());
+        cacheManager.registerCustomCache("longLived", Caffeine.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).maximumSize(500).recordStats().build());
         return cacheManager;
     }
 }

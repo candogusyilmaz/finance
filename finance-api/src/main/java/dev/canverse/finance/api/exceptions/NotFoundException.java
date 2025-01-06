@@ -15,7 +15,7 @@ public class NotFoundException extends ApiException {
     }
 
     @Override
-    protected HttpStatusCode getHttpStatusCode() {
+    public HttpStatusCode getHttpStatusCode() {
         return HttpStatus.NOT_FOUND;
     }
 }
