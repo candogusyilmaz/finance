@@ -31,7 +31,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true)
 @RequiredArgsConstructor
-public class Security {
+public class SecurityConfiguration {
     private final CorsProperties corsProperties;
     private final JwtAuthConverter jwtAuthConverter;
 
