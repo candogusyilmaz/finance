@@ -24,6 +24,9 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class PermissionInitializer implements ApplicationListener<ApplicationReadyEvent> {
+    private final static String PACKAGE_NAME = "dev.canverse.finance.api";
+    private final static boolean DELETE_UNUSED_PERMISSIONS = false;
+
     private final PermissionRepository permissionRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -53,6 +56,9 @@ public class PermissionInitializer implements ApplicationListener<ApplicationRea
     }
 
     private void deletePermissions(List<Permission> persistedPermissions, List<Permission> permissionsOnControllers) {
+        if (!DELETE_UNUSED_PERMISSIONS)
+            return;
+
         // Permissions that are not used in the controllers but persisted in the database
         var unusedPermissions = persistedPermissions.stream()
                 .filter(p -> permissionsOnControllers.stream().noneMatch(pp -> p.getName().equals(pp.getName())))
@@ -70,7 +76,7 @@ public class PermissionInitializer implements ApplicationListener<ApplicationRea
             return ClassPath.from(ClassLoader.getSystemClassLoader())
                     .getAllClasses()
                     .stream()
-                    .filter(clazz -> clazz.getPackageName().startsWith("dev.canverse.studio.api") && clazz.getSimpleName().endsWith("Controller"))
+                    .filter(clazz -> clazz.getPackageName().startsWith(PACKAGE_NAME) && clazz.getSimpleName().endsWith("Controller"))
                     .map(ClassPath.ClassInfo::load)
                     .collect(Collectors.toSet());
         } catch (IOException e) {

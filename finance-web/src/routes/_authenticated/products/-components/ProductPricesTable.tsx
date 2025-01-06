@@ -1,20 +1,30 @@
-import { Button, Group, Popover, Stack, rem } from '@mantine/core';
-import { DatePickerInput, type DateValue } from '@mantine/dates';
-import { IconCalendarDown, IconCalendarUp, IconSearch } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
-import { getRouteApi } from '@tanstack/react-router';
-import type { DataTableColumn } from 'mantine-datatable';
-import { useState } from 'react';
-import { api } from 'src/api/axios';
-import { type Page, createURL } from 'src/api/types/Defaults';
-import { PartyRoles } from 'src/api/types/PartyTypes';
-import type { GetProductPricesResponse } from 'src/api/types/ProductPriceTypes';
-import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
-import { PartySelect } from 'src/components/selects/party-select';
-import { FormatDate, FormatDateTime, FormatISODate, FormatPercentage, FormatPrice } from 'src/utils/formatter';
-import { CreateProductPriceModal } from './CreateProductPriceModal';
+import { Button, Group, Popover, Stack, rem } from "@mantine/core";
+import { DatePickerInput, type DateValue } from "@mantine/dates";
+import {
+  IconCalendarDown,
+  IconCalendarUp,
+  IconSearch,
+} from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
+import { getRouteApi } from "@tanstack/react-router";
+import type { DataTableColumn } from "mantine-datatable";
+import { useState } from "react";
+import { api } from "src/api/axios";
+import { type Page, createURL } from "src/api/types/Defaults";
+import { PartyRoles } from "src/api/types/PartyTypes";
+import type { GetProductPricesResponse } from "src/api/types/ProductPriceTypes";
+import { PreconfiguredDataTable } from "src/components/preconfigured-data-table";
+import { PartySelect } from "src/components/selects/party-select";
+import {
+  FormatDate,
+  FormatDateTime,
+  FormatISODate,
+  FormatPercentage,
+  FormatPrice,
+} from "src/utils/formatter";
+import { CreateProductPriceModal } from "./CreateProductPriceModal";
 
-const route = getRouteApi('/_authenticated/products/$productId');
+const route = getRouteApi("/_authenticated/products/$productId");
 
 export function ProductPricesTable() {
   const [opened, setOpened] = useState(false);
@@ -28,7 +38,7 @@ export function ProductPricesTable() {
   const pageable = {
     page: page,
     size: size,
-    sort: sort
+    sort: sort,
   };
 
   const [querySearchParams, setQuerySearchParams] = useState({});
@@ -36,58 +46,77 @@ export function ProductPricesTable() {
   const query = useQuery({
     queryKey: [`product-${productId}-prices`, pageable, querySearchParams],
     queryFn: async () => {
-      return (await api.get<Page<GetProductPricesResponse>>(createURL(`/products/${productId}/prices`, pageable, querySearchParams))).data;
+      return (
+        await api.get<Page<GetProductPricesResponse>>(
+          createURL(
+            `/products/${productId}/prices`,
+            pageable,
+            querySearchParams
+          )
+        )
+      ).data;
     },
-    staleTime: 1200000
+    staleTime: 1200000,
   });
 
   const columns: DataTableColumn<GetProductPricesResponse>[] = [
-    { accessor: 'supplier.name', title: 'Tedarikçi', sortable: true },
+    { accessor: "supplier.name", title: "Tedarikçi", sortable: true },
     {
-      accessor: 'price',
-      title: 'Fiyat',
+      accessor: "price",
+      title: "Fiyat",
       sortable: true,
-      render: (record) => FormatPrice(record.price, record.currency.code)
+      render: (record) => FormatPrice(record.price, record.currency.code),
     },
     {
-      accessor: 'vatRate',
-      title: 'KDV Oranı',
-      render: (record) => FormatPercentage(record.vatRate)
+      accessor: "vatRate",
+      title: "KDV Oranı",
+      render: (record) => FormatPercentage(record.vatRate),
     },
     {
-      accessor: 'withholdingTaxRate',
-      title: 'Stopaj Oranı',
-      render: (record) => FormatPercentage(record.withholdingTaxRate)
+      accessor: "withholdingTaxRate",
+      title: "Stopaj Oranı",
+      render: (record) => FormatPercentage(record.withholdingTaxRate),
     },
     {
-      accessor: 'startDate',
-      title: 'Başlangıç Tarihi',
-      render: (record) => FormatDate(record.startDate)
+      accessor: "startDate",
+      title: "Başlangıç Tarihi",
+      render: (record) => FormatDate(record.startDate),
     },
     {
-      accessor: 'endDate',
-      title: 'Bitiş Tarihi',
-      render: (record) => FormatDate(record.endDate)
+      accessor: "endDate",
+      title: "Bitiş Tarihi",
+      render: (record) => FormatDate(record.endDate),
     },
-    { accessor: 'priceConfirmedBy.displayName', title: 'Onaylayan' },
+    { accessor: "priceConfirmedBy.displayName", title: "Onaylayan" },
     {
-      accessor: 'createdAt',
-      title: 'Oluşturulma Tarihi',
-      render: (record) => FormatDateTime(record.createdAt)
+      accessor: "createdAt",
+      title: "Oluşturulma Tarihi",
+      render: (record) => FormatDateTime(record.createdAt),
     },
     {
-      accessor: 'updatedAt',
-      title: 'Son Güncelleme Tarihi',
-      render: (record) => FormatDateTime(record.updatedAt)
-    }
+      accessor: "updatedAt",
+      title: "Son Güncelleme Tarihi",
+      render: (record) => FormatDateTime(record.updatedAt),
+    },
   ];
 
   return (
     <Stack>
       <Group justify="space-between">
-        <Popover opened={opened} onChange={setOpened} trapFocus width={200} position="bottom-start" shadow="md">
+        <Popover
+          opened={opened}
+          onChange={setOpened}
+          trapFocus
+          width={200}
+          position="bottom-start"
+          shadow="md"
+        >
           <Popover.Target>
-            <Button onClick={() => setOpened((o) => !o)} variant="default" px="xl">
+            <Button
+              onClick={() => setOpened((o) => !o)}
+              variant="default"
+              px="xl"
+            >
               Filtrele
             </Button>
           </Popover.Target>
@@ -102,7 +131,7 @@ export function ProductPricesTable() {
                   if (value) setSubcontractorId(value);
                 }}
                 comboboxProps={{
-                  withinPortal: false
+                  withinPortal: false,
                 }}
                 partyRoles={[PartyRoles.SUPPLIER]}
               />
@@ -132,7 +161,8 @@ export function ProductPricesTable() {
                     setSubcontractorId(undefined);
                     setStartDate(undefined);
                     setEndDate(undefined);
-                  }}>
+                  }}
+                >
                   Sıfırla
                 </Button>
                 <Button
@@ -142,12 +172,14 @@ export function ProductPricesTable() {
                   onClick={(e) => {
                     e.preventDefault();
                     setQuerySearchParams({
-                      subcontractorId: subcontractorId && Number.parseInt(subcontractorId),
+                      subcontractorId:
+                        subcontractorId && Number.parseInt(subcontractorId),
                       startDate: startDate && FormatISODate(startDate),
-                      endDate: endDate && FormatISODate(endDate)
+                      endDate: endDate && FormatISODate(endDate),
                     });
                     setOpened(false);
-                  }}>
+                  }}
+                >
                   Ara
                 </Button>
               </Group>
@@ -166,16 +198,16 @@ export function ProductPricesTable() {
           navigate({
             search: (prev) => ({
               ...prev,
-              sort: { id: s.columnAccessor, direction: s.direction }
-            })
+              sort: { id: s.columnAccessor, direction: s.direction },
+            }),
           })
         }
-        totalRecords={query.data?.page.totalElements}
+        totalRecords={query.data?.totalElements}
         recordsPerPage={size}
         page={page}
         onPageChange={(p) =>
           navigate({
-            search: (prev) => ({ ...prev, page: p })
+            search: (prev) => ({ ...prev, page: p }),
           })
         }
       />

@@ -1,15 +1,18 @@
-import { IconEye } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
-import { getRouteApi } from '@tanstack/react-router';
-import { type DataTableSortStatus, useDataTableColumns } from 'mantine-datatable';
-import { useCallback } from 'react';
-import type { GetEmployeesResponse } from 'src/api/types/EmployeeTypes';
-import { PreconfiguredDataTable } from 'src/components/preconfigured-data-table';
-import { ActionIconLink } from 'src/components/ui/action-icon-link';
-import { FormatDate } from 'src/utils/formatter';
-import { getEmployeesQueryOptions } from '../-api/employee-list-queries';
+import { IconEye } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
+import { getRouteApi } from "@tanstack/react-router";
+import {
+  type DataTableSortStatus,
+  useDataTableColumns,
+} from "mantine-datatable";
+import { useCallback } from "react";
+import type { GetEmployeesResponse } from "src/api/types/EmployeeTypes";
+import { PreconfiguredDataTable } from "src/components/preconfigured-data-table";
+import { ActionIconLink } from "src/components/ui/action-icon-link";
+import { FormatDate } from "src/utils/formatter";
+import { getEmployeesQueryOptions } from "../-api/employee-list-queries";
 
-const route = getRouteApi('/_authenticated/employees/');
+const route = getRouteApi("/_authenticated/employees/");
 
 export function EmployeesTable() {
   const { page, sort, size } = route.useSearch();
@@ -17,71 +20,88 @@ export function EmployeesTable() {
   const pageable = {
     page: page,
     size: size,
-    sort: sort
+    sort: sort,
   };
 
   const query = useQuery(getEmployeesQueryOptions(pageable));
 
   const { effectiveColumns } = useDataTableColumns<GetEmployeesResponse>({
-    key: 'employees',
+    key: "employees",
     columns: [
       {
-        accessor: 'em.organization.name',
-        title: 'Organizasyon',
+        accessor: "em.organization.name",
+        title: "Organizasyon",
         sortable: true,
-        render: (record) => record.currentOrganization?.name
+        render: (record) => record.currentOrganization?.name,
       },
       {
-        accessor: 'socialSecurityNumber',
-        title: 'Kimlik Numarası',
-        render: (record) => record.socialSecurityNumber
+        accessor: "socialSecurityNumber",
+        title: "Kimlik Numarası",
+        render: (record) => record.socialSecurityNumber,
       },
       {
-        accessor: 'name',
-        title: 'Personel',
-        render: (record) => record.name
+        accessor: "name",
+        title: "Personel",
+        render: (record) => record.name,
       },
       {
-        accessor: 'ea.worksite.name',
-        title: 'Çalışma Yeri',
+        accessor: "ea.worksite.name",
+        title: "Çalışma Yeri",
         sortable: true,
-        render: (record) => record.currentWorksite?.name
+        render: (record) => record.currentWorksite?.name,
       },
       {
-        accessor: 'currentOrganization.formalEmploymentPeriod.startDate',
-        title: 'Resmi İşe Başlama Tarihi',
-        render: (record) => FormatDate(record.currentOrganization?.formalEmploymentPeriod?.startDate)
+        accessor: "currentOrganization.formalEmploymentPeriod.startDate",
+        title: "Resmi İşe Başlama Tarihi",
+        render: (record) =>
+          FormatDate(
+            record.currentOrganization?.formalEmploymentPeriod?.startDate
+          ),
       },
       {
-        accessor: 'currentOrganization.formalEmploymentPeriod.endDate',
-        title: 'Resmi İşten Ayrılma Tarihi',
-        render: (record) => FormatDate(record.currentOrganization?.formalEmploymentPeriod?.endDate)
+        accessor: "currentOrganization.formalEmploymentPeriod.endDate",
+        title: "Resmi İşten Ayrılma Tarihi",
+        render: (record) =>
+          FormatDate(
+            record.currentOrganization?.formalEmploymentPeriod?.endDate
+          ),
       },
       {
-        accessor: 'currentOrganization.actualEmploymentPeriod.startDate',
-        title: 'İşe Başlama Tarihi',
-        render: (record) => FormatDate(record.currentOrganization?.actualEmploymentPeriod?.startDate)
+        accessor: "currentOrganization.actualEmploymentPeriod.startDate",
+        title: "İşe Başlama Tarihi",
+        render: (record) =>
+          FormatDate(
+            record.currentOrganization?.actualEmploymentPeriod?.startDate
+          ),
       },
       {
-        accessor: 'currentOrganization.actualformalEmploymentPeriod.endDate',
-        title: 'İşten Ayrılma Tarihi',
-        render: (record) => FormatDate(record.currentOrganization?.actualEmploymentPeriod?.endDate)
+        accessor: "currentOrganization.actualformalEmploymentPeriod.endDate",
+        title: "İşten Ayrılma Tarihi",
+        render: (record) =>
+          FormatDate(
+            record.currentOrganization?.actualEmploymentPeriod?.endDate
+          ),
       },
       {
-        accessor: 'actions',
-        title: '',
+        accessor: "actions",
+        title: "",
         cellsStyle: () => ({
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }),
         render: (record) => (
-          <ActionIconLink size="sm" variant="subtle" to="/employees/$employeeId" params={{ employeeId: record.id.toString() }}>
+          <ActionIconLink
+            size="sm"
+            variant="subtle"
+            to="/employees/$employeeId"
+            params={{ employeeId: record.id.toString() }}
+          >
             <IconEye size="100%" />
           </ActionIconLink>
-        )
-      }
-    ]
+        ),
+      },
+    ],
   });
 
   const onSortStatusChange = useCallback(
@@ -89,8 +109,8 @@ export function EmployeesTable() {
       navigate({
         search: (prev) => ({
           ...prev,
-          sort: { id: s.columnAccessor, direction: s.direction }
-        })
+          sort: { id: s.columnAccessor, direction: s.direction },
+        }),
       }),
     [navigate]
   );
@@ -98,7 +118,7 @@ export function EmployeesTable() {
   const onPageChange = useCallback(
     (p: number) =>
       navigate({
-        search: (prev) => ({ ...prev, page: p })
+        search: (prev) => ({ ...prev, page: p }),
       }),
     [navigate]
   );
@@ -110,7 +130,7 @@ export function EmployeesTable() {
       fetching={query.isFetching}
       sortStatus={{ columnAccessor: sort.id, direction: sort.direction }}
       onSortStatusChange={onSortStatusChange}
-      totalRecords={query.data?.page.totalElements}
+      totalRecords={query.data?.totalElements}
       recordsPerPage={size}
       page={page}
       onPageChange={onPageChange}
