@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.currency.controllers;
+package dev.canverse.finance.api.rest.common;
 
 import dev.canverse.finance.api.features.currency.dtos.CreateCurrencyRequest;
 import dev.canverse.finance.api.features.currency.dtos.CurrencyResponse;

@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.auth;
+package dev.canverse.finance.api.rest.authentication;
 
 import dev.canverse.finance.api.auth.dtos.CreateTokenRequest;
 import dev.canverse.finance.api.auth.dtos.CreateTokenResponse;

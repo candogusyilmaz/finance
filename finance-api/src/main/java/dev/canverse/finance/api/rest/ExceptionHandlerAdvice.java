@@ -1,5 +1,6 @@
-package dev.canverse.finance.api.exceptions;
+package dev.canverse.finance.api.rest;
 
+import dev.canverse.finance.api.exceptions.ApiException;
 import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;

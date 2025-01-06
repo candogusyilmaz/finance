@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.employee.controllers;
+package dev.canverse.finance.api.rest.common;
 
 import dev.canverse.finance.api.features.employee.dtos.CreateProfessionRequest;
 import dev.canverse.finance.api.features.employee.dtos.UpdateProfessionNameRequest;

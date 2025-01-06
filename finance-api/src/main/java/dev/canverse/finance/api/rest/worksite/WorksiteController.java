@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.worksite.controllers;
+package dev.canverse.finance.api.rest.worksite;
 
 import dev.canverse.finance.api.features.shared.projections.IdNameProjection;
 import dev.canverse.finance.api.features.worksite.dtos.CreateWorksiteRequest;

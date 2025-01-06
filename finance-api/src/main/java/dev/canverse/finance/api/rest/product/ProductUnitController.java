@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.product.controllers;
+package dev.canverse.finance.api.rest.product;
 
 import dev.canverse.finance.api.features.product.dtos.CreateProductUnitRequest;
 import dev.canverse.finance.api.features.product.dtos.GetProductUnitsResponse;

@@ -1,6 +1,5 @@
 import { Grid, Tabs } from '@mantine/core';
 import { createFileRoute } from '@tanstack/react-router';
-import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { AutofetchingTable } from 'src/components/autofetching-table/autofetching-table';
 import { EmployeeInfoCard } from './-components/employee-info-card';
@@ -20,37 +19,32 @@ function Employee() {
   const { employeeId } = Route.useParams();
 
   return (
-    <>
-      <Helmet>
-        <title>Personel Bilgileri | Canverse</title>
-      </Helmet>
-      <Grid>
-        <Grid.Col span={{ sm: 12, md: 12 }}>
-          <EmployeeInfoCard employeeId={employeeId} />
-        </Grid.Col>
-        <Grid.Col span={{ sm: 12, md: 12 }}>
-          <Tabs keepMounted={false} defaultValue="employments">
-            <Tabs.List mb="md">
-              <Tabs.Tab value="employments">Organizasyon</Tabs.Tab>
-              <Tabs.Tab value="assignments">Çalışma Yeri</Tabs.Tab>
-              <Tabs.Tab value="salaries">Ücret</Tabs.Tab>
-              <Tabs.Tab value="payments">Ödeme</Tabs.Tab>
-            </Tabs.List>
-            <Tabs.Panel value="employments">
-              <AutofetchingTable columns={EMPLOYEE_EMPLOYMENT_COLUMNS} fetchUrl={`/employees/${employeeId}/employments`} />
-            </Tabs.Panel>
-            <Tabs.Panel value="assignments">
-              <AutofetchingTable columns={EMPLOYEE_ASSIGNMENT_COLUMNS} fetchUrl={`/employees/${employeeId}/assignments`} />
-            </Tabs.Panel>
-            <Tabs.Panel value="salaries">
-              <AutofetchingTable columns={EMPLOYEE_SALAY_COLUMNS} fetchUrl={`/employees/${employeeId}/salaries`} />
-            </Tabs.Panel>
-            <Tabs.Panel value="payments">
-              <AutofetchingTable columns={GET_EMPLOYEE_PAYMENT_COLUMNS(t, employeeId)} fetchUrl={`/employees/${employeeId}/payments`} />
-            </Tabs.Panel>
-          </Tabs>
-        </Grid.Col>
-      </Grid>
-    </>
+    <Grid>
+      <Grid.Col span={{ sm: 12, md: 12 }}>
+        <EmployeeInfoCard employeeId={employeeId} />
+      </Grid.Col>
+      <Grid.Col span={{ sm: 12, md: 12 }}>
+        <Tabs keepMounted={false} defaultValue="employments">
+          <Tabs.List mb="md">
+            <Tabs.Tab value="employments">Organizasyon</Tabs.Tab>
+            <Tabs.Tab value="assignments">Çalışma Yeri</Tabs.Tab>
+            <Tabs.Tab value="salaries">Ücret</Tabs.Tab>
+            <Tabs.Tab value="payments">Ödeme</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="employments">
+            <AutofetchingTable columns={EMPLOYEE_EMPLOYMENT_COLUMNS} fetchUrl={`/employees/${employeeId}/employments`} />
+          </Tabs.Panel>
+          <Tabs.Panel value="assignments">
+            <AutofetchingTable columns={EMPLOYEE_ASSIGNMENT_COLUMNS} fetchUrl={`/employees/${employeeId}/assignments`} />
+          </Tabs.Panel>
+          <Tabs.Panel value="salaries">
+            <AutofetchingTable columns={EMPLOYEE_SALAY_COLUMNS} fetchUrl={`/employees/${employeeId}/salaries`} />
+          </Tabs.Panel>
+          <Tabs.Panel value="payments">
+            <AutofetchingTable columns={GET_EMPLOYEE_PAYMENT_COLUMNS(t, employeeId)} fetchUrl={`/employees/${employeeId}/payments`} />
+          </Tabs.Panel>
+        </Tabs>
+      </Grid.Col>
+    </Grid>
   );
 }

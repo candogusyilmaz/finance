@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.employee.controllers;
+package dev.canverse.finance.api.rest.employee;
 
 import dev.canverse.finance.api.features.employee.dtos.*;
 import dev.canverse.finance.api.features.employee.services.EmployeeService;

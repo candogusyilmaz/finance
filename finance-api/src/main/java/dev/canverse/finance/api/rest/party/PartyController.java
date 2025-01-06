@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.party.controllers;
+package dev.canverse.finance.api.rest.party;
 
 import dev.canverse.finance.api.features.party.entities.Party;
 import dev.canverse.finance.api.features.party.services.PartyService;

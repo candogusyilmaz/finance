@@ -2,7 +2,6 @@ import { Group, ScrollArea, Stack, rem, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconId } from '@tabler/icons-react';
 import { createFileRoute } from '@tanstack/react-router';
-import { Helmet } from 'react-helmet-async';
 import { Fragment } from 'react/jsx-runtime';
 import { PageSchema } from 'src/api/types/Defaults';
 import { Frawer } from 'src/components/frawer';
@@ -22,9 +21,6 @@ function Employees() {
 
   return (
     <Fragment>
-      <Helmet>
-        <title>Personeller | Canverse</title>
-      </Helmet>
       <Group align="center" mb="xl">
         <IconId size={36} />
         <RouteTitle title="Personeller" />

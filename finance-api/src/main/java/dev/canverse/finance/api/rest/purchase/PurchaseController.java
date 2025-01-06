@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.purchase.controllers;
+package dev.canverse.finance.api.rest.purchase;
 
 import dev.canverse.finance.api.features.purchase.dtos.*;
 import dev.canverse.finance.api.features.purchase.services.DeliveryService;

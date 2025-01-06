@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.payment.controllers;
+package dev.canverse.finance.api.rest.payment;
 
 import dev.canverse.finance.api.features.payment.dtos.CreatePaymentCategoryRequest;
 import dev.canverse.finance.api.features.payment.dtos.GetPaymentCategoriesResponse;

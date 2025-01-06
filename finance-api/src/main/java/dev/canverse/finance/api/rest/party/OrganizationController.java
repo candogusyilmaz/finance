@@ -1,4 +1,4 @@
-package dev.canverse.finance.api.features.party.controllers;
+package dev.canverse.finance.api.rest.party;
 
 import dev.canverse.finance.api.features.party.dtos.CreateOrganizationRequest;
 import dev.canverse.finance.api.features.party.dtos.GetOrganization;
